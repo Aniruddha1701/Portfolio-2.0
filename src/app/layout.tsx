@@ -5,6 +5,7 @@ import './globals.css';
 import ParticlesBackground from '@/components/particles-background';
 import CursorFollower from '@/components/cursor-follower';
 import { Spotlight } from '@/components/spotlight';
+import { AnimatePresence } from 'framer-motion';
 
 export const metadata: Metadata = {
   title: 'Aniruddha Patil | Full Stack Developer',
@@ -33,9 +34,11 @@ export default function RootLayout({
           <CursorFollower />
           <Spotlight />
           <ParticlesBackground />
-          <div className="relative z-10">
-            {children}
-          </div>
+          <AnimatePresence mode="wait">
+            <div className="relative z-10">
+              {children}
+            </div>
+          </AnimatePresence>
           <Toaster />
         </ThemeProvider>
       </body>

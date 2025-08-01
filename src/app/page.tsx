@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from 'react';
 import { Header } from '@/components/header';
 import { Portfolio } from '@/components/portfolio';
 import { Skills } from '@/components/skills';
@@ -10,6 +11,7 @@ import { ArrowDown, FileText } from 'lucide-react';
 import { Journey } from '@/components/journey';
 import { Github, Linkedin, Mail } from 'lucide-react';
 import { TypingEffect } from '@/components/typing-effect';
+import { LoadingScreen } from '@/components/loading-screen';
 
 const SocialLinks = () => (
   <div className="fixed top-1/2 right-4 -translate-y-1/2 z-50 hidden md:flex flex-col gap-4">
@@ -27,6 +29,19 @@ const SocialLinks = () => (
 
 
 export default function Home() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000); // Simulate a 3-second load time
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-transparent">
       <Header />
