@@ -7,8 +7,8 @@ import { useRef } from "react"
 
 const journeyData = [
   {
-    institution: "To be continued...",
-    degree: "The journey continues, shaping the future with every step.",
+    institution: "Embarking on New Adventures",
+    degree: "Open to new opportunities and collaborations.",
     duration: "Present - Future",
     location: "",
     icon: (
