@@ -144,11 +144,10 @@ export function Journey() {
     offset: ["start end", "end start"]
   });
 
-  // This will find the index of the first "future" item.
-  // We'll split the timeline visually at this point.
   const firstFutureIndex = journeyData.findIndex(item => item.isFuture);
-  const timelineSplitPercentage = (firstFutureIndex / (journeyData.length -1)) * 100;
-
+  const completedJourneyEnd = (journeyData.length - firstFutureIndex) / journeyData.length;
+  const pathHeight = useTransform(scrollYProgress, [0, 0.8], [0, completedJourneyEnd]);
+  
 
   return (
     <div className="container mx-auto px-4 md:px-6">
@@ -159,18 +158,19 @@ export function Journey() {
         </div>
       </div>
       <div ref={ref} className="relative mt-12 w-full max-w-3xl mx-auto">
-        {/* Dotted line for the future part */}
-        <div className="absolute left-1/2 -ml-[1px] top-0 h-full w-[2px]">
-            <div className="h-full w-full" style={{
-                background: `linear-gradient(to bottom, hsl(var(--primary)) 0%, hsl(var(--primary)) ${timelineSplitPercentage}%, transparent ${timelineSplitPercentage}%)`,
-                backgroundSize: '2px 12px',
-                backgroundRepeat: 'repeat-y'
-            }}></div>
-        </div>
-        {/* Solid line for the past part */}
-        <div className="absolute left-1/2 -ml-[1px] top-0 h-full w-[2px] bg-primary" style={{
-            height: `${timelineSplitPercentage}%`
-        }}></div>
+        <div 
+            className="absolute left-1/2 -ml-[1px] top-0 h-full w-[2px] bg-primary/20"
+            style={{
+                background: `repeating-linear-gradient(to bottom, hsl(var(--primary)), hsl(var(--primary)) 4px, transparent 4px, transparent 10px)`,
+                backgroundSize: '2px 10px',
+            }}
+        />
+        <motion.div 
+          className="absolute left-1/2 -ml-[1px] top-0 w-[2px] bg-primary"
+          style={{
+            height: useTransform(pathHeight, (h) => `${h * 100}%`)
+          }}
+        />
 
         <div className="relative">
           {journeyData.map((edu, i) => (
