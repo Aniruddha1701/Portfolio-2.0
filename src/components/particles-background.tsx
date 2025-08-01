@@ -1,10 +1,12 @@
 "use client"
 
 import React, { useRef, useEffect } from 'react';
+import { useTheme } from 'next-themes';
 
 const ParticlesBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouse = useRef<{ x: number | null; y: number | null }>({ x: null, y: null });
+  const { theme } = useTheme();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -38,15 +40,23 @@ const ParticlesBackground = () => {
       vy: number;
       radius: number;
       baseColor: string;
+      interactionColor: string;
       color: string;
 
       constructor() {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
-        this.vx = (Math.random() - 0.5) * 0.5; // Slower, more consistent initial speed
-        this.vy = (Math.random() - 0.5) * 0.5; // Slower, more consistent initial speed
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
         this.radius = Math.random() * 2.5 + 1;
-        this.baseColor = 'rgba(125, 249, 255, 0.5)';
+        
+        if (theme === 'light') {
+          this.baseColor = 'rgba(0, 0, 0, 0.4)';
+          this.interactionColor = 'rgba(0, 0, 139, 0.8)'; // Dark Blue
+        } else {
+          this.baseColor = 'rgba(125, 249, 255, 0.5)';
+          this.interactionColor = 'rgba(50, 205, 50, 0.8)'; // Lime Green
+        }
         this.color = this.baseColor;
       }
 
@@ -54,13 +64,11 @@ const ParticlesBackground = () => {
         this.x += this.vx;
         this.y += this.vy;
 
-        // Reset particle position if it goes off-screen
         if (this.x < -this.radius) this.x = width + this.radius;
         if (this.x > width + this.radius) this.x = -this.radius;
         if (this.y < -this.radius) this.y = height + this.radius;
         if (this.y > height + this.radius) this.y = -this.radius;
         
-        // Interaction with mouse
         if (mouse.current.x !== null && mouse.current.y !== null) {
           const dx = mouse.current.x - this.x;
           const dy = mouse.current.y - this.y;
@@ -73,7 +81,7 @@ const ParticlesBackground = () => {
             const moveY = forceDirectionY * force * 0.5;
             this.x -= moveX;
             this.y -= moveY;
-            this.color = 'rgba(50, 205, 50, 0.8)'; // Lime Green on interaction
+            this.color = this.interactionColor;
           } else {
             this.color = this.baseColor;
           }
@@ -119,7 +127,8 @@ const ParticlesBackground = () => {
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(125, 249, 255, ${1 - dist / 140})`;
+            const lineColor = theme === 'light' ? 'rgba(0, 0, 0, 0.4)' : 'rgba(125, 249, 255, 0.4)';
+            ctx.strokeStyle = `${lineColor.slice(0, -2)}${1 - dist / 140})`;
             ctx.stroke();
           }
         }
@@ -136,7 +145,7 @@ const ParticlesBackground = () => {
         window.removeEventListener('mouseout', mouseOutHandler);
     }
 
-  }, []);
+  }, [theme]);
 
   return <canvas ref={canvasRef} className="fixed top-0 left-0 -z-10 w-full h-full bg-transparent" />;
 };
