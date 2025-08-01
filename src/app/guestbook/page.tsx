@@ -67,7 +67,7 @@ export default function GuestbookPage() {
                 toast({
                     title: "Success!",
                     description: "Your message has been posted to the guestbook.",
-                    icon: <CheckCircle className="h-5 w-5 text-green-500" />,
+                    icon: <CheckCircle className="h-5 w-5 text-primary" />,
                 });
                 setEntries(prev => [result.entry!, ...prev]);
                 setName('');

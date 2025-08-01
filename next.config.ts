@@ -19,15 +19,13 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  devIndicators: {
-    buildActivity: false,
-  },
   experimental: {
-    allowedDevOrigins: [
-        "http://localhost:3000",
-        "https://*.cluster-cd3bsnf6r5bemwki2bxljme5as.cloudworkstations.dev"
-    ]
-  }
+    // Empty experimental block for now
+  },
+  allowedDevOrigins: [
+    "http://localhost:3000",
+    "https://*.cluster-cd3bsnf6r5bemwki2bxljme5as.cloudworkstations.dev"
+  ]
 };
 
 export default nextConfig;

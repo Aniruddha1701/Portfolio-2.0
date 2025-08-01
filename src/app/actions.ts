@@ -1,18 +1,14 @@
 "use server"
 
 import { getItNews } from "@/ai/flows/it-news-flow";
-import { moderateText, ModerateTextInput } from "@/ai/flows/moderate-text-flow";
+import { moderateText } from "@/ai/flows/moderate-text-flow";
 import { promises as fs } from 'fs';
 import path from 'path';
+import type { GuestbookEntry } from './types';
+
 
 // Define the path to the JSON file
 const guestbookPath = path.resolve(process.cwd(), 'src/data/guestbook-entries.json');
-
-export interface GuestbookEntry {
-  name: string;
-  message: string;
-  timestamp: string;
-}
 
 export async function handleGetItNews() {
     try {
