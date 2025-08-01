@@ -17,14 +17,19 @@ const ParticlesBackground = () => {
     let particles: Particle[] = [];
     const particleCount = Math.floor(width / 30);
 
-    window.addEventListener('resize', () => {
+    const resizeHandler = () => {
       width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+      height = canvas.height = document.body.scrollHeight; // Set height to scroll height
       particles = [];
       for (let i = 0; i < particleCount; i++) {
         particles.push(new Particle());
       }
-    });
+    };
+
+    window.addEventListener('resize', resizeHandler);
+    // Also resize on initial load
+    resizeHandler();
+
 
     class Particle {
       x: number;
@@ -39,7 +44,7 @@ const ParticlesBackground = () => {
         this.y = Math.random() * height;
         this.vx = Math.random() * 1 - 0.5;
         this.vy = Math.random() * 1 - 0.5;
-        this.radius = Math.random() * 2 + 1;
+        this.radius = Math.random() * 1.5 + 1;
         this.color = 'rgba(125, 249, 255, 0.5)';
       }
 
@@ -91,12 +96,12 @@ const ParticlesBackground = () => {
     animate();
 
     return () => {
-        window.removeEventListener('resize', () => {});
+        window.removeEventListener('resize', resizeHandler);
     }
 
   }, []);
 
-  return <canvas ref={canvasRef} className="absolute inset-0 z-0 w-full h-full bg-transparent" />;
+  return <canvas ref={canvasRef} className="fixed top-0 left-0 -z-10 w-full h-full bg-transparent" />;
 };
 
 export default ParticlesBackground;

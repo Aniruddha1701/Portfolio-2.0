@@ -4,17 +4,15 @@ import { Skills } from '@/components/skills';
 import { CodePlayground } from '@/components/code-playground';
 import { Footer } from '@/components/footer';
 import { Button } from '@/components/ui/button';
-import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react';
+import { ArrowDown, Github, Linkedin, Mail, FileText } from 'lucide-react';
 import Link from 'next/link';
-import ParticlesBackground from '@/components/particles-background';
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen w-full flex-col bg-background">
+    <div className="flex min-h-screen w-full flex-col bg-transparent">
       <Header />
       <main className="flex-1">
         <section id="hero" className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden text-center">
-          <ParticlesBackground />
           <div className="absolute inset-0 z-0">
             <div className="absolute inset-0 bg-background/80">
                <div className="absolute bottom-0 left-[-20%] right-0 top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(125,249,255,0.1),rgba(255,255,255,0))]"></div>
@@ -36,18 +34,24 @@ export default function Home() {
                     <ArrowDown className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-y-1" />
                   </a>
                 </Button>
-                 <div className="flex justify-center space-x-4 md:justify-start">
-                    <Link href="https://github.com/Aniruddha1701" aria-label="Github" target="_blank" className="p-2 rounded-full hover:bg-primary/10 transition-colors">
-                      <Github className="h-6 w-6 text-muted-foreground transition-colors hover:text-primary" />
-                    </Link>
-                    <Link href="https://linkedin.com/in/aniruddhapatil0593" aria-label="LinkedIn" target="_blank" className="p-2 rounded-full hover:bg-primary/10 transition-colors">
-                      <Linkedin className="h-6 w-6 text-muted-foreground transition-colors hover:text-primary" />
-                    </Link>
-                     <Link href="mailto:aniruddhap66@gmail.com" aria-label="Email" target="_blank" className="p-2 rounded-full hover:bg-primary/10 transition-colors">
-                      <Mail className="h-6 w-6 text-muted-foreground transition-colors hover:text-primary" />
-                    </Link>
-                  </div>
+                <Button asChild size="lg" variant="outline" className="group transition-all duration-300 ease-in-out hover:scale-105">
+                  <a href="https://drive.google.com/file/d/1gG17jQFF8jYT4m4KSIGrZ6O9MVElxggF/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+                    <span>View Resume</span>
+                    <FileText className="ml-2 h-5 w-5" />
+                  </a>
+                </Button>
               </div>
+              <div className="flex justify-center space-x-4 md:justify-start mt-4">
+                  <Link href="https://github.com/Aniruddha1701" aria-label="Github" target="_blank" className="p-2 rounded-full hover:bg-primary/10 transition-colors">
+                    <Github className="h-6 w-6 text-muted-foreground transition-colors hover:text-primary" />
+                  </Link>
+                  <Link href="https://linkedin.com/in/aniruddhapatil0593" aria-label="LinkedIn" target="_blank" className="p-2 rounded-full hover:bg-primary/10 transition-colors">
+                    <Linkedin className="h-6 w-6 text-muted-foreground transition-colors hover:text-primary" />
+                  </Link>
+                   <Link href="mailto:aniruddhap66@gmail.com" aria-label="Email" target="_blank" className="p-2 rounded-full hover:bg-primary/10 transition-colors">
+                    <Mail className="h-6 w-6 text-muted-foreground transition-colors hover:text-primary" />
+                  </Link>
+                </div>
             </div>
           </div>
           <div className="absolute bottom-10 animate-bounce">

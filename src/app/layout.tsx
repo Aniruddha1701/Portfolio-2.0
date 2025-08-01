@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
 import './globals.css';
+import ParticlesBackground from '@/components/particles-background';
 
 export const metadata: Metadata = {
   title: 'Aniruddha Patil | Full Stack Developer',
@@ -25,9 +26,12 @@ export default function RootLayout({
           attribute="class"
           defaultTheme="dark"
           enableSystem
-          disableTransitionOnChange
+          disableTransitionOnChange={false}
         >
-          {children}
+          <ParticlesBackground />
+          <div className="relative z-10">
+            {children}
+          </div>
           <Toaster />
         </ThemeProvider>
       </body>
