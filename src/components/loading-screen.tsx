@@ -1,47 +1,52 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
+import { useEffect, useState } from "react"
 import { CodeXml } from "lucide-react"
 
+const words = ["Hello", "नमस्ते", "Bonjour", "Ciao", "Olá", "Guten Tag", "Welcome"];
+
 export function LoadingScreen() {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prevIndex) => (prevIndex + 1) % words.length);
+    }, 400); // Should be faster than the total animation time to feel fluid
+
+    return () => clearInterval(interval);
+  }, []);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { 
       opacity: 1,
-      transition: { 
-        duration: 0.5,
-        when: "beforeChildren",
-        staggerChildren: 0.2
-      } 
+      transition: { duration: 0.5, when: "beforeChildren" } 
     },
     exit: { 
       opacity: 0,
-      transition: {
-        duration: 0.5,
-        ease: "easeInOut"
-      }
+      transition: { duration: 0.5, ease: "easeInOut" }
     }
   };
 
-  const iconVariants = {
-    hidden: { scale: 0, opacity: 0 },
-    visible: {
-      scale: 1,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 260,
-        damping: 20,
-        repeat: Infinity,
-        repeatType: "mirror",
-        duration: 1.5,
-      },
-    },
-  };
-
   const textVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { duration: 0.8, ease: "easeOut" } },
+    enter: {
+      opacity: 0,
+      y: 20,
+      filter: "blur(8px)",
+    },
+    center: {
+      zIndex: 1,
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+    },
+    exit: {
+      zIndex: 0,
+      opacity: 0,
+      filter: "blur(8px)",
+      transition: { duration: 0.4 }
+    },
   };
 
   return (
@@ -52,15 +57,26 @@ export function LoadingScreen() {
       exit="exit"
       className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-background"
     >
-      <motion.div variants={iconVariants}>
-        <CodeXml className="h-20 w-20 text-primary" />
-      </motion.div>
-      <motion.p 
-        variants={textVariants}
-        className="mt-6 text-lg text-muted-foreground font-code"
-      >
-        Compiling creativity...
-      </motion.p>
+      <div className="relative flex items-center justify-center h-24 w-60">
+        <AnimatePresence>
+            <motion.p
+              key={index}
+              variants={textVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                y: { type: "spring", stiffness: 300, damping: 30 },
+                opacity: { duration: 0.5 },
+                filter: {duration: 0.5}
+              }}
+              className="absolute text-3xl font-bold font-headline text-primary"
+            >
+              {words[index]}
+            </motion.p>
+        </AnimatePresence>
+      </div>
+
     </motion.div>
   )
 }
