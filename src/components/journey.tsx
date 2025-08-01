@@ -7,13 +7,6 @@ import { useRef } from "react"
 
 const journeyData = [
   {
-    institution: "Vellore Institute of Technology (VIT Chennai)",
-    degree: "Bachelor of Technology in Computer Science",
-    duration: "2021 – 2025",
-    location: "Chennai, Tamil Nadu",
-    icon: <School className="text-primary-foreground" />,
-  },
-  {
     institution: "To be continued...",
     degree: "The journey continues, shaping the future with every step.",
     duration: "Present - Future",
@@ -34,6 +27,13 @@ const journeyData = [
         <Infinity className="text-primary-foreground" />
       </motion.div>
     ),
+  },
+  {
+    institution: "Vellore Institute of Technology (VIT Chennai)",
+    degree: "Bachelor of Technology in Computer Science",
+    duration: "2021 – 2025",
+    location: "Chennai, Tamil Nadu",
+    icon: <School className="text-primary-foreground" />,
   },
   {
     institution: "Maharashtra State Board, Nashik",
