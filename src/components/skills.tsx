@@ -1,3 +1,4 @@
+
 "use client"
 
 import { motion } from "framer-motion";
@@ -11,7 +12,7 @@ const skills = [
       <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#F7DF1E]">
         <path d="M0 0h24v24H0z" fill="none"/>
         <path d="M3 3h18v18H3z" fill="#F7DF1E"/>
-        <path d="M9.522 13.013c.318.644.759 1.156 1.458 1.458l-.51.986c-.9-.37-1.54-1.096-1.933-1.933l.985-.511zm4.956-2.026c-.318-.644-.759-1.156-1.458-1.458l.51-.986c.9.37 1.54 1.096 1.933 1.933l-.985.511zM10 6h2v2h-2zm4 10h2v2h-2z"/>
+        <path d="M9.522 13.013c.318.644.759 1.156 1.458 1.458l-.51.986c-.9-.37-1.54-1.096-1.933-1.933l.985-.511zm4.956-2.026c-.318-.644-.759 1.156-1.458-1.458l.51-.986c.9.37 1.54 1.096 1.933 1.933l-.985.511zM10 6h2v2h-2zm4 10h2v2h-2z"/>
         <path d="M12 12c-2.388-.388-3.002-1.28-3-2 0-.72.63-1.002 1.5-1.002.825 0 1.5.315 1.5.315V6.5s-.63-.315-1.5-.315c-1.5 0-2.5.765-2.5 2.5 0 2.25 1.92 2.94 3 3.24.81.22 1 .5 1 1s-.502 1-1.5 1c-.825 0-1.5-.315-1.5-.315V17.5s.63.315 1.5.315c1.5 0 2.5-.765 2.5-2.5 0-1.53-1.002-2.19-2.5-2.7z" fill="#000"/>
       </svg>
     ),
@@ -154,11 +155,20 @@ export function Skills() {
             whileHover={{ y: -5, scale: 1.05 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
-            <Card className="flex h-full flex-col items-center justify-center text-center p-6 bg-card/50 border-primary/10 transition-shadow duration-300 hover:shadow-lg hover:shadow-primary/10">
-              <CardHeader className="p-0">
-                <div className="mb-4">
+            <Card className="flex h-full flex-col items-center justify-start text-center p-6 bg-card/50 border-primary/10 transition-shadow duration-300 hover:shadow-lg hover:shadow-primary/10">
+              <CardHeader className="p-0 flex-grow flex flex-col items-center justify-center">
+                <motion.div
+                  className="mb-4"
+                  animate={{ y: [-3, 3, -3] }}
+                  transition={{
+                    duration: 2.5,
+                    ease: "easeInOut",
+                    repeat: Infinity,
+                    delay: i * 0.1,
+                  }}
+                >
                   {skill.logo}
-                </div>
+                </motion.div>
                 <CardTitle className="text-lg font-semibold">{skill.name}</CardTitle>
               </CardHeader>
               <CardContent className="p-0 mt-2">
@@ -171,3 +181,5 @@ export function Skills() {
     </div>
   )
 }
+
+    
