@@ -41,11 +41,23 @@ export default function Home() {
           <div className="container z-10 px-4 md:px-6">
             <div className="animate-fade-in-up space-y-6">
               <div className="relative inline-block">
-                <div className="absolute -left-4 -top-4 -bottom-4 w-1 bg-primary/20 rounded-full animate-hero-text [animation-delay:0.2s]"></div>
-                <div className="absolute -right-4 -top-4 -bottom-4 w-1 bg-primary/20 rounded-full animate-hero-text [animation-delay:0.2s]"></div>
+                <div className="absolute -left-12 -top-8 w-16 h-16 text-primary/30 animate-hero-text [animation-delay:0.2s]">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 20,50 C 20,20 80,20 80,50" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
+                        <circle cx="20" cy="50" r="4" fill="currentColor"/>
+                        <path d="M 50,80 C 20,80 20,20 50,20" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
+                    </svg>
+                </div>
                 <h1 className="font-headline text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl animate-hero-text">
                   Aniruddha Patil
                 </h1>
+                <div className="absolute -right-12 -bottom-8 w-16 h-16 text-primary/30 animate-hero-text [animation-delay:0.2s] transform -scale-x-100 -scale-y-100">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 20,50 C 20,20 80,20 80,50" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
+                        <circle cx="20" cy="50" r="4" fill="currentColor"/>
+                        <path d="M 50,80 C 20,80 20,20 50,20" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
+                    </svg>
+                </div>
               </div>
               <TypingEffect />
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
