@@ -10,70 +10,81 @@ import { Sparkles, Terminal } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { motion } from "framer-motion"
 
-const defaultCode = `<!-- Click Run Code to see the digital rain! -->
+const defaultCode = `<!-- Click Run Code to see the 3D card flip! -->
 <style>
   body {
-    margin: 0;
-    overflow: hidden;
-    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #1a1a1a;
+    font-family: 'Poppins', sans-serif;
+    perspective: 1000px;
   }
-  canvas {
-    display: block;
+  .card {
+    width: 300px;
+    height: 400px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.8s;
+    cursor: pointer;
+  }
+  .card:hover {
+    transform: rotateY(180deg);
+  }
+  .card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    text-align: center;
+  }
+  .card-front {
+    background: linear-gradient(45deg, #1f1f1f, #3a3a3a);
+    color: white;
+    border: 1px solid #444;
+  }
+  .card-back {
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    color: white;
+    transform: rotateY(180deg);
+    border: 1px solid #0072ff;
+  }
+  .card-front h3 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  .card-front p {
+    font-size: 1rem;
+    color: #ccc;
+  }
+   .card-back h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+  .card-back p {
+    font-size: 0.9rem;
+    line-height: 1.6;
   }
 </style>
 
-<canvas id="matrix-canvas"></canvas>
-
-<script>
-  const canvas = document.getElementById('matrix-canvas');
-  const ctx = canvas.getContext('2d');
-
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-  const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
-  const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const nums = '0123456789';
-  const alphabet = katakana + latin + nums;
-
-  const fontSize = 16;
-  const columns = Math.floor(canvas.width / fontSize);
-
-  const rainDrops = [];
-  for (let x = 0; x < columns; x++) {
-    rainDrops[x] = 1;
-  }
-
-  const draw = () => {
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = '#0F0'; // Green text
-    ctx.font = fontSize + 'px monospace';
-
-    for (let i = 0; i < rainDrops.length; i++) {
-      const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-      ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
-
-      if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-        rainDrops[i] = 0;
-      }
-      rainDrops[i]++;
-    }
-  };
-
-  setInterval(draw, 30);
-  
-  window.addEventListener('resize', () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    columns = Math.floor(canvas.width / fontSize);
-    for (let x = 0; x < columns; x++) {
-        rainDrops[x] = 1;
-    }
-  });
-
-</script>
+<div class="card">
+  <div class="card-face card-front">
+    <h3>Hover Me</h3>
+    <p>Discover the secret on the other side!</p>
+  </div>
+  <div class="card-face card-back">
+    <h3>Behind the Scenes</h3>
+    <p>This effect is created with CSS 3D transforms. The card container has 'transform-style: preserve-3d' and the 'backface-visibility' property hides the back of each face until it's rotated into view.</p>
+  </div>
+</div>
 `
 
 export function CodePlayground() {
