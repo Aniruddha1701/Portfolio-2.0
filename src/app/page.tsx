@@ -60,6 +60,11 @@ export default function Home() {
                         <line x1="10" y1="50" x2="90" y2="50" stroke="currentColor" strokeWidth="4" />
                     </svg>
                 </div>
+                <div className="absolute right-1/4 -top-12 w-10 h-10 text-primary/30 animate-hero-text [animation-delay:0.6s] animate-float [animation-duration:8s]">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="20" y="20" width="60" height="60" rx="10" fill="none" stroke="currentColor" strokeWidth="4"/>
+                    </svg>
+                </div>
                 <h1 className="font-headline text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl animate-hero-text">
                   Aniruddha Patil
                 </h1>
@@ -80,6 +85,11 @@ export default function Home() {
                     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                          <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" strokeWidth="4"/>
                          <circle cx="50" cy="50" r="10" fill="currentColor"/>
+                    </svg>
+                </div>
+                 <div className="absolute -right-8 -top-12 w-12 h-12 text-accent/30 animate-hero-text [animation-delay:0.7s] animate-float [animation-duration:9s]">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 50 L50 10 L90 50 L50 90 Z" fill="none" stroke="currentColor" strokeWidth="4"/>
                     </svg>
                 </div>
               </div>
