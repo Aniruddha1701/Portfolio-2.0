@@ -1,7 +1,7 @@
+
 "use client"
 
 import { useState } from "react"
-import Image from "next/image"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -11,38 +11,34 @@ const projects = [
   {
     title: "CarePlus - Healthcare Management System",
     description: "A comprehensive healthcare platform for patient management, appointment scheduling, and secure data handling, built with HIPAA compliance in mind.",
-    image: "https://placehold.co/600x400.png",
+    emoji: "🩺",
     tags: ["Web App", "Healthcare", "React.js", "Appwrite"],
     liveUrl: "https://careplus-demo.vercel.app",
     sourceUrl: "https://github.com/Aniruddha1701/careplus",
-    aiHint: "healthcare dashboard",
   },
   {
     title: "GourmetGenie - AI-Powered Food Recommendation System",
     description: "An AI-driven food suggestion engine using LightGBM and KNN to provide personalized recommendations based on user preferences and eating habits.",
-    image: "https://placehold.co/600x400.png",
+    emoji: "🍲",
     tags: ["AI", "Python", "Streamlit", "Django"],
     liveUrl: "https://gourmetgenie-demo.streamlit.app",
     sourceUrl: "https://github.com/Aniruddha1701/gourmetgenie",
-    aiHint: "delicious food",
   },
   {
     title: "ImaginAI - Text-to-Image Generator",
     description: "An open-source text-to-image generator using Stability AI, featuring a responsive interface and secure API management for real-time image creation.",
-    image: "https://placehold.co/600x400.png",
+    emoji: "🎨",
     tags: ["AI", "Tooling", "React.js", "Stability AI"],
     liveUrl: "https://image-generator-aniruddha1701.vercel.app/settings",
     sourceUrl: "https://github.com/Aniruddha1701/imaginai",
-    aiHint: "abstract art",
   },
   {
     title: "Wildlife Conservation Platform",
     description: "An educational platform designed to raise awareness and provide information about wildlife conservation efforts and species protection.",
-    image: "https://placehold.co/600x400.png",
+    emoji: "🐘",
     tags: ["Web App", "Education"],
     liveUrl: "#",
     sourceUrl: "#",
-    aiHint: "wildlife conservation",
   },
 ];
 
@@ -112,8 +108,8 @@ export function Portfolio() {
           >
             <Card className="flex flex-col overflow-hidden h-full bg-card/50 border-primary/10 transition-all duration-300 ease-in-out hover:shadow-2xl hover:shadow-primary/20">
               <CardHeader className="p-0">
-                <div className="relative h-48 w-full overflow-hidden rounded-t-lg group">
-                  <Image src={project.image} alt={project.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" data-ai-hint={project.aiHint} />
+                <div className="relative h-48 w-full overflow-hidden rounded-t-lg group flex items-center justify-center bg-muted">
+                  <div className="text-7xl transition-transform duration-500 group-hover:scale-125">{project.emoji}</div>
                 </div>
               </CardHeader>
               <CardContent className="flex-grow p-6">
