@@ -6,6 +6,7 @@ import { Footer } from '@/components/footer';
 import { Button } from '@/components/ui/button';
 import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react';
 import Link from 'next/link';
+import ParticlesBackground from '@/components/particles-background';
 
 export default function Home() {
   return (
@@ -13,13 +14,11 @@ export default function Home() {
       <Header />
       <main className="flex-1">
         <section id="hero" className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden text-center">
+          <ParticlesBackground />
           <div className="absolute inset-0 z-0">
-            <div className="absolute inset-0 bg-background">
-               <div className="absolute bottom-0 left-[-20%] right-0 top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(125,249,255,0.15),rgba(255,255,255,0))]"></div>
-               <div className="absolute bottom-0 right-[-20%] top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(125,249,255,0.15),rgba(255,255,255,0))]"></div>
-            </div>
-            <div
-              className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_60%,transparent_100%)]">
+            <div className="absolute inset-0 bg-background/80">
+               <div className="absolute bottom-0 left-[-20%] right-0 top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(125,249,255,0.1),rgba(255,255,255,0))]"></div>
+               <div className="absolute bottom-0 right-[-20%] top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(125,249,255,0.1),rgba(255,255,255,0))]"></div>
             </div>
           </div>
           <div className="container z-10 px-4 md:px-6">
