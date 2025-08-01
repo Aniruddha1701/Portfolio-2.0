@@ -81,12 +81,6 @@ export default function Home() {
                         <circle cx="50" cy="20" r="4" fill="currentColor"/>
                     </svg>
                 </div>
-                <div className="absolute left-1/3 -bottom-16 w-12 h-12 text-destructive/30 animate-hero-text [animation-delay:0.5s] animate-float [animation-duration:7s]">
-                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                         <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" strokeWidth="4"/>
-                         <circle cx="50" cy="50" r="10" fill="currentColor"/>
-                    </svg>
-                </div>
                  <div className="absolute -right-8 -top-12 w-12 h-12 text-accent/30 animate-hero-text [animation-delay:0.7s] animate-float [animation-duration:9s]">
                     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                         <path d="M10 50 L50 10 L90 50 L50 90 Z" fill="none" stroke="currentColor" strokeWidth="4"/>
