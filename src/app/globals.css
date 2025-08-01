@@ -27,7 +27,7 @@
   }
 
   .light {
-    --background: 0 0% 96%;
+    --background: 0 0% 98%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
@@ -43,8 +43,8 @@
     --accent-foreground: 0 0% 98%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 80%;
-    --input: 240 5.9% 80%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
     --ring: 182 90% 40%;
   }
 }
