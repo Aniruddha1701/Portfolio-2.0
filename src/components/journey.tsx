@@ -27,6 +27,7 @@ const journeyData = [
         <Infinity className="text-primary-foreground" />
       </motion.div>
     ),
+    isFuture: true,
   },
   {
     institution: "Vellore Institute of Technology (VIT Chennai)",
@@ -34,6 +35,7 @@ const journeyData = [
     duration: "2021 – 2025",
     location: "Chennai, Tamil Nadu",
     icon: <School className="text-primary-foreground" />,
+    isFuture: false,
   },
   {
     institution: "Maharashtra State Board, Nashik",
@@ -41,6 +43,7 @@ const journeyData = [
     duration: "2019 – 2021",
     location: "Nashik, Maharashtra",
     icon: <School className="text-primary-foreground" />,
+    isFuture: false,
   },
   {
     institution: "Maharashtra State Board, Nashik",
@@ -48,6 +51,7 @@ const journeyData = [
     duration: "Completed 2019",
     location: "Nashik, Maharashtra",
     icon: <School className="text-primary-foreground" />,
+    isFuture: false,
   },
 ]
 
@@ -140,7 +144,11 @@ export function Journey() {
     offset: ["start end", "end start"]
   });
 
-  const pathLength = useTransform(scrollYProgress, [0, 0.8], [0, 1]);
+  // This will find the index of the first "future" item.
+  // We'll split the timeline visually at this point.
+  const firstFutureIndex = journeyData.findIndex(item => item.isFuture);
+  const timelineSplitPercentage = (firstFutureIndex / (journeyData.length -1)) * 100;
+
 
   return (
     <div className="container mx-auto px-4 md:px-6">
@@ -151,17 +159,19 @@ export function Journey() {
         </div>
       </div>
       <div ref={ref} className="relative mt-12 w-full max-w-3xl mx-auto">
-        <svg width="2" height="100%" className="absolute left-1/2 -ml-[1px] top-0 bottom-0">
-          <motion.path
-            d="M 1 0 V 1000"
-            fill="transparent"
-            stroke="hsl(var(--primary))"
-            strokeWidth="2"
-            strokeDasharray="4 8"
-            initial={{ pathLength: 0 }}
-            style={{ pathLength }}
-          />
-        </svg>
+        {/* Dotted line for the future part */}
+        <div className="absolute left-1/2 -ml-[1px] top-0 h-full w-[2px]">
+            <div className="h-full w-full" style={{
+                background: `linear-gradient(to bottom, hsl(var(--primary)) 0%, hsl(var(--primary)) ${timelineSplitPercentage}%, transparent ${timelineSplitPercentage}%)`,
+                backgroundSize: '2px 12px',
+                backgroundRepeat: 'repeat-y'
+            }}></div>
+        </div>
+        {/* Solid line for the past part */}
+        <div className="absolute left-1/2 -ml-[1px] top-0 h-full w-[2px] bg-primary" style={{
+            height: `${timelineSplitPercentage}%`
+        }}></div>
+
         <div className="relative">
           {journeyData.map((edu, i) => (
             <TimelineItem key={i} edu={edu} i={i} />
