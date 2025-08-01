@@ -112,8 +112,8 @@ export function Portfolio() {
           >
             <Card className="flex flex-col overflow-hidden h-full bg-card/50 border-primary/10 transition-all duration-300 ease-in-out hover:shadow-2xl hover:shadow-primary/20">
               <CardHeader className="p-0">
-                <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
-                  <Image src={project.image} alt={project.title} fill objectFit="cover" className="transition-transform duration-500 group-hover:scale-105" data-ai-hint={project.aiHint} />
+                <div className="relative h-48 w-full overflow-hidden rounded-t-lg group">
+                  <Image src={project.image} alt={project.title} layout="fill" objectFit="cover" className="transition-transform duration-500 group-hover:scale-105" data-ai-hint={project.aiHint} />
                 </div>
               </CardHeader>
               <CardContent className="flex-grow p-6">
