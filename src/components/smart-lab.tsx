@@ -1,6 +1,4 @@
-import { CodePlayground } from './code-playground';
 import { ItNews } from './it-news';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { motion } from "framer-motion"
 
 const SectionTitle = ({ children }: { children: React.ReactNode }) => (
@@ -35,23 +33,12 @@ export function SmartLab() {
             <div className="space-y-2">
                 <SectionTitle>Smart Lab</SectionTitle>
                 <SectionDescription>
-                    A collection of AI-powered tools to showcase my skills. Play around and see what they can do!
+                    A collection of AI-powered tools to showcase my skills. Here are the latest headlines from the world of IT.
                 </SectionDescription>
             </div>
         </div>
         <div className="mt-12">
-            <Tabs defaultValue="code-playground" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto">
-                    <TabsTrigger value="code-playground">Code Playground</TabsTrigger>
-                    <TabsTrigger value="it-news">IT News</TabsTrigger>
-                </TabsList>
-                <TabsContent value="code-playground" className="mt-8">
-                    <CodePlayground />
-                </TabsContent>
-                <TabsContent value="it-news" className="mt-8">
-                    <ItNews />
-                </TabsContent>
-            </Tabs>
+            <ItNews />
         </div>
     </div>
   )
