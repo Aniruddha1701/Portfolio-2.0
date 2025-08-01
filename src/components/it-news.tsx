@@ -1,11 +1,10 @@
 "use client"
 
-import { useState, useTransition } from "react"
-import { Button } from "@/components/ui/button"
+import { useEffect, useState, useTransition } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { handleGetItNews } from "@/app/actions"
-import { Sparkles, Newspaper, BotMessageSquare } from "lucide-react"
+import { Newspaper, BotMessageSquare } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { motion } from "framer-motion"
 import type { ItNewsOutput } from "@/ai/flows/it-news-flow"
@@ -15,7 +14,7 @@ export function ItNews() {
   const [isPending, startTransition] = useTransition()
   const { toast } = useToast()
 
-  const onGetNews = () => {
+  useEffect(() => {
     startTransition(async () => {
       setNews(null)
       const result = await handleGetItNews()
@@ -29,18 +28,11 @@ export function ItNews() {
         setNews(result.news || [])
       }
     })
-  }
+  }, [toast])
 
   return (
     <div className="container mx-auto px-4 md:px-6 max-w-4xl">
       <div className="flex flex-col gap-8">
-        <div className="flex justify-center">
-          <Button onClick={onGetNews} disabled={isPending}>
-            {isPending ? "Fetching..." : "Fetch Latest News"}
-            <Sparkles className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
-        
         <div className="flex flex-col gap-4">
           {isPending && (
             <div className="flex items-center justify-center space-x-2">
