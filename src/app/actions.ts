@@ -1,6 +1,7 @@
 "use server"
 
 import { explainCodeSnippet, ExplainCodeSnippetInput } from "@/ai/flows/explain-code-snippet"
+import { portfolioChatbot, PortfolioChatbotInput } from "@/ai/flows/chatbot"
 import { z } from "zod"
 
 const explainCodeInputSchema = z.object({
@@ -19,5 +20,24 @@ export async function handleExplainCode(input: ExplainCodeSnippetInput) {
   } catch (error) {
     console.error(error)
     return { error: "An unexpected error occurred." }
+  }
+}
+
+const chatbotInputSchema = z.object({
+  message: z.string(),
+});
+
+export async function handleChatbot(input: PortfolioChatbotInput) {
+  const validation = chatbotInputSchema.safeParse(input);
+  if (!validation.success) {
+    return { error: "Invalid input." };
+  }
+
+  try {
+    const { response } = await portfolioChatbot(validation.data);
+    return { response };
+  } catch (error) {
+    console.error(error);
+    return { error: "An unexpected error occurred." };
   }
 }
