@@ -16,21 +16,7 @@ const ParticlesBackground = () => {
     let height = (canvas.height = window.innerHeight);
     let particles: Particle[] = [];
     const particleCount = Math.floor(width / 30);
-
-    const resizeHandler = () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = document.body.scrollHeight; // Set height to scroll height
-      particles = [];
-      for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle());
-      }
-    };
-
-    window.addEventListener('resize', resizeHandler);
-    // Also resize on initial load
-    resizeHandler();
-
-
+    
     class Particle {
       x: number;
       y: number;
@@ -64,6 +50,19 @@ const ParticlesBackground = () => {
         ctx.fill();
       }
     }
+
+    const resizeHandler = () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = document.body.scrollHeight; // Set height to scroll height
+      particles = [];
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
+    };
+
+    window.addEventListener('resize', resizeHandler);
+    // Also resize on initial load
+    resizeHandler();
 
     for (let i = 0; i < particleCount; i++) {
       particles.push(new Particle());
