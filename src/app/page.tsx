@@ -45,7 +45,7 @@ export default function Home() {
           </div>
           <div className="container z-10 px-4 md:px-6">
             <div className="animate-fade-in-up space-y-6">
-              <h1 className="font-headline text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl">
+              <h1 className="font-headline text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl animate-hero-text">
                 Aniruddha Patil
               </h1>
               <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
@@ -78,15 +78,15 @@ export default function Home() {
           <Education />
         </section>
 
-        <section id="portfolio" className="w-full py-12 md:py-24 lg:py-32">
+        <section id="portfolio" className="w-full py-12 md:py-24 lg:py-32 bg-muted/20">
           <Portfolio />
         </section>
 
-        <section id="skills" className="w-full bg-muted/40 py-12 md:py-24 lg:py-32">
+        <section id="skills" className="w-full py-12 md:py-24 lg:py-32">
           <Skills />
         </section>
 
-        <section id="playground" className="w-full py-12 md:py-24 lg:py-32">
+        <section id="playground" className="w-full bg-muted/20 py-12 md:py-24 lg:py-32">
           <CodePlayground />
         </section>
       </main>

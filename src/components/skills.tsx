@@ -106,27 +106,40 @@ const cardVariants = {
   }),
 };
 
+const SectionTitle = ({ children }: { children: React.ReactNode }) => (
+    <motion.h2 
+      className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline text-primary"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.5 }}
+      transition={{ duration: 0.5 }}
+    >
+      {children}
+    </motion.h2>
+)
+
+const SectionDescription = ({ children }: { children: React.ReactNode }) => (
+    <motion.p 
+      className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.5 }}
+      transition={{ duration: 0.5, delay: 0.2 }}
+    >
+      {children}
+    </motion.p>
+)
+
+
 export function Skills() {
   return (
     <div className="container mx-auto px-4 md:px-6">
       <div className="flex flex-col items-center justify-center space-y-4 text-center">
         <div className="space-y-2">
-          <motion.h2 
-            className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline text-primary"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            My Expertise
-          </motion.h2>
-          <motion.p 
-            className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
+          <SectionTitle>My Expertise</SectionTitle>
+          <SectionDescription>
             I have a diverse skill set that allows me to build robust and beautiful web applications from front to back.
-          </motion.p>
+          </SectionDescription>
         </div>
       </div>
       <div className="mx-auto mt-12 grid max-w-5xl gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
@@ -138,7 +151,7 @@ export function Skills() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.5 }}
-            whileHover={{ y: -5 }}
+            whileHover={{ y: -5, scale: 1.05 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
             <Card className="flex h-full flex-col items-center justify-center text-center p-6 bg-card/50 border-primary/10 transition-shadow duration-300 hover:shadow-lg hover:shadow-primary/10">

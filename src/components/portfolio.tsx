@@ -58,6 +58,29 @@ const cardVariants = {
   }),
 };
 
+const SectionTitle = ({ children }: { children: React.ReactNode }) => (
+    <motion.h2 
+      className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline text-primary"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.5 }}
+      transition={{ duration: 0.5 }}
+    >
+      {children}
+    </motion.h2>
+)
+
+const SectionDescription = ({ children }: { children: React.ReactNode }) => (
+    <motion.p 
+      className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.5 }}
+      transition={{ duration: 0.5, delay: 0.2 }}
+    >
+      {children}
+    </motion.p>
+)
 
 export function Portfolio() {
   const [activeFilter, setActiveFilter] = useState("All");
@@ -70,10 +93,10 @@ export function Portfolio() {
     <div className="container mx-auto px-4 md:px-6">
       <div className="flex flex-col items-center justify-center space-y-4 text-center">
         <div className="space-y-2">
-          <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline text-primary">My Work</h2>
-          <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+          <SectionTitle>My Work</SectionTitle>
+          <SectionDescription>
             Here's a selection of projects I've worked on. Use the filters to explore different categories.
-          </p>
+          </SectionDescription>
         </div>
       </div>
       <div className="my-8 flex justify-center">
