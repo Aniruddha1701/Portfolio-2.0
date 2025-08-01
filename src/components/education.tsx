@@ -26,19 +26,6 @@ const educationData = [
   },
 ]
 
-const timelineVariants = {
-  hidden: { opacity: 0, x: -50 },
-  visible: (i: number) => ({
-    opacity: 1,
-    x: 0,
-    transition: {
-      delay: i * 0.3,
-      duration: 0.5,
-      ease: "easeOut",
-    },
-  }),
-}
-
 const SectionTitle = ({ children }: { children: React.ReactNode }) => (
     <motion.h2 
       className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline text-primary"
@@ -65,29 +52,51 @@ const SectionDescription = ({ children }: { children: React.ReactNode }) => (
 
 const TimelineItem = ({ edu, i }: { edu: typeof educationData[0], i: number }) => {
   const isEven = i % 2 === 0;
+
+  const timelineVariants = {
+    hidden: { opacity: 0, x: isEven ? 50 : -50 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
+  };
+
   return (
     <motion.div
-      custom={i}
       variants={timelineVariants}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.5 }}
       className="relative mb-12"
     >
-      <div className={`flex items-center ${isEven ? 'flex-row-reverse' : 'flex-row'}`}>
-        <div className={`flex-1 ${isEven ? 'text-left pl-8' : 'text-right pr-8'}`}>
-            <div className="p-4 rounded-lg bg-card/50 border border-primary/10 shadow-lg">
-              <h3 className="font-bold text-lg">{edu.institution}</h3>
-              <p className="text-primary">{edu.degree}</p>
-              <p className="text-sm text-muted-foreground">{edu.duration}</p>
-              <p className="text-xs text-muted-foreground">{edu.location}</p>
-            </div>
+      <div className={`flex items-center ${isEven ? 'flex-row' : 'flex-row-reverse'}`}>
+        <div className={`flex-1 ${isEven ? 'text-right pr-8' : 'text-left pl-8'}`}>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 300 }}
+            className="p-4 rounded-lg bg-card/50 border border-primary/10 shadow-lg"
+          >
+            <h3 className="font-bold text-lg">{edu.institution}</h3>
+            <p className="text-primary">{edu.degree}</p>
+            <p className="text-sm text-muted-foreground">{edu.duration}</p>
+            <p className="text-xs text-muted-foreground">{edu.location}</p>
+          </motion.div>
         </div>
         
         <div className="absolute left-1/2 -ml-5 z-10">
-          <div className="bg-primary rounded-full h-10 w-10 flex items-center justify-center ring-8 ring-background">
+          <motion.div 
+            className="bg-primary rounded-full h-10 w-10 flex items-center justify-center ring-8 ring-background"
+            initial={{ scale: 0 }}
+            whileInView={{ scale: 1 }}
+            viewport={{ once: true, amount: 1 }}
+            transition={{ delay: 0.4, type: "spring", stiffness: 400, damping: 15 }}
+          >
             <School className="text-primary-foreground" />
-          </div>
+          </motion.div>
         </div>
 
         <div className="flex-1">
@@ -103,10 +112,10 @@ export function Education() {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start center", "end center"]
+    offset: ["start end", "end start"]
   });
 
-  const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
+  const scaleY = useTransform(scrollYProgress, [0, 0.8], [0, 1]);
 
   return (
     <div className="container mx-auto px-4 md:px-6">
