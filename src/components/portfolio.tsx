@@ -12,8 +12,8 @@ const projects = [
     title: "CarePlus - Healthcare Management System",
     description: "A comprehensive healthcare platform for patient management, appointment scheduling, and secure data handling, built with HIPAA compliance in mind.",
     image: "https://placehold.co/600x400.png",
-    tags: ["Web App", "Healthcare", "React.js"],
-    liveUrl: "https://care-plus-lyart.vercel.app/",
+    tags: ["Web App", "Healthcare", "React.js", "Appwrite"],
+    liveUrl: "https://careplus-demo.vercel.app",
     sourceUrl: "https://github.com/Aniruddha1701/careplus",
     aiHint: "healthcare dashboard",
   },
@@ -21,7 +21,7 @@ const projects = [
     title: "GourmetGenie - AI-Powered Food Recommendation System",
     description: "An AI-driven food suggestion engine using LightGBM and KNN to provide personalized recommendations based on user preferences and eating habits.",
     image: "https://placehold.co/600x400.png",
-    tags: ["AI", "Python", "Streamlit"],
+    tags: ["AI", "Python", "Streamlit", "Django"],
     liveUrl: "https://gourmetgenie-demo.streamlit.app",
     sourceUrl: "https://github.com/Aniruddha1701/gourmetgenie",
     aiHint: "food recommendation",
@@ -30,7 +30,7 @@ const projects = [
     title: "ImaginAI - Text-to-Image Generator",
     description: "An open-source text-to-image generator using Stability AI, featuring a responsive interface and secure API management for real-time image creation.",
     image: "https://placehold.co/600x400.png",
-    tags: ["AI", "Tooling", "React.js"],
+    tags: ["AI", "Tooling", "React.js", "Stability AI"],
     liveUrl: "https://image-generator-aniruddha1701.vercel.app/settings",
     sourceUrl: "https://github.com/Aniruddha1701/imaginai",
     aiHint: "ai art",
@@ -46,7 +46,7 @@ const projects = [
   },
 ];
 
-const categories = ["All", "Web App", "AI", "Healthcare", "Python", "Streamlit", "Tooling", "React.js", "Education"];
+const categories = ["All", "Web App", "AI", "Healthcare", "Python", "Streamlit", "Tooling", "React.js", "Education", "Appwrite", "Django", "Stability AI"];
 
 const cardVariants = {
   hidden: { opacity: 0, y: 50, rotateX: -20 },

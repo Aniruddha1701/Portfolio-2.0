@@ -7,6 +7,7 @@ import { useState } from "react"
 import { Button } from "./ui/button"
 
 const navLinks = [
+  { href: "#education", label: "Education" },
   { href: "#portfolio", label: "Portfolio" },
   { href: "#skills", label: "Skills" },
   { href: "#playground", label: "Playground" },
