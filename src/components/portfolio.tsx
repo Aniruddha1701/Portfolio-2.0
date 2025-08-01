@@ -48,6 +48,21 @@ const projects = [
 
 const categories = ["All", "Web App", "AI", "Healthcare", "Python", "Streamlit", "Tooling", "React.js", "Education"];
 
+const cardVariants = {
+  hidden: { opacity: 0, y: 50, rotateX: -20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    rotateX: 0,
+    transition: {
+      delay: i * 0.1,
+      duration: 0.5,
+      ease: "easeOut",
+    },
+  }),
+};
+
+
 export function Portfolio() {
   const [activeFilter, setActiveFilter] = useState("All");
 
@@ -82,20 +97,23 @@ export function Portfolio() {
       <motion.div 
         layout
         className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
+        style={{ perspective: 1000 }}
       >
         {filteredProjects.map((project, i) => (
           <motion.div
             key={project.title}
-            layout
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.3, delay: i * 0.1 }}
+            custom={i}
+            variants={cardVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            whileHover={{ y: -10, scale: 1.05, rotateZ: 1 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
           >
-            <Card className="flex flex-col overflow-hidden h-full bg-card/50 border-primary/10 transition-all duration-300 ease-in-out hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-2">
+            <Card className="flex flex-col overflow-hidden h-full bg-card/50 border-primary/10 transition-all duration-300 ease-in-out hover:shadow-2xl hover:shadow-primary/20">
               <CardHeader className="p-0">
                 <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
-                  <Image src={project.image} alt={project.title} layout="fill" objectFit="cover" className="transition-transform duration-500 group-hover:scale-105" data-ai-hint={project.aiHint} />
+                  <Image src={project.image} alt={project.title} fill objectFit="cover" className="transition-transform duration-500 group-hover:scale-105" data-ai-hint={project.aiHint} />
                 </div>
               </CardHeader>
               <CardContent className="flex-grow p-6">
