@@ -16,7 +16,7 @@ const ParticlesBackground = () => {
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
     let particles: Particle[] = [];
-    const particleCount = Math.floor(width / 30);
+    const particleCount = Math.floor(width / 20); // Increase particle density
 
     const mouseMoveHandler = (e: MouseEvent) => {
       mouse.current.x = e.x;
@@ -43,9 +43,9 @@ const ParticlesBackground = () => {
       constructor() {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
-        this.vx = Math.random() * 1 - 0.5;
-        this.vy = Math.random() * 1 - 0.5;
-        this.radius = Math.random() * 1.5 + 1;
+        this.vx = Math.random() * 1.5 - 0.75; // Increase velocity range
+        this.vy = Math.random() * 1.5 - 0.75; // Increase velocity range
+        this.radius = Math.random() * 2 + 1; // Increase radius range
         this.baseColor = 'rgba(125, 249, 255, 0.5)';
         this.color = this.baseColor;
       }
@@ -62,12 +62,12 @@ const ParticlesBackground = () => {
           const dx = mouse.current.x - this.x;
           const dy = mouse.current.y - this.y;
           const distance = Math.hypot(dx, dy);
-          if (distance < 100) {
+          if (distance < 120) { // Increase interaction radius
             const forceDirectionX = dx / distance;
             const forceDirectionY = dy / distance;
-            const force = (100 - distance) / 100;
-            this.vx -= forceDirectionX * force * 0.1;
-            this.vy -= forceDirectionY * force * 0.1;
+            const force = (120 - distance) / 120;
+            this.vx -= forceDirectionX * force * 0.2; // Stronger interaction
+            this.vy -= forceDirectionY * force * 0.2;
             this.color = 'rgba(50, 205, 50, 0.8)'; // Lime Green on interaction
           } else {
             this.color = this.baseColor;
@@ -76,9 +76,9 @@ const ParticlesBackground = () => {
             this.color = this.baseColor;
         }
 
-        // Dampening velocity
-        this.vx *= 0.98;
-        this.vy *= 0.98;
+        // Dampening velocity to a minimum speed
+        this.vx *= 0.99;
+        this.vy *= 0.99;
       }
 
       draw() {
@@ -94,7 +94,7 @@ const ParticlesBackground = () => {
       width = canvas.width = window.innerWidth;
       height = canvas.height = document.body.scrollHeight;
       particles = [];
-      const newParticleCount = Math.floor(width / 30);
+      const newParticleCount = Math.floor(width / 20);
       for (let i = 0; i < newParticleCount; i++) {
         particles.push(new Particle());
       }
@@ -114,11 +114,11 @@ const ParticlesBackground = () => {
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dist = Math.hypot(particles[i].x - particles[j].x, particles[i].y - particles[j].y);
-          if (dist < 100) {
+          if (dist < 120) { // Increase line connection distance
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(125, 249, 255, ${1 - dist / 100})`;
+            ctx.strokeStyle = `rgba(125, 249, 255, ${1 - dist / 120})`;
             ctx.stroke();
           }
         }

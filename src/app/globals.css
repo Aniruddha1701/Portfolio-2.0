@@ -4,22 +4,22 @@
 
 @layer base {
   :root {
-    --background: 240 5% 15%; /* Default to a darker base for dark mode */
+    --background: 0 0% 0%; /* Pure black background for dark mode */
     --foreground: 0 0% 98%;
 
-    --card: 240 5% 20%;
+    --card: 240 5% 10%; /* Slightly lighter card for contrast */
     --card-foreground: 0 0% 98%;
 
-    --popover: 240 5% 15%;
+    --popover: 240 5% 10%;
     --popover-foreground: 0 0% 98%;
 
     --primary: 182 100% 74%;
     --primary-foreground: 240 6% 10%;
     
-    --secondary: 240 4% 25%;
+    --secondary: 240 4% 15%;
     --secondary-foreground: 0 0% 98%;
 
-    --muted: 240 4% 25%;
+    --muted: 240 4% 15%;
     --muted-foreground: 0 0% 63.9%;
 
     --accent: 120 61% 60%;
@@ -28,8 +28,8 @@
     --destructive: 0 63% 50%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 4% 30%;
-    --input: 240 4% 30%;
+    --border: 240 4% 20%;
+    --input: 240 4% 20%;
     --ring: 182 100% 74%;
 
     --radius: 0.5rem;
