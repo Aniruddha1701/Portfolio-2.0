@@ -3,6 +3,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
 import './globals.css';
 import ParticlesBackground from '@/components/particles-background';
+import CursorFollower from '@/components/cursor-follower';
 
 export const metadata: Metadata = {
   title: 'Aniruddha Patil | Full Stack Developer',
@@ -28,6 +29,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange={false}
         >
+          <CursorFollower />
           <ParticlesBackground />
           <div className="relative z-10">
             {children}

@@ -76,8 +76,13 @@
     font-feature-settings: "rlig" 1, "calt" 1;
     scroll-behavior: smooth;
     transition: background-color 0.5s ease, color 0.5s ease;
+    cursor: none;
   }
   
+  a, button {
+    cursor: none;
+  }
+
   ::selection {
     background-color: hsl(var(--primary));
     color: hsl(var(--primary-foreground));
