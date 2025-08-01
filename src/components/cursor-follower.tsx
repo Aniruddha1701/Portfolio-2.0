@@ -60,7 +60,7 @@ const CursorFollower = () => {
             className="fixed top-0 left-0 rounded-full z-[9999] pointer-events-none hidden md:block"
             variants={variants}
             animate={isHoveringLink ? 'hover' : 'default'}
-            transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+            transition={{ type: 'spring', stiffness: 800, damping: 40 }}
         />
     );
 };
