@@ -1,5 +1,14 @@
-import { config } from 'dotenv';
+import {config} from 'dotenv';
 config();
 
-import '@/ai/flows/explain-code-snippet.ts';
-import '@/ai/flows/it-news-flow.ts';
+import {genkit} from 'genkit';
+import {googleAI} from '@genkit-ai/googleai';
+
+// Make sure that the AI flows are imported so that they are registered with Genkit.
+import '@/ai/flows/explain-code-snippet.js';
+import '@/ai/flows/it-news-flow.js';
+
+genkit({
+  plugins: [googleAI()],
+  model: 'googleai/gemini-1.5-flash-latest',
+});
