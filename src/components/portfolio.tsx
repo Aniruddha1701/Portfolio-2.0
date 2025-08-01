@@ -5,6 +5,7 @@ import Image from "next/image"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { motion } from "framer-motion"
 
 const projects = [
   {
@@ -58,7 +59,7 @@ export function Portfolio() {
     <div className="container mx-auto px-4 md:px-6">
       <div className="flex flex-col items-center justify-center space-y-4 text-center">
         <div className="space-y-2">
-          <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline">My Work</h2>
+          <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline text-primary">My Work</h2>
           <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
             Here's a selection of projects I've worked on. Use the filters to explore different categories.
           </p>
@@ -71,39 +72,51 @@ export function Portfolio() {
               key={category}
               variant={activeFilter === category ? "default" : "secondary"}
               onClick={() => setActiveFilter(category)}
-              className="transition-all"
+              className="transition-all hover:scale-105"
             >
               {category}
             </Button>
           ))}
         </div>
       </div>
-      <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {filteredProjects.map((project) => (
-          <Card key={project.title} className="flex flex-col overflow-hidden transition-transform duration-300 ease-in-out hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/20">
-            <CardHeader className="p-0">
-              <div className="relative h-48 w-full">
-                <Image src={project.image} alt={project.title} layout="fill" objectFit="cover" className="rounded-t-lg" data-ai-hint={project.aiHint} />
-              </div>
-            </CardHeader>
-            <CardContent className="flex-grow p-6">
-              <CardTitle>{project.title}</CardTitle>
-              <p className="mt-2 text-muted-foreground">{project.description}</p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {project.tags.map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}
-              </div>
-            </CardContent>
-            <CardFooter className="flex justify-start gap-2 p-6 pt-0">
-              <Button asChild>
-                <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">Live Demo</a>
-              </Button>
-              <Button asChild variant="outline">
-                <a href={project.sourceUrl} target="_blank" rel="noopener noreferrer">Source Code</a>
-              </Button>
-            </CardFooter>
-          </Card>
+      <motion.div 
+        layout
+        className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
+      >
+        {filteredProjects.map((project, i) => (
+          <motion.div
+            key={project.title}
+            layout
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.3, delay: i * 0.1 }}
+          >
+            <Card className="flex flex-col overflow-hidden h-full bg-card/50 border-primary/10 transition-all duration-300 ease-in-out hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-2">
+              <CardHeader className="p-0">
+                <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
+                  <Image src={project.image} alt={project.title} layout="fill" objectFit="cover" className="transition-transform duration-500 group-hover:scale-105" data-ai-hint={project.aiHint} />
+                </div>
+              </CardHeader>
+              <CardContent className="flex-grow p-6">
+                <CardTitle>{project.title}</CardTitle>
+                <p className="mt-2 text-sm text-muted-foreground">{project.description}</p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {project.tags.map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}
+                </div>
+              </CardContent>
+              <CardFooter className="flex justify-start gap-2 p-6 pt-0">
+                <Button asChild>
+                  <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">Live Demo</a>
+                </Button>
+                <Button asChild variant="outline">
+                  <a href={project.sourceUrl} target="_blank" rel="noopener noreferrer">Source Code</a>
+                </Button>
+              </CardFooter>
+            </Card>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   )
 }
