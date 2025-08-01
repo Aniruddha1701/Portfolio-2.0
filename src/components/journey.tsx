@@ -53,6 +53,14 @@ const journeyData = [
     icon: <School className="text-primary-foreground" />,
     isFuture: false,
   },
+  {
+    institution: "Maharashtra State Board, Nandurbar",
+    degree: "Primary Education",
+    duration: "Completed 2017",
+    location: "Nandurbar, Maharashtra",
+    icon: <School className="text-primary-foreground" />,
+    isFuture: false,
+  },
 ]
 
 const SectionTitle = ({ children }: { children: React.ReactNode }) => (
