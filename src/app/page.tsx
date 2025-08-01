@@ -3,7 +3,7 @@
 import { Header } from '@/components/header';
 import { Portfolio } from '@/components/portfolio';
 import { Skills } from '@/components/skills';
-import { CodePlayground } from '@/components/code-playground';
+import { SmartLab } from '@/components/smart-lab';
 import { Footer } from '@/components/footer';
 import { Button } from '@/components/ui/button';
 import { ArrowDown, FileText } from 'lucide-react';
@@ -80,8 +80,8 @@ export default function Home() {
           <Skills />
         </section>
 
-        <section id="playground" className="w-full py-12 md:py-24 lg:py-32 bg-muted/20">
-          <CodePlayground />
+        <section id="smart-lab" className="w-full py-12 md:py-24 lg:py-32 bg-muted/20">
+          <SmartLab />
         </section>
       </main>
       <Footer />
