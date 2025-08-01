@@ -5,7 +5,7 @@ import { motion, useScroll, useTransform } from "framer-motion"
 import { School } from "lucide-react"
 import { useRef } from "react"
 
-const educationData = [
+const journeyData = [
   {
     institution: "Vellore Institute of Technology (VIT Chennai)",
     degree: "Bachelor of Technology in Computer Science",
@@ -50,7 +50,7 @@ const SectionDescription = ({ children }: { children: React.ReactNode }) => (
     </motion.p>
 )
 
-const TimelineItem = ({ edu, i }: { edu: typeof educationData[0], i: number }) => {
+const TimelineItem = ({ edu, i }: { edu: typeof journeyData[0], i: number }) => {
   const isEven = i % 2 === 0;
 
   const timelineVariants = {
@@ -108,30 +108,37 @@ const TimelineItem = ({ edu, i }: { edu: typeof educationData[0], i: number }) =
 };
 
 
-export function Education() {
+export function Journey() {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"]
   });
 
-  const scaleY = useTransform(scrollYProgress, [0, 0.8], [0, 1]);
+  const pathLength = useTransform(scrollYProgress, [0, 0.8], [0, 1]);
 
   return (
     <div className="container mx-auto px-4 md:px-6">
       <div className="flex flex-col items-center justify-center space-y-4 text-center">
         <div className="space-y-2">
-          <SectionTitle>Education</SectionTitle>
-          <SectionDescription>My academic journey and qualifications.</SectionDescription>
+          <SectionTitle>The Journey</SectionTitle>
+          <SectionDescription>My academic and professional journey.</SectionDescription>
         </div>
       </div>
       <div ref={ref} className="relative mt-12 w-full max-w-3xl mx-auto">
-        <motion.div
-          style={{ scaleY, originY: 0 }}
-          className="absolute left-1/2 -ml-[2px] h-full w-1 bg-primary/20"
-        />
+        <svg width="2" height="100%" className="absolute left-1/2 -ml-[1px] top-0 bottom-0">
+          <motion.path
+            d="M 1 0 V 1000"
+            fill="transparent"
+            stroke="hsl(var(--primary))"
+            strokeWidth="2"
+            strokeDasharray="4 8"
+            initial={{ pathLength: 0 }}
+            style={{ pathLength }}
+          />
+        </svg>
         <div className="relative">
-          {educationData.map((edu, i) => (
+          {journeyData.map((edu, i) => (
             <TimelineItem key={i} edu={edu} i={i} />
           ))}
         </div>

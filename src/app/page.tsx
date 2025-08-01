@@ -7,7 +7,7 @@ import { SmartLab } from '@/components/smart-lab';
 import { Footer } from '@/components/footer';
 import { Button } from '@/components/ui/button';
 import { ArrowDown, FileText } from 'lucide-react';
-import { Education } from '@/components/education';
+import { Journey } from '@/components/journey';
 import { Github, Linkedin, Mail } from 'lucide-react';
 
 const SocialLinks = () => (
@@ -68,8 +68,8 @@ export default function Home() {
           </div>
         </section>
         
-        <section id="education" className="w-full py-12 md:py-24 lg:py-32">
-          <Education />
+        <section id="journey" className="w-full py-12 md:py-24 lg:py-32">
+          <Journey />
         </section>
 
         <section id="portfolio" className="w-full py-12 md:py-24 lg:py-32 bg-muted/20">
