@@ -87,7 +87,8 @@ export default function Home() {
           <Journey />
         </section>
 
-        <section id="portfolio" className="w-full py-12 md:py-24 lg:py-32 bg-muted/20">
+        <section id="portfolio" className="relative w-full py-12 md:py-24 lg:py-32 bg-muted/20 overflow-hidden">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(125,249,255,0.1),rgba(255,255,255,0))]"></div>
           <Portfolio />
         </section>
 
@@ -95,7 +96,8 @@ export default function Home() {
           <Skills />
         </section>
 
-        <section id="smart-lab" className="w-full py-12 md:py-24 lg:py-32 bg-muted/20">
+        <section id="smart-lab" className="relative w-full py-12 md:py-24 lg:py-32 bg-muted/20 overflow-hidden">
+           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(125,249,255,0.1),rgba(255,255,255,0))]"></div>
           <SmartLab />
         </section>
       </main>
