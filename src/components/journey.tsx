@@ -2,7 +2,7 @@
 "use client"
 
 import { motion, useScroll, useTransform } from "framer-motion"
-import { School } from "lucide-react"
+import { School, Infinity } from "lucide-react"
 import { useRef } from "react"
 
 const journeyData = [
@@ -11,18 +11,43 @@ const journeyData = [
     degree: "Bachelor of Technology in Computer Science",
     duration: "2021 – 2025",
     location: "Chennai, Tamil Nadu",
+    icon: <School className="text-primary-foreground" />,
+  },
+  {
+    institution: "To be continued...",
+    degree: "The journey continues, shaping the future with every step.",
+    duration: "Present - Future",
+    location: "",
+    icon: (
+      <motion.div
+        animate={{
+          scale: [1, 1.2, 1, 1.2, 1],
+          rotate: [0, 0, 180, 180, 0],
+        }}
+        transition={{
+          duration: 2,
+          ease: "easeInOut",
+          repeat: Infinity,
+          repeatDelay: 1,
+        }}
+      >
+        <Infinity className="text-primary-foreground" />
+      </motion.div>
+    ),
   },
   {
     institution: "Maharashtra State Board, Nashik",
     degree: "Senior Secondary (HSC)",
     duration: "2019 – 2021",
     location: "Nashik, Maharashtra",
+    icon: <School className="text-primary-foreground" />,
   },
   {
     institution: "Maharashtra State Board, Nashik",
     degree: "Secondary (SSC)",
     duration: "Completed 2019",
     location: "Nashik, Maharashtra",
+    icon: <School className="text-primary-foreground" />,
   },
 ]
 
@@ -95,7 +120,7 @@ const TimelineItem = ({ edu, i }: { edu: typeof journeyData[0], i: number }) => 
             viewport={{ once: true, amount: 1 }}
             transition={{ delay: 0.4, type: "spring", stiffness: 400, damping: 15 }}
           >
-            <School className="text-primary-foreground" />
+            {edu.icon}
           </motion.div>
         </div>
 
