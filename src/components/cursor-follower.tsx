@@ -57,7 +57,7 @@ const CursorFollower = () => {
 
     return (
         <motion.div
-            className="fixed top-0 left-0 rounded-full z-[9999] pointer-events-none"
+            className="fixed top-0 left-0 rounded-full z-[9999] pointer-events-none hidden md:block"
             variants={variants}
             animate={isHoveringLink ? 'hover' : 'default'}
             transition={{ type: 'spring', stiffness: 200, damping: 20 }}

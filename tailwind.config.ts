@@ -19,8 +19,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        body: ['Inter', ...fontFamily.sans],
-        headline: ['Inter', ...fontFamily.sans],
+        body: ['Poppins', 'Inter', ...fontFamily.sans],
+        headline: ['Poppins', 'Inter', ...fontFamily.sans],
         code: ['Source Code Pro', ...fontFamily.mono],
       },
       colors: {
