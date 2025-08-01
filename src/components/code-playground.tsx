@@ -10,7 +10,7 @@ import { Sparkles, Terminal } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { motion } from "framer-motion"
 
-const defaultCode = `<!-- Hover over the card! -->
+const defaultCode = `<!-- Click the hamburger menu! -->
 <style>
   body {
     display: grid;
@@ -20,71 +20,134 @@ const defaultCode = `<!-- Hover over the card! -->
     background: #1a1a1a;
     font-family: 'Poppins', sans-serif;
   }
-  .card-container {
-    perspective: 1000px;
-    width: 320px;
-    height: 220px;
+  
+  .menu {
+    filter: url(#gooey);
   }
-  .card {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 0.8s cubic-bezier(0.76, 0, 0.24, 1);
-    cursor: pointer;
-  }
-  .card-container:hover .card {
-    transform: rotateY(180deg);
-  }
-  .card-face {
+
+  .menu-item, .menu-open-button {
+    background: hsl(var(--primary));
+    border-radius: 100%;
+    width: 80px;
+    height: 80px;
     position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    border-radius: 0.75rem;
+    top: 20px;
+    left: 20px;
+    transform: translate3d(0, 0, 0);
+    transition: transform ease-out 200ms;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-size: 1.25rem;
-    padding: 1rem;
-    border: 2px solid;
   }
-  .front {
-    background-color: hsl(var(--card));
-    border-color: hsl(var(--primary));
-    color: hsl(var(--primary));
-    font-weight: bold;
+
+  .menu-open {
+    display: none;
   }
-  .back {
-    background-color: hsl(var(--accent));
-    border-color: hsl(var(--accent));
+
+  .hamburger {
+    width: 25px;
+    height: 3px;
+    background: hsl(var(--primary-foreground));
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -12.5px;
+    margin-top: -1.5px;
+    transition: transform 200ms;
+  }
+
+  .hamburger-1 {
+    transform: translate3d(0, -8px, 0);
+  }
+
+  .hamburger-2 {
+    transform: translate3d(0, 0, 0);
+  }
+
+  .hamburger-3 {
+    transform: translate3d(0, 8px, 0);
+  }
+
+  .menu-open:checked + .menu-open-button .hamburger-1 {
+    transform: translate3d(0, 0, 0) rotate(45deg);
+  }
+  .menu-open:checked + .menu-open-button .hamburger-2 {
+    transform: translate3d(0, 0, 0) scale(0.1, 1);
+  }
+  .menu-open:checked + .menu-open-button .hamburger-3 {
+    transform: translate3d(0, 0, 0) rotate(-45deg);
+  }
+
+  .menu-item {
+    transition: all 0.1s ease 0s;
+  }
+
+  .menu-item:hover {
+    background: hsl(var(--accent));
     color: hsl(var(--accent-foreground));
-    transform: rotateY(180deg);
   }
-  .back h3 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
+  
+  .menu-item svg {
+     width: 24px;
+     height: 24px;
+     color: hsl(var(--primary-foreground));
   }
-  .back p {
-    font-size: 0.9rem;
-    text-align: center;
+  .menu-item:hover svg {
+     color: hsl(var(--accent-foreground));
   }
+
+  .menu-open:checked ~ .menu-item:nth-child(3) {
+    transition-duration: 180ms;
+    transform: translate3d(0.08361px, -104.99997px, 0);
+  }
+  .menu-open:checked ~ .menu-item:nth-child(4) {
+    transition-duration: 280ms;
+    transform: translate3d(90.9466px, -52.47586px, 0);
+  }
+  .menu-open:checked ~ .menu-item:nth-child(5) {
+    transition-duration: 380ms;
+    transform: translate3d(90.9466px, 52.47586px, 0);
+  }
+  .menu-open:checked ~ .menu-item:nth-child(6) {
+    transition-duration: 480ms;
+    transform: translate3d(0.08361px, 104.99997px, 0);
+  }
+
 </style>
 
-<div class="card-container">
-  <div class="card">
-    <div class="card-face front">
-      Hover Over Me!
-    </div>
-    <div class="card-face back">
-      <h3>CSS 3D Transform</h3>
-      <p>This card flips using CSS transforms and transitions. It's a great way to create engaging interactive elements.</p>
-    </div>
-  </div>
-</div>
+<nav class="menu" style="position: absolute; top: 50%; left: 50%; margin-left: -70px; margin-top: -70px;">
+  <input type="checkbox" href="#" class="menu-open" name="menu-open" id="menu-open"/>
+  <label class="menu-open-button" for="menu-open">
+    <span class="hamburger hamburger-1"></span>
+    <span class="hamburger hamburger-2"></span>
+    <span class="hamburger hamburger-3"></span>
+  </label>
+  
+  <a href="#" class="menu-item">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10" /><line x1="18" y1="20" x2="18" y2="4" /><line x1="6" y1="20" x2="6" y2="16" /></svg>
+  </a>
+  <a href="#" class="menu-item">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></svg>
+  </a>
+  <a href="#" class="menu-item">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>
+  </a>
+  <a href="#" class="menu-item">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1.51 1H15a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" /><circle cx="12" cy="12" r="3" /></svg>
+  </a>
+</nav>
 
+<!-- filters -->
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display: none;">
+  <defs>
+    <filter id="gooey">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+      <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+      <feBlend in="SourceGraphic" in2="goo" />
+    </filter>
+  </defs>
+</svg>
 `
 
 export function CodePlayground() {
