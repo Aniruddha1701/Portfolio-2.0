@@ -21,12 +21,11 @@ export function Header() {
     <>
       <header className="fixed top-4 inset-x-0 max-w-2xl mx-auto z-50">
         <div className="relative flex h-16 items-center justify-between rounded-full border border-primary/10 bg-background/80 px-8 shadow-lg shadow-primary/5 backdrop-blur-md">
-          <Link href="/" className="mr-6 flex items-center space-x-2">
+          <Link href="/" className="flex items-center space-x-2">
             <CodeXml className="h-6 w-6 text-primary" />
-            <span className="hidden sm:inline-block font-bold">Aniruddha Patil</span>
           </Link>
 
-          <nav className="hidden flex-1 items-center space-x-8 text-sm font-medium md:flex">
+          <nav className="hidden flex-1 items-center justify-center space-x-8 text-sm font-medium md:flex">
             {navLinks.map(link => (
               <Link key={link.href} href={link.href} className="group relative text-foreground/70 transition-colors hover:text-foreground">
                 {link.label}
