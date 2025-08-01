@@ -18,7 +18,7 @@ const ParticlesBackground = () => {
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
     let particles: Particle[] = [];
-    const particleCount = Math.floor(width / 15);
+    const particleCount = Math.floor(width / 10);
 
     const mouseMoveHandler = (e: MouseEvent) => {
       mouse.current.x = e.x;
@@ -103,7 +103,7 @@ const ParticlesBackground = () => {
       width = canvas.width = window.innerWidth;
       height = canvas.height = document.body.scrollHeight;
       particles = [];
-      const newParticleCount = Math.floor(width / 15);
+      const newParticleCount = Math.floor(width / 10);
       for (let i = 0; i < newParticleCount; i++) {
         particles.push(new Particle());
       }
