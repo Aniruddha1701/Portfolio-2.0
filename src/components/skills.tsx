@@ -2,14 +2,14 @@ import { Progress } from "@/components/ui/progress"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 const skills = [
-  { name: 'JavaScript', proficiency: 95, description: "Expert in modern JS (ES6+), async/await, and performance optimization." },
-  { name: 'React & Next.js', proficiency: 90, description: "Building interactive UIs with hooks, server components, and state management." },
-  { name: 'TypeScript', proficiency: 90, description: "Enhancing code quality and maintainability with static typing." },
-  { name: 'Node.js', proficiency: 85, description: "Developing scalable server-side applications and RESTful APIs." },
-  { name: 'HTML & CSS', proficiency: 95, description: "Crafting semantic, accessible, and responsive layouts with modern CSS." },
-  { name: 'Tailwind CSS', proficiency: 88, description: "Rapidly building custom designs with a utility-first CSS framework." },
-  { name: 'Python & GenAI', proficiency: 75, description: "Leveraging Python for scripting and integrating generative AI models." },
-  { name: 'Firebase & SQL', proficiency: 80, description: "Designing and managing databases with both NoSQL and SQL solutions." },
+  { name: 'JavaScript', proficiency: 95, description: "Advanced proficiency in modern ES6+ features." },
+  { name: 'React.js & Next.js', proficiency: 90, description: "Component-based development, state management, hooks, and full-stack React." },
+  { name: 'Node.js & Express.js', proficiency: 85, description: "Server-side JavaScript, RESTful API development, and middleware." },
+  { name: 'Python', proficiency: 80, description: "Machine learning, data analysis, and backend development." },
+  { name: 'MongoDB', proficiency: 85, description: "Database design, aggregation pipelines, and performance optimization." },
+  { name: 'C++', proficiency: 80, description: "Strong foundation in OOP and algorithm implementation." },
+  { name: 'SQL', proficiency: 75, description: "Database design, complex queries, and performance optimization." },
+  { name: 'Machine Learning', proficiency: 78, description: "Experience with LightGBM, KNN, Scikit-learn, Pandas, and NumPy." },
 ];
 
 export function Skills() {

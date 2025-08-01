@@ -4,8 +4,8 @@ import { Toaster } from '@/components/ui/toaster';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Vizfolio',
-  description: 'A dynamic, interactive web developer portfolio.',
+  title: 'Aniruddha Patil | Full Stack Developer',
+  description: 'Full Stack Developer with expertise in MERN stack and Machine Learning.',
 };
 
 export default function RootLayout({

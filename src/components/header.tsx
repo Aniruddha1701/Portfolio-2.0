@@ -10,7 +10,7 @@ export function Header() {
       <div className="container flex h-16 items-center">
         <Link href="/" className="mr-6 flex items-center space-x-2">
           <CodeXml className="h-6 w-6 text-primary" />
-          <span className="font-bold">Vizfolio</span>
+          <span className="font-bold">Aniruddha Patil</span>
         </Link>
         <nav className="hidden flex-1 items-center space-x-6 text-sm font-medium md:flex">
           <Link href="#portfolio" className="text-foreground/60 transition-colors hover:text-foreground/80">
