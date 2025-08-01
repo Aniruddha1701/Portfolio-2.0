@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowDown, FileText } from 'lucide-react';
 import { Journey } from '@/components/journey';
 import { Github, Linkedin, Mail } from 'lucide-react';
+import { TypingEffect } from '@/components/typing-effect';
 
 const SocialLinks = () => (
   <div className="fixed top-1/2 right-4 -translate-y-1/2 z-50 hidden md:flex flex-col gap-4">
@@ -42,9 +43,7 @@ export default function Home() {
               <h1 className="font-headline text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl animate-hero-text">
                 Aniruddha Patil
               </h1>
-              <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                Full Stack Developer with expertise in MERN stack and Machine Learning. I build beautiful, responsive, and scalable web applications.
-              </p>
+              <TypingEffect />
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Button asChild size="lg" className="group transition-all duration-300 ease-in-out hover:scale-105">
                   <a href="#portfolio">
