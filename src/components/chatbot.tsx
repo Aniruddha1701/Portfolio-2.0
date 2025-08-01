@@ -39,10 +39,11 @@ export function Chatbot() {
 
     const userMessage: Message = { role: "user", content: input }
     setMessages((prev) => [...prev, userMessage])
+    const currentInput = input;
     setInput("")
 
     startTransition(async () => {
-      const result = await handleChatbot({ message: input })
+      const result = await handleChatbot({ message: currentInput })
       if (result.error) {
         toast({
           variant: "destructive",
