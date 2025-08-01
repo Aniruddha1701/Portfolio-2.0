@@ -30,24 +30,24 @@ body {
     --radius: 0.5rem;
   }
   .dark {
-    --background: 240 3% 17%;
+    --background: 240 5% 15%;
     --foreground: 0 0% 98%;
-    --card: 240 3% 20%;
+    --card: 240 5% 18%;
     --card-foreground: 0 0% 98%;
-    --popover: 240 3% 17%;
+    --popover: 240 5% 15%;
     --popover-foreground: 0 0% 98%;
     --primary: 182 100% 74%;
     --primary-foreground: 240 6% 10%;
-    --secondary: 240 3.7% 15.9%;
+    --secondary: 240 4% 25%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
+    --muted: 240 4% 25%;
     --muted-foreground: 0 0% 63.9%;
     --accent: 120 61% 50%;
     --accent-foreground: 120 60% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 3% 25%;
-    --input: 240 3% 25%;
+    --border: 240 4% 30%;
+    --input: 240 4% 30%;
     --ring: 182 100% 74%;
   }
 }
@@ -58,5 +58,11 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in-up {
+    animation: fade-in-up 0.8s ease-in-out;
   }
 }

@@ -11,10 +11,11 @@ export default function Home() {
     <div className="flex min-h-screen w-full flex-col">
       <Header />
       <main className="flex-1">
-        <section id="hero" className="relative flex h-[calc(100vh-4rem)] w-full flex-col items-center justify-center bg-background text-center">
-          <div className="absolute inset-0 z-0 h-full w-full bg-grid-white/[0.05]"></div>
+        <section id="hero" className="relative flex h-[calc(100vh-4rem)] w-full flex-col items-center justify-center overflow-hidden bg-background text-center">
+          <div className="absolute inset-0 z-0 h-full w-full bg-grid-white/[0.02]"></div>
+          <div className="absolute inset-0 z-[-1] bg-[radial-gradient(circle_500px_at_50%_200px,#3e9c9c44,transparent)]"></div>
           <div className="container z-10 px-4 md:px-6">
-            <div className="space-y-4">
+            <div className="animate-fade-in-up space-y-4">
               <h1 className="font-headline text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
                 Aniruddha Patil
               </h1>

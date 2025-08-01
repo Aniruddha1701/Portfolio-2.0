@@ -71,28 +71,29 @@ export function Portfolio() {
               key={category}
               variant={activeFilter === category ? "default" : "secondary"}
               onClick={() => setActiveFilter(category)}
+              className="transition-all"
             >
               {category}
             </Button>
           ))}
         </div>
       </div>
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {filteredProjects.map((project) => (
-          <Card key={project.title} className="flex flex-col overflow-hidden transition-transform duration-300 ease-in-out hover:-translate-y-2">
-            <CardHeader>
+          <Card key={project.title} className="flex flex-col overflow-hidden transition-transform duration-300 ease-in-out hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/20">
+            <CardHeader className="p-0">
               <div className="relative h-48 w-full">
                 <Image src={project.image} alt={project.title} layout="fill" objectFit="cover" className="rounded-t-lg" data-ai-hint={project.aiHint} />
               </div>
-              <CardTitle className="pt-4">{project.title}</CardTitle>
             </CardHeader>
-            <CardContent className="flex-grow">
-              <p className="text-muted-foreground">{project.description}</p>
+            <CardContent className="flex-grow p-6">
+              <CardTitle>{project.title}</CardTitle>
+              <p className="mt-2 text-muted-foreground">{project.description}</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {project.tags.map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}
               </div>
             </CardContent>
-            <CardFooter className="flex justify-start gap-2">
+            <CardFooter className="flex justify-start gap-2 p-6 pt-0">
               <Button asChild>
                 <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">Live Demo</a>
               </Button>
