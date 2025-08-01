@@ -37,21 +37,21 @@ const CursorFollower = () => {
 
     const variants = {
         default: {
-            x: mousePosition.x - 16,
-            y: mousePosition.y - 16,
-            height: 32,
-            width: 32,
+            x: mousePosition.x - 8,
+            y: mousePosition.y - 8,
+            height: 16,
+            width: 16,
             backgroundColor: 'hsl(var(--primary))',
             mixBlendMode: 'difference',
         },
         hover: {
-            x: mousePosition.x - 24,
-            y: mousePosition.y - 24,
-            height: 48,
-            width: 48,
-            backgroundColor: 'hsl(var(--background))',
-            mixBlendMode: 'normal',
-            border: '2px solid hsl(var(--primary))'
+            x: mousePosition.x - 32,
+            y: mousePosition.y - 32,
+            height: 64,
+            width: 64,
+            backgroundColor: 'hsl(var(--primary))',
+            mixBlendMode: 'difference',
+            opacity: 0.2,
         },
     };
 
@@ -60,7 +60,7 @@ const CursorFollower = () => {
             className="fixed top-0 left-0 rounded-full z-[9999] pointer-events-none"
             variants={variants}
             animate={isHoveringLink ? 'hover' : 'default'}
-            transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+            transition={{ type: 'spring', stiffness: 200, damping: 20 }}
         />
     );
 };
