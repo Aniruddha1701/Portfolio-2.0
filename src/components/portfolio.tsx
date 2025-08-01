@@ -24,7 +24,7 @@ const projects = [
     tags: ["AI", "Python", "Streamlit", "Django"],
     liveUrl: "https://gourmetgenie-demo.streamlit.app",
     sourceUrl: "https://github.com/Aniruddha1701/gourmetgenie",
-    aiHint: "food recommendation",
+    aiHint: "delicious food",
   },
   {
     title: "ImaginAI - Text-to-Image Generator",
@@ -33,7 +33,7 @@ const projects = [
     tags: ["AI", "Tooling", "React.js", "Stability AI"],
     liveUrl: "https://image-generator-aniruddha1701.vercel.app/settings",
     sourceUrl: "https://github.com/Aniruddha1701/imaginai",
-    aiHint: "ai art",
+    aiHint: "abstract art",
   },
   {
     title: "Wildlife Conservation Platform",
@@ -42,7 +42,7 @@ const projects = [
     tags: ["Web App", "Education"],
     liveUrl: "#",
     sourceUrl: "#",
-    aiHint: "wildlife nature",
+    aiHint: "wildlife conservation",
   },
 ];
 
