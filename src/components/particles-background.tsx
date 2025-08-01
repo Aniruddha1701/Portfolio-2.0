@@ -16,7 +16,7 @@ const ParticlesBackground = () => {
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
     let particles: Particle[] = [];
-    const particleCount = Math.floor(width / 15); // Increased particle density
+    const particleCount = Math.floor(width / 15);
 
     const mouseMoveHandler = (e: MouseEvent) => {
       mouse.current.x = e.x;
@@ -43,9 +43,9 @@ const ParticlesBackground = () => {
       constructor() {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
-        this.vx = Math.random() * 2 - 1; // Wider velocity range
-        this.vy = Math.random() * 2 - 1; // Wider velocity range
-        this.radius = Math.random() * 2.5 + 1; // Slightly larger particles
+        this.vx = (Math.random() - 0.5) * 0.5; // Slower, more consistent initial speed
+        this.vy = (Math.random() - 0.5) * 0.5; // Slower, more consistent initial speed
+        this.radius = Math.random() * 2.5 + 1;
         this.baseColor = 'rgba(125, 249, 255, 0.5)';
         this.color = this.baseColor;
       }
@@ -54,20 +54,25 @@ const ParticlesBackground = () => {
         this.x += this.vx;
         this.y += this.vy;
 
-        if (this.x < 0 || this.x > width) this.vx *= -1;
-        if (this.y < 0 || this.y > height) this.vy *= -1;
+        // Reset particle position if it goes off-screen
+        if (this.x < -this.radius) this.x = width + this.radius;
+        if (this.x > width + this.radius) this.x = -this.radius;
+        if (this.y < -this.radius) this.y = height + this.radius;
+        if (this.y > height + this.radius) this.y = -this.radius;
         
         // Interaction with mouse
         if (mouse.current.x !== null && mouse.current.y !== null) {
           const dx = mouse.current.x - this.x;
           const dy = mouse.current.y - this.y;
           const distance = Math.hypot(dx, dy);
-          if (distance < 150) { // Increased interaction radius
+          if (distance < 150) {
             const forceDirectionX = dx / distance;
             const forceDirectionY = dy / distance;
             const force = (150 - distance) / 150;
-            this.vx -= forceDirectionX * force * 0.3; // Stronger interaction
-            this.vy -= forceDirectionY * force * 0.3;
+            const moveX = forceDirectionX * force * 0.5;
+            const moveY = forceDirectionY * force * 0.5;
+            this.x -= moveX;
+            this.y -= moveY;
             this.color = 'rgba(50, 205, 50, 0.8)'; // Lime Green on interaction
           } else {
             this.color = this.baseColor;
@@ -75,10 +80,6 @@ const ParticlesBackground = () => {
         } else {
             this.color = this.baseColor;
         }
-
-        // Dampening velocity to a minimum speed
-        this.vx *= 0.98;
-        this.vy *= 0.98;
       }
 
       draw() {
@@ -114,7 +115,7 @@ const ParticlesBackground = () => {
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dist = Math.hypot(particles[i].x - particles[j].x, particles[i].y - particles[j].y);
-          if (dist < 140) { // Increased line connection distance
+          if (dist < 140) {
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
