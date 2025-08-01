@@ -79,9 +79,12 @@
     animation: fade-in-up 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
   }
 
-  /* Add a new animation for the hero text */
   .animate-hero-text {
     animation: text-focus-in 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+  }
+
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
   }
 
   .icon-glow {
@@ -108,6 +111,18 @@
     }
     50% {
       filter: drop-shadow(0 0 8px currentColor);
+    }
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-20px) rotate(10deg);
+    }
+    100% {
+      transform: translateY(0px) rotate(0deg);
     }
   }
 }

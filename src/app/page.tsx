@@ -41,33 +41,45 @@ export default function Home() {
           <div className="container z-10 px-4 md:px-6">
             <div className="animate-fade-in-up space-y-6">
               <div className="relative inline-block">
-                <div className="absolute -left-12 -top-8 w-16 h-16 text-primary/30 animate-hero-text [animation-delay:0.2s]">
+                <div className="absolute -left-12 -top-8 w-16 h-16 text-primary/30 animate-hero-text [animation-delay:0.2s] animate-float">
                     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                         <path d="M 20,50 C 20,20 80,20 80,50" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
                         <circle cx="20" cy="50" r="4" fill="currentColor"/>
                         <path d="M 50,80 C 20,80 20,20 50,20" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
                     </svg>
                 </div>
-                 <div className="absolute -left-20 top-1/2 w-12 h-12 text-accent/30 animate-hero-text [animation-delay:0.3s]">
+                 <div className="absolute -left-24 top-1/2 w-12 h-12 text-accent/30 animate-hero-text [animation-delay:0.3s] animate-float [animation-duration:5s]">
                     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                         <path d="M 50,20 C 80,20 80,80 50,80" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
                         <circle cx="50" cy="20" r="4" fill="currentColor"/>
+                    </svg>
+                </div>
+                <div className="absolute left-1/2 -top-20 w-10 h-10 text-destructive/30 animate-hero-text [animation-delay:0.4s] animate-float [animation-duration:6s]">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <line x1="50" y1="10" x2="50" y2="90" stroke="currentColor" strokeWidth="4" />
+                        <line x1="10" y1="50" x2="90" y2="50" stroke="currentColor" strokeWidth="4" />
                     </svg>
                 </div>
                 <h1 className="font-headline text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl animate-hero-text">
                   Aniruddha Patil
                 </h1>
-                <div className="absolute -right-12 -bottom-8 w-16 h-16 text-primary/30 animate-hero-text [animation-delay:0.2s] transform -scale-x-100 -scale-y-100">
+                <div className="absolute -right-12 -bottom-8 w-16 h-16 text-primary/30 animate-hero-text [animation-delay:0.2s] transform -scale-x-100 -scale-y-100 animate-float">
                     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                         <path d="M 20,50 C 20,20 80,20 80,50" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
                         <circle cx="20" cy="50" r="4" fill="currentColor"/>
                         <path d="M 50,80 C 20,80 20,20 50,20" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
                     </svg>
                 </div>
-                 <div className="absolute -right-20 top-1/2 w-12 h-12 text-accent/30 animate-hero-text [animation-delay:0.3s] transform -scale-x-100 -scale-y-100">
+                 <div className="absolute -right-24 top-1/2 w-12 h-12 text-accent/30 animate-hero-text [animation-delay:0.3s] transform -scale-x-100 -scale-y-100 animate-float [animation-duration:5s]">
                     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                         <path d="M 50,20 C 80,20 80,80 50,80" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
                         <circle cx="50" cy="20" r="4" fill="currentColor"/>
+                    </svg>
+                </div>
+                <div className="absolute left-1/3 -bottom-16 w-12 h-12 text-destructive/30 animate-hero-text [animation-delay:0.5s] animate-float [animation-duration:7s]">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                         <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" strokeWidth="4"/>
+                         <circle cx="50" cy="50" r="10" fill="currentColor"/>
                     </svg>
                 </div>
               </div>
