@@ -1,8 +1,19 @@
 "use client"
 
 import { TypeAnimation } from 'react-type-animation';
+import { useEffect, useState } from 'react';
 
 export function TypingEffect() {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl h-16">&nbsp;</p>;
+  }
+
   return (
     <TypeAnimation
       sequence={[
