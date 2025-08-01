@@ -32,7 +32,7 @@ const prompt = ai.definePrompt({
   prompt: `You are an AI code explainer. You will be given a code snippet and you will explain what the code does in plain English.
 
 Code Snippet:
-{{code}}`,
+{{{code}}}`,
 });
 
 const explainCodeSnippetFlow = ai.defineFlow(

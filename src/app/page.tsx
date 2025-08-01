@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button';
 import { ArrowDown, FileText } from 'lucide-react';
 import { Education } from '@/components/education';
 import { Github, Linkedin, Mail } from 'lucide-react';
-import { SmartLab } from '@/components/smart-lab';
 
 const SocialLinks = () => (
   <div className="fixed top-1/2 right-4 -translate-y-1/2 z-50 hidden md:flex flex-col gap-4">
@@ -81,11 +80,7 @@ export default function Home() {
           <Skills />
         </section>
 
-        <section id="smart-lab" className="w-full py-12 md:py-24 lg:py-32 bg-muted/20">
-          <SmartLab />
-        </section>
-
-        <section id="playground" className="w-full py-12 md:py-24 lg:py-32">
+        <section id="playground" className="w-full py-12 md:py-24 lg:py-32 bg-muted/20">
           <CodePlayground />
         </section>
       </main>
