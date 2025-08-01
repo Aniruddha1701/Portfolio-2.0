@@ -27,6 +27,7 @@ async function getGuestbookEntries(): Promise<GuestbookEntry[]> {
   } catch (error) {
     // If the file doesn't exist, return an empty array
     if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+      await fs.writeFile(guestbookPath, JSON.stringify([]), 'utf-8');
       return [];
     }
     throw error;
