@@ -1,5 +1,5 @@
 import { CodePlayground } from './code-playground';
-import { StoryGenerator } from './story-generator';
+import { ItNews } from './it-news';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { motion } from "framer-motion"
 
@@ -43,13 +43,13 @@ export function SmartLab() {
             <Tabs defaultValue="code-playground" className="w-full">
                 <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto">
                     <TabsTrigger value="code-playground">Code Playground</TabsTrigger>
-                    <TabsTrigger value="story-generator">Story Generator</TabsTrigger>
+                    <TabsTrigger value="it-news">IT News</TabsTrigger>
                 </TabsList>
                 <TabsContent value="code-playground" className="mt-8">
                     <CodePlayground />
                 </TabsContent>
-                <TabsContent value="story-generator" className="mt-8">
-                    <StoryGenerator />
+                <TabsContent value="it-news" className="mt-8">
+                    <ItNews />
                 </TabsContent>
             </Tabs>
         </div>
