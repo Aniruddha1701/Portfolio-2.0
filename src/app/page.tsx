@@ -40,9 +40,13 @@ export default function Home() {
           </div>
           <div className="container z-10 px-4 md:px-6">
             <div className="animate-fade-in-up space-y-6">
-              <h1 className="font-headline text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl animate-hero-text">
-                Aniruddha Patil
-              </h1>
+              <div className="relative inline-block">
+                <div className="absolute -left-4 -top-4 -bottom-4 w-1 bg-primary/20 rounded-full animate-hero-text [animation-delay:0.2s]"></div>
+                <div className="absolute -right-4 -top-4 -bottom-4 w-1 bg-primary/20 rounded-full animate-hero-text [animation-delay:0.2s]"></div>
+                <h1 className="font-headline text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl animate-hero-text">
+                  Aniruddha Patil
+                </h1>
+              </div>
               <TypingEffect />
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Button asChild size="lg" className="group transition-all duration-300 ease-in-out hover:scale-105">
