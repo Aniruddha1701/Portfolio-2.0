@@ -12,6 +12,7 @@ import { Journey } from '@/components/journey';
 import { Github, Linkedin, Mail } from 'lucide-react';
 import { TypingEffect } from '@/components/typing-effect';
 import { LoadingScreen } from '@/components/loading-screen';
+import { Guestbook } from '@/components/guestbook';
 
 const SocialLinks = () => (
   <div className="fixed top-1/2 right-4 -translate-y-1/2 z-50 hidden md:flex flex-col gap-4">
@@ -142,6 +143,10 @@ export default function Home() {
         <section id="smart-lab" className="relative w-full py-12 md:py-24 lg:py-32 bg-muted/20 overflow-hidden">
            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(125,249,255,0.1),rgba(255,255,255,0))]"></div>
           <SmartLab />
+        </section>
+
+        <section id="guestbook" className="w-full">
+          <Guestbook />
         </section>
       </main>
       <Footer />

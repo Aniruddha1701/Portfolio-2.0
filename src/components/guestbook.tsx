@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useTransition, useEffect, useRef } from 'react';
@@ -8,7 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { addGuestbookEntry, getEntries, GuestbookEntry } from '@/app/actions';
+import { addGuestbookEntry, getEntries } from '@/app/actions';
+import type { GuestbookEntry } from '@/app/types';
 import { useToast } from '@/hooks/use-toast';
 import { formatDistanceToNow } from 'date-fns';
 
@@ -36,7 +36,7 @@ const SectionDescription = ({ children }: { children: React.ReactNode }) => (
     </motion.p>
 )
 
-export default function GuestbookPage() {
+export function Guestbook() {
     const [entries, setEntries] = useState<GuestbookEntry[]>([]);
     const [name, setName] = useState('');
     const [message, setMessage] = useState('');
@@ -78,7 +78,7 @@ export default function GuestbookPage() {
     };
 
     return (
-        <main className="container mx-auto px-4 md:px-6 py-24 md:py-32">
+        <div className="container mx-auto px-4 md:px-6 py-12 md:py-24">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
                 <div className="space-y-2">
                     <SectionTitle>Guestbook</SectionTitle>
@@ -89,7 +89,7 @@ export default function GuestbookPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-16 max-w-6xl mx-auto">
-                <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}>
+                <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
                     <Card className="bg-card/50 border-primary/10 shadow-lg">
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
@@ -133,7 +133,7 @@ export default function GuestbookPage() {
                         </CardContent>
                     </Card>
                 </motion.div>
-                <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.2 }}>
+                <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }}>
                     <div className="h-[450px] overflow-y-auto pr-4 space-y-4">
                         <AnimatePresence>
                             {entries.map((entry, index) => (
@@ -167,6 +167,6 @@ export default function GuestbookPage() {
                     </div>
                 </motion.div>
             </div>
-        </main>
+        </div>
     );
 }
