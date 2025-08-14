@@ -25,7 +25,7 @@ const projects = [
     tags: ["Web App", "Healthcare", "React.js", "Appwrite"],
     liveUrl: "https://careplus-demo.vercel.app",
     sourceUrl: "https://github.com/Aniruddha1701/careplus",
-    image: "https://images.unsplash.com/photo-1576091160550-2173dba9996a?q=80&w=600&h=400&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1603398938378-e54eab446dde?q=80&w=600&h=400&auto=format&fit=crop",
     imageHint: "healthcare doctor",
   },
   {
