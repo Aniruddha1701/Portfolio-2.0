@@ -2,7 +2,7 @@
 "use client"
 
 import { motion, useScroll, useTransform } from "framer-motion"
-import { School, Infinity } from "lucide-react"
+import { School, Infinity, BookOpen, GraduationCap, Briefcase } from "lucide-react"
 import { useRef } from "react"
 
 const journeyData = [
@@ -10,48 +10,69 @@ const journeyData = [
     institution: "Embarking on New Adventures",
     degree: "Open to new opportunities and collaborations.",
     duration: "Present - Future",
-    location: "",
+    location: "Worldwide",
     icon: (
-      <motion.div
+       <motion.div
+        className="text-primary-foreground"
         animate={{
-          scale: [1, 1.2, 1, 1.2, 1],
-          rotate: [0, 0, 180, 180, 0],
+          scale: [1, 1.1, 1, 1.1, 1],
+          rotate: [0, 15, -15, 15, 0],
         }}
         transition={{
-          duration: 2,
+          duration: 3,
           ease: "easeInOut",
           repeat: Infinity,
           repeatDelay: 1,
         }}
-      >
-        <Infinity className="text-primary-foreground" />
-      </motion.div>
+       >
+        <Briefcase size={24}/>
+       </motion.div>
     ),
-    isFuture: true,
   },
   {
     institution: "Vellore Institute of Technology (VIT Chennai)",
     degree: "Bachelor of Technology in Computer Science",
     duration: "2021 – 2025",
     location: "Chennai, Tamil Nadu",
-    icon: <School className="text-primary-foreground" />,
-    isFuture: false,
+    icon: (
+        <motion.div 
+         className="text-primary-foreground"
+         animate={{ rotateY: [0, 360] }}
+         transition={{ duration: 4, ease: "linear", repeat: Infinity }}
+        >
+            <GraduationCap size={24}/>
+        </motion.div>
+    ),
   },
   {
     institution: "Maharashtra State Board, Nashik",
     degree: "Senior Secondary (HSC)",
     duration: "2019 – 2021",
     location: "Nandurbar, Maharashtra",
-    icon: <School className="text-primary-foreground" />,
-    isFuture: false,
+    icon: (
+        <motion.div 
+            className="text-primary-foreground"
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ duration: 2, ease: "easeInOut", repeat: Infinity }}
+        >
+            <BookOpen size={24}/>
+        </motion.div>
+    ),
   },
   {
     institution: "Maharashtra State Board, Nashik",
     degree: "Secondary (SSC)",
     duration: "Completed 2019",
     location: "Nandurbar, Maharashtra",
-    icon: <School className="text-primary-foreground" />,
-    isFuture: false,
+    icon: (
+       <motion.div 
+            className="text-primary-foreground"
+            animate={{ rotate: [0, 5, -5, 5, 0] }}
+            transition={{ duration: 2.5, ease: "easeInOut", repeat: Infinity }}
+        >
+            <School size={24}/>
+       </motion.div>
+    ),
   },
 ]
 
@@ -83,13 +104,14 @@ const TimelineItem = ({ edu, i }: { edu: typeof journeyData[0], i: number }) => 
   const isEven = i % 2 === 0;
 
   const timelineVariants = {
-    hidden: { opacity: 0, x: isEven ? 50 : -50 },
+    hidden: { opacity: 0, x: isEven ? 50 : -50, scale: 0.9 },
     visible: {
       opacity: 1,
       x: 0,
+      scale: 1,
       transition: {
         duration: 0.6,
-        ease: "easeOut",
+        ease: [0.25, 1, 0.5, 1],
       },
     },
   };
@@ -105,10 +127,11 @@ const TimelineItem = ({ edu, i }: { edu: typeof journeyData[0], i: number }) => 
       <div className={`flex items-center ${isEven ? 'flex-row' : 'flex-row-reverse'}`}>
         <div className={`flex-1 ${isEven ? 'text-right pr-8' : 'text-left pl-8'}`}>
           <motion.div
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ y: -5 }}
             transition={{ type: "spring", stiffness: 300 }}
-            className="p-4 rounded-lg bg-card/50 border border-primary/10 shadow-lg"
+            className="relative p-6 rounded-lg bg-card/50 border border-primary/10 shadow-lg overflow-hidden group"
           >
+            <div className="absolute top-0 left-[-100%] w-full h-full bg-gradient-to-r from-transparent via-primary/10 to-transparent transition-all duration-700 group-hover:left-0"></div>
             <h3 className="font-bold text-lg">{edu.institution}</h3>
             <p className="text-primary">{edu.degree}</p>
             <p className="text-sm text-muted-foreground">{edu.duration}</p>
@@ -144,7 +167,7 @@ export function Journey() {
     offset: ["start end", "end start"]
   });
 
-  const firstFutureIndex = journeyData.findIndex(item => item.isFuture);
+  const firstFutureIndex = journeyData.findIndex(item => item.duration.startsWith("Present"));
   const completedJourneyEnd = (journeyData.length - firstFutureIndex) / journeyData.length;
   const pathHeight = useTransform(scrollYProgress, [0, 0.8], [0, completedJourneyEnd]);
   
@@ -160,15 +183,12 @@ export function Journey() {
       <div ref={ref} className="relative mt-12 w-full max-w-3xl mx-auto">
         <div 
             className="absolute left-1/2 -ml-[1px] top-0 h-full w-[2px] bg-primary/20"
-            style={{
-                background: `repeating-linear-gradient(to bottom, hsl(var(--primary)), hsl(var(--primary)) 4px, transparent 4px, transparent 10px)`,
-                backgroundSize: '2px 10px',
-            }}
         />
         <motion.div 
           className="absolute left-1/2 -ml-[1px] top-0 w-[2px] bg-primary"
           style={{
-            height: useTransform(pathHeight, (h) => `${h * 100}%`)
+            height: useTransform(pathHeight, (h) => `${h * 100}%`),
+            boxShadow: '0 0 10px hsl(var(--primary))'
           }}
         />
 
