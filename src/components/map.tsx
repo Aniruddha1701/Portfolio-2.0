@@ -53,6 +53,7 @@ export function Map() {
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
           title="Pune Map"
+          className="dark:invert dark:grayscale"
         ></iframe>
       </motion.div>
     </div>
