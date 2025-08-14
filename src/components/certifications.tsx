@@ -1,8 +1,8 @@
 "use client"
 
 import { motion } from "framer-motion";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building, Calendar } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Building, Calendar, Award } from "lucide-react";
 
 const certifications = [
   {
@@ -130,10 +130,11 @@ const SectionDescription = ({ children }: { children: React.ReactNode }) => (
 )
 
 const cardVariants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: { opacity: 0, y: 50, scale: 0.9 },
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
+      scale: 1,
       transition: {
         delay: i * 0.15,
         duration: 0.5,
@@ -141,6 +142,57 @@ const cardVariants = {
       },
     }),
 };
+
+const CertificateCard = ({ cert, i }: { cert: typeof certifications[0], i: number }) => {
+    return (
+      <motion.div
+        custom={i}
+        variants={cardVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+        whileHover={{ y: -8 }}
+        style={{ perspective: "1000px" }}
+      >
+        <motion.div
+            className="h-full"
+            whileHover={{ scale: 1.03, rotateX: 5, rotateY: -5 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        >
+          <Card className="relative h-full flex flex-col p-6 bg-card/50 overflow-hidden group border-2 border-primary/10 hover:border-primary/30 transition-all duration-300">
+            <div className="absolute -top-2 -left-2 w-16 h-16 border-t-2 border-l-2 border-primary/20 rounded-tl-lg transition-all duration-300 group-hover:w-24 group-hover:h-24"></div>
+            <div className="absolute -bottom-2 -right-2 w-16 h-16 border-b-2 border-r-2 border-primary/20 rounded-br-lg transition-all duration-300 group-hover:w-24 group-hover:h-24"></div>
+            
+            <div className="relative z-10 flex flex-col h-full">
+                <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 bg-background/50 p-2 rounded-lg">
+                      {cert.logo}
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-bold text-lg leading-tight text-foreground">{cert.title}</h3>
+                    </div>
+                </div>
+
+                <div className="mt-4 flex-grow flex flex-col justify-end space-y-2">
+                    <div className="flex items-center text-sm text-muted-foreground gap-2">
+                      <Building className="h-4 w-4 text-primary" />
+                      <span>{cert.issuer}</span>
+                    </div>
+                    <div className="flex items-center text-sm text-muted-foreground gap-2">
+                      <Calendar className="h-4 w-4 text-primary" />
+                      <span>{cert.date}</span>
+                    </div>
+                </div>
+
+                <div className="absolute bottom-1 right-1 z-0">
+                    <Award className="w-20 h-20 text-primary/5 opacity-50 -rotate-12" />
+                </div>
+            </div>
+          </Card>
+        </motion.div>
+      </motion.div>
+    )
+}
 
 export function Certifications() {
   return (
@@ -155,35 +207,7 @@ export function Certifications() {
       </div>
       <div className="mx-auto mt-12 grid max-w-5xl gap-8 md:grid-cols-2 lg:grid-cols-3">
         {certifications.map((cert, i) => (
-          <motion.div
-            key={cert.title + i}
-            custom={i}
-            variants={cardVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            whileHover={{ y: -8, scale: 1.03 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            <Card className="h-full flex flex-col p-6 bg-card/50 border-primary/10 transition-shadow duration-300 hover:shadow-xl hover:shadow-primary/15">
-              <CardHeader className="p-0 flex flex-row items-center gap-4">
-                <div className="flex-shrink-0">
-                  {cert.logo}
-                </div>
-                <CardTitle className="text-lg leading-tight">{cert.title}</CardTitle>
-              </CardHeader>
-              <CardContent className="p-0 mt-4 flex-grow flex flex-col justify-end">
-                <div className="flex items-center text-sm text-muted-foreground gap-2">
-                  <Building className="h-4 w-4" />
-                  <span>{cert.issuer}</span>
-                </div>
-                <div className="flex items-center text-sm text-muted-foreground gap-2 mt-1">
-                  <Calendar className="h-4 w-4" />
-                  <span>{cert.date}</span>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+          <CertificateCard key={cert.title + i} cert={cert} i={i} />
         ))}
       </div>
     </div>
