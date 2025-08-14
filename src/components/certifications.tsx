@@ -21,17 +21,6 @@ const certifications = [
     ),
   },
   {
-    title: "AWS Certified Solutions Architect – Associate",
-    issuer: "Amazon Web Services",
-    date: "Issued Jun 2023",
-    logo: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
-            <path fill="#FF9900" d="M12.3,9.3c0,0-0.5-0.1-1.1-0.1c-1.3,0-2.3,0.4-2.9,1.2c-0.6,0.8-0.9,1.9-0.9,3.3c0,2.1,0.8,3.7,2.3,4.6 c1.5,0.9,3.4,1.4,5.7,1.4c2,0,3.6-0.3,4.8-0.8l0.1-0.5c0,0-0.4,0.2-1.2,0.4c-1.2,0.3-2.4,0.4-3.5,0.4c-2.4,0-4.3-0.5-5.5-1.4 c-1.2-0.9-1.8-2.3-1.8-4.1c0-1.2,0.3-2.3,0.8-3.1s1.3-1.3,2.4-1.3c0.9,0,1.7,0.1,2.5,0.4c0.8,0.3,1.3,0.5,1.3,0.5L12.3,9.3z M19.4,7.2C18.2,6.1,16.6,5.5,14.6,5.5c-2.4,0-4.3,0.5-5.6,1.4C7.8,7.8,7.1,9.2,7.1,11c0,1.8,0.7,3.3,2.1,4.4 c1.4,1.1,3.3,1.7,5.7,1.7c2.4,0,4.3-0.5,5.6-1.4c1.3-0.9,2-2.3,2-4.1c0-1.8-0.7-3.3-2.1-4.4L19.4,7.2z"/>
-             <path fill="#232F3E" d="M0,0h24v4.8H0V0z M0,19.2h24V24H0V19.2z" />
-        </svg>
-    ),
-  },
-  {
     title: "Certified Kubernetes Application Developer (CKAD)",
     issuer: "The Linux Foundation",
     date: "Issued Dec 2023",
