@@ -15,7 +15,6 @@ import { Map } from '@/components/map';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const SmartLab = lazy(() => import('@/components/smart-lab').then(module => ({ default: module.SmartLab })));
-const Guestbook = lazy(() => import('@/components/guestbook').then(module => ({ default: module.Guestbook })));
 
 
 const SocialLinks = () => (
@@ -151,12 +150,6 @@ export default function Home() {
           </section>
         </Suspense>
 
-        <Suspense fallback={<div className="container mx-auto px-4 md:px-6 py-12 md:py-24"><Skeleton className="h-96 w-full" /></div>}>
-          <section id="guestbook" className="w-full">
-            <Guestbook />
-          </section>
-        </Suspense>
-        
         <section id="map" className="w-full py-12 md:py-24 bg-muted/20">
           <Map />
         </section>

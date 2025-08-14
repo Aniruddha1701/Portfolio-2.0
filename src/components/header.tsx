@@ -11,7 +11,6 @@ const navLinks = [
   { href: "#portfolio", label: "Portfolio" },
   { href: "#skills", label: "Skills" },
   { href: "#smart-lab", label: "Smart Lab" },
-  { href: "#guestbook", label: "Guestbook" },
   { href: "#contact", label: "Contact" },
 ]
 
