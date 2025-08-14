@@ -6,6 +6,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { motion } from "framer-motion"
+import Image from "next/image"
 
 const projects = [
   {
@@ -15,6 +16,8 @@ const projects = [
     tags: ["Web App", "Healthcare", "React.js", "Appwrite"],
     liveUrl: "https://careplus-demo.vercel.app",
     sourceUrl: "https://github.com/Aniruddha1701/careplus",
+    image: "https://placehold.co/600x400.png",
+    imageHint: "healthcare doctor",
   },
   {
     title: "GourmetGenie - AI-Powered Food Recommendation System",
@@ -23,6 +26,8 @@ const projects = [
     tags: ["AI", "Python", "Streamlit", "Django"],
     liveUrl: "https://gourmetgenie-demo.streamlit.app",
     sourceUrl: "https://github.com/Aniruddha1701/gourmetgenie",
+    image: "https://placehold.co/600x400.png",
+    imageHint: "delicious food",
   },
   {
     title: "ImaginAI - Text-to-Image Generator",
@@ -31,6 +36,8 @@ const projects = [
     tags: ["AI", "Tooling", "React.js", "Stability AI"],
     liveUrl: "https://image-generator-aniruddha1701.vercel.app/settings",
     sourceUrl: "https://github.com/Aniruddha1701/imaginai",
+    image: "https://placehold.co/600x400.png",
+    imageHint: "abstract art",
   },
   {
     title: "Wildlife Conservation Platform",
@@ -39,6 +46,8 @@ const projects = [
     tags: ["Web App", "Education"],
     liveUrl: "#",
     sourceUrl: "#",
+    image: "https://placehold.co/600x400.png",
+    imageHint: "wildlife elephant",
   },
 ];
 
@@ -126,13 +135,22 @@ export function Portfolio() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
-            whileHover={{ y: -10, scale: 1.05, rotateZ: 1 }}
+            whileHover={{ y: -10, scale: 1.05 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
           >
             <Card className="flex flex-col overflow-hidden h-full bg-card/50 border-primary/10 transition-all duration-300 ease-in-out hover:shadow-2xl hover:shadow-primary/20">
               <CardHeader className="p-0">
-                <div className="relative h-48 w-full overflow-hidden rounded-t-lg group flex items-center justify-center bg-muted">
-                  <div className="text-7xl transition-transform duration-500 group-hover:scale-125">{project.emoji}</div>
+                <div className="relative h-48 w-full overflow-hidden rounded-t-lg group">
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    data-ai-hint={project.imageHint}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                     <div className="text-6xl transition-transform duration-500 group-hover:scale-125">{project.emoji}</div>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent className="flex-grow p-6">
