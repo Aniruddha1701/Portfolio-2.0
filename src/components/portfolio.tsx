@@ -25,7 +25,7 @@ const projects = [
     tags: ["Web App", "Healthcare", "React.js", "Appwrite"],
     liveUrl: "https://careplus-demo.vercel.app",
     sourceUrl: "https://github.com/Aniruddha1701/careplus",
-    image: "https://placehold.co/600x400.png",
+    image: "https://images.unsplash.com/photo-1576091160550-2173dba9996a?q=80&w=600&h=400&auto=format&fit=crop",
     imageHint: "healthcare doctor",
   },
   {
@@ -60,7 +60,7 @@ const projects = [
     tags: ["AI", "Tooling", "React.js", "Stability AI"],
     liveUrl: "https://image-generator-aniruddha1701.vercel.app/settings",
     sourceUrl: "https://github.com/Aniruddha1701/imaginai",
-    image: "https://placehold.co/600x400.png",
+    image: "https://images.unsplash.com/photo-1509343256512-d77a5cb3791b?q=80&w=600&h=400&auto=format&fit=crop",
     imageHint: "abstract art",
   },
   {
