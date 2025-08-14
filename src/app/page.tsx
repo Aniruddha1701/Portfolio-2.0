@@ -1,10 +1,9 @@
 "use client"
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense, lazy } from 'react';
 import { Header } from '@/components/header';
 import { Portfolio } from '@/components/portfolio';
 import { Skills } from '@/components/skills';
-import { SmartLab } from '@/components/smart-lab';
 import { Footer } from '@/components/footer';
 import { Button } from '@/components/ui/button';
 import { ArrowDown, FileText } from 'lucide-react';
@@ -12,7 +11,12 @@ import { Journey } from '@/components/journey';
 import { Github, Linkedin, Mail } from 'lucide-react';
 import { TypingEffect } from '@/components/typing-effect';
 import { LoadingScreen } from '@/components/loading-screen';
-import { Guestbook } from '@/components/guestbook';
+import { Map } from '@/components/map';
+import { Skeleton } from '@/components/ui/skeleton';
+
+const SmartLab = lazy(() => import('@/components/smart-lab').then(module => ({ default: module.SmartLab })));
+const Guestbook = lazy(() => import('@/components/guestbook').then(module => ({ default: module.Guestbook })));
+
 
 const SocialLinks = () => (
   <div className="fixed top-1/2 right-4 -translate-y-1/2 z-50 hidden md:flex flex-col gap-4">
@@ -139,15 +143,24 @@ export default function Home() {
         <section id="skills" className="w-full py-12 md:py-24 lg:py-32">
           <Skills />
         </section>
+        
+        <Suspense fallback={<div className="container mx-auto px-4 md:px-6 py-12 md:py-24 lg:py-32"><Skeleton className="h-64 w-full" /></div>}>
+          <section id="smart-lab" className="relative w-full py-12 md:py-24 lg:py-32 bg-muted/20 overflow-hidden">
+             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(125,249,255,0.1),rgba(255,255,255,0))]"></div>
+            <SmartLab />
+          </section>
+        </Suspense>
 
-        <section id="smart-lab" className="relative w-full py-12 md:py-24 lg:py-32 bg-muted/20 overflow-hidden">
-           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(125,249,255,0.1),rgba(255,255,255,0))]"></div>
-          <SmartLab />
+        <Suspense fallback={<div className="container mx-auto px-4 md:px-6 py-12 md:py-24"><Skeleton className="h-96 w-full" /></div>}>
+          <section id="guestbook" className="w-full">
+            <Guestbook />
+          </section>
+        </Suspense>
+        
+        <section id="map" className="w-full bg-muted/20">
+          <Map />
         </section>
 
-        <section id="guestbook" className="w-full">
-          <Guestbook />
-        </section>
       </main>
       <Footer />
     </div>
