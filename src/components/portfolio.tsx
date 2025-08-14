@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { motion } from "framer-motion"
 import Image from "next/image"
-import { Stethoscope, Lightbulb, ImageIcon, Leaf } from "lucide-react"
+import { Lightbulb, Leaf } from "lucide-react"
 
 const projects = [
   {
@@ -17,14 +17,15 @@ const projects = [
         <motion.div
             animate={{ rotate: [0, 10, -10, 0] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            className="text-white"
         >
-            <Stethoscope size={48} className="text-white"/>
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12h16M12 4v16"/><path d="M12 4a8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8 8 8 0 0 0-8-8z"/><path d="M12 4a8 8 0 0 0-8 8 8 8 0 0 0 8 8"/></svg>
         </motion.div>
     ),
     tags: ["Web App", "Healthcare", "React.js", "Appwrite"],
     liveUrl: "https://careplus-demo.vercel.app",
     sourceUrl: "https://github.com/Aniruddha1701/careplus",
-    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ab?q=80&w=600&h=400&auto=format&fit=crop",
+    image: "https://placehold.co/600x400.png",
     imageHint: "healthcare doctor",
   },
   {
@@ -51,14 +52,15 @@ const projects = [
         <motion.div
             animate={{ y: [-5, 5, -5] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            className="text-white"
         >
-            <ImageIcon size={48} className="text-white"/>
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
         </motion.div>
     ),
     tags: ["AI", "Tooling", "React.js", "Stability AI"],
     liveUrl: "https://image-generator-aniruddha1701.vercel.app/settings",
     sourceUrl: "https://github.com/Aniruddha1701/imaginai",
-    image: "https://images.unsplash.com/photo-1684493651816-94e439bb9459?q=80&w=600&h=400&auto=format&fit=crop",
+    image: "https://placehold.co/600x400.png",
     imageHint: "abstract art",
   },
   {
