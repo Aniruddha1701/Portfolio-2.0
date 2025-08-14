@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { CodeXml, Menu, X } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "./ui/button"
 
 const navLinks = [
@@ -14,6 +14,44 @@ const navLinks = [
   { href: "#smart-lab", label: "Smart Lab" },
   { href: "#contact", label: "Contact" },
 ]
+
+const Clock = () => {
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timerId);
+  }, []);
+
+  const formatDate = (date: Date) => {
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+    };
+    return date.toLocaleDateString('en-US', options);
+  };
+  
+  const formatTime = (date: Date) => {
+    return date.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true,
+    });
+  }
+
+  return (
+    <div className="hidden md:flex items-center justify-center text-xs font-mono text-muted-foreground gap-2">
+      <span>{formatDate(time)}</span>
+      <span>{formatTime(time)}</span>
+    </div>
+  )
+}
+
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -35,7 +73,8 @@ export function Header() {
             ))}
           </nav>
 
-          <div className="flex items-center justify-end gap-2">
+          <div className="flex items-center justify-end gap-4">
+            <Clock />
             <ThemeToggle />
             <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
               {isMenuOpen ? <X /> : <Menu />}
