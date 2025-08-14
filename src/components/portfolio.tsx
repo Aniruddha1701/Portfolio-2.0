@@ -6,8 +6,6 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { motion } from "framer-motion"
-import Image from "next/image"
-import { Leaf } from "lucide-react"
 
 const projects = [
   {
@@ -32,8 +30,6 @@ const projects = [
     tags: ["Web App", "Healthcare", "React.js", "Appwrite"],
     liveUrl: "https://careplus-demo.vercel.app",
     sourceUrl: "https://github.com/Aniruddha1701/careplus",
-    image: "https://images.unsplash.com/photo-1576091160550-2173dba9996a?q=80&w=600&h=400&auto=format&fit=crop",
-    imageHint: "healthcare doctor",
   },
   {
     title: "GourmetGenie - AI-Powered Food Recommendation System",
@@ -57,8 +53,6 @@ const projects = [
     tags: ["AI", "Python", "Streamlit", "Django"],
     liveUrl: "https://gourmetgenie-demo.streamlit.app",
     sourceUrl: "https://github.com/Aniruddha1701/gourmetgenie",
-    image: "https://images.unsplash.com/photo-1490818387583-1baba5e638af?q=80&w=600&h=400&auto=format&fit=crop",
-    imageHint: "delicious food",
   },
   {
     title: "ImaginAI - Text-to-Image Generator",
@@ -82,8 +76,6 @@ const projects = [
     tags: ["AI", "Tooling", "React.js", "Stability AI"],
     liveUrl: "https://image-generator-aniruddha1701.vercel.app/settings",
     sourceUrl: "https://github.com/Aniruddha1701/imaginai",
-    image: "https://images.unsplash.com/photo-1518314916381-77a37c2a49ae?q=80&w=600&h=400&auto=format&fit=crop",
-    imageHint: "abstract art",
   },
   {
     title: "Wildlife Conservation Platform",
@@ -107,8 +99,6 @@ const projects = [
     tags: ["Web App", "Education"],
     liveUrl: "#",
     sourceUrl: "#",
-    image: "https://images.unsplash.com/photo-1474511320723-9a56873867b5?q=80&w=600&h=400&auto=format&fit=crop",
-    imageHint: "wildlife elephant",
   },
 ];
 
@@ -199,30 +189,18 @@ export function Portfolio() {
             whileHover={{ y: -10, scale: 1.05 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
           >
-            <Card className="flex flex-col overflow-hidden h-full bg-card/50 border-primary/10 transition-all duration-300 ease-in-out hover:shadow-2xl hover:shadow-primary/20">
-              <CardHeader className="p-0">
-                <div className="relative h-48 w-full overflow-hidden rounded-t-lg group">
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    data-ai-hint={project.imageHint}
-                    width={600}
-                    height={400}
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                     <div className="text-6xl transition-transform duration-500 group-hover:scale-125">{project.logo}</div>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="flex-grow p-6">
+            <Card className="flex flex-col text-center overflow-hidden h-full bg-card/50 border-primary/10 transition-all duration-300 ease-in-out hover:shadow-2xl hover:shadow-primary/20">
+              <CardHeader className="flex-grow flex flex-col items-center justify-center p-6">
+                <div className="mb-4">{project.logo}</div>
                 <CardTitle>{project.title}</CardTitle>
+              </CardHeader>
+              <CardContent className="flex-grow p-6 pt-0">
                 <p className="mt-2 text-sm text-muted-foreground">{project.description}</p>
-                <div className="mt-4 flex flex-wrap gap-2">
+                <div className="mt-4 flex flex-wrap gap-2 justify-center">
                   {project.tags.map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}
                 </div>
               </CardContent>
-              <CardFooter className="flex justify-start gap-2 p-6 pt-0">
+              <CardFooter className="flex justify-center gap-2 p-6 pt-0">
                 <Button asChild>
                   <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">Live Demo</a>
                 </Button>
