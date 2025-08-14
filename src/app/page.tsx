@@ -13,6 +13,7 @@ import { TypingEffect } from '@/components/typing-effect';
 import { LoadingScreen } from '@/components/loading-screen';
 import { Map } from '@/components/map';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Certifications } from '@/components/certifications';
 
 const SmartLab = lazy(() => import('@/components/smart-lab').then(module => ({ default: module.SmartLab })));
 
@@ -141,6 +142,10 @@ export default function Home() {
 
         <section id="skills" className="w-full py-12 md:py-24 lg:py-32">
           <Skills />
+        </section>
+
+        <section id="certifications" className="w-full py-12 md:py-24 lg:py-32 bg-muted/20">
+          <Certifications />
         </section>
         
         <Suspense fallback={<div className="container mx-auto px-4 md:px-6 py-12 md:py-24 lg:py-32"><Skeleton className="h-64 w-full" /></div>}>

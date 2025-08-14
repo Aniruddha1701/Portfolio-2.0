@@ -10,6 +10,7 @@ const navLinks = [
   { href: "#journey", label: "The Journey" },
   { href: "#portfolio", label: "Portfolio" },
   { href: "#skills", label: "Skills" },
+  { href: "#certifications", label: "Certifications" },
   { href: "#smart-lab", label: "Smart Lab" },
   { href: "#contact", label: "Contact" },
 ]
@@ -19,7 +20,7 @@ export function Header() {
 
   return (
     <>
-      <header className="fixed top-4 inset-x-0 max-w-4xl mx-auto z-50">
+      <header className="fixed top-4 inset-x-0 max-w-5xl mx-auto z-50">
         <div className="relative flex h-16 items-center justify-between rounded-full border border-primary/10 bg-background/80 px-8 shadow-lg shadow-primary/5 backdrop-blur-md">
           <Link href="/" className="flex items-center space-x-2">
             <CodeXml className="h-6 w-6 text-primary" />
