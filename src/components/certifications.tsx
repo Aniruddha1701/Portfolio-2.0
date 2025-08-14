@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Award, Building, Calendar } from "lucide-react";
+import { Building, Calendar } from "lucide-react";
 
 const certifications = [
   {
@@ -40,7 +40,7 @@ const certifications = [
         </svg>
     ),
   },
-   {
+  {
     title: "Certified Kubernetes Application Developer (CKAD)",
     issuer: "The Linux Foundation",
     date: "Issued Dec 2023",
@@ -53,6 +53,79 @@ const certifications = [
                 </linearGradient>
             </defs>
             <path fill="url(#k8s-gradient)" d="M12,2L2,7l10,5l10-5L12,2z M2,17l10,5l10-5l-10-5L2,17z M12,14.47L4.9,11L12,7.53L19.1,11L12,14.47z"/>
+        </svg>
+    ),
+  },
+  {
+    title: "Oracle Cloud Infrastructure 2025 Certified AI Foundations Associate",
+    issuer: "Oracle",
+    date: "Issued Aug 2025",
+    logo: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+        <path fill="#F80000" d="M13.535 15.155c-1.397 0-2.443-.447-3.235-1.343a4.363 4.363 0 0 1-1.127-3.088c0-1.22.376-2.26.98-2.954c.604-.694 1.493-1.128 2.58-1.128c.967 0 1.8.313 2.459.887c.66.574 1.055 1.455.98 2.427c-.075.972-.51 1.785-1.22 2.378c-.708.594-1.637.82-2.437.82zm.125-8.987c-2.02 0-3.652.668-4.838 2.003c-1.186 1.336-1.78 3.14-1.78 5.414c0 2.274.594 4.05 1.78 5.267c1.186 1.218 2.817 1.848 4.838 1.848c2.145 0 3.864-.694 5.07-2.083c1.206-1.389 1.83-3.268 1.83-5.592c0-2.203-.594-3.96-1.78-5.267C17.47 6.84 15.78 6.168 13.66 6.168z"/>
+      </svg>
+    ),
+  },
+  {
+    title: "GenAI Powered Data Analytics",
+    issuer: "Tata Group",
+    date: "Issued Jun 2025",
+    logo: (
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+          <path fill="#4A90E2" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2zm-1.25 14.25h-1.5v-7.5h1.5v7.5zm3.75 0h-1.5v-7.5h1.5v7.5zm-5-9.25h6.25v1.5H9.5v-1.5z"/>
+        </svg>
+    ),
+  },
+  {
+    title: "Google cloud computing foundations",
+    issuer: "Google",
+    date: "Issued Dec 2023",
+    logo: (
+       <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M21.35,11.1H12.18V13.83H18.67C18.2,17.09 15.82,19.46 12.18,19.46C8.76,19.46 6,16.7 6,13.28C6,9.87 8.76,7.1 12.18,7.1C13.8,7.1 15.2,7.67 16.24,8.66L18.3,6.62C16.5,4.96 14.47,4 12.18,4C7.59,4 4,7.59 4,12.18C4,16.77 7.59,20.36 12.18,20.36C17.09,20.36 21.5,17.15 21.5,12.42C21.5,11.93 21.45,11.51 21.35,11.1Z"/>
+        </svg>
+    ),
+  },
+  {
+    title: "Certificate for Completion of C Training",
+    issuer: "Indian Institute of Technology, Bombay",
+    date: "Issued Feb 2022",
+    logo: (
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10" fill="#F37021"/>
+          <path fill="#FFFFFF" d="M8.5,8.5h7v2h-5v1h4v2h-4v1h5v2h-7v-8z"/>
+        </svg>
+    ),
+  },
+  {
+    title: "Certificate for Completion of Advanced Cpp Training",
+    issuer: "Indian Institute of Technology, Bombay",
+    date: "Issued Feb 2022",
+    logo: (
+       <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10" fill="#005C9E"/>
+          <path fill="#FFFFFF" d="M8.5,8.5h7v2h-5v1h4v2h-4v1h5v2h-7v-8z M16,10h2v2h-2v-2zm0,4h2v2h-2v-2z"/>
+        </svg>
+    ),
+  },
+  {
+    title: "Certificate for Completion of Python 3.4.3",
+    issuer: "Indian Institute of Technology, Bombay",
+    date: "Issued Feb 2022",
+    logo: (
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10" fill="#3776AB"/>
+          <path fill="#FFD43B" d="M10.25,8.5v1.5h3.5c1.1,0,2-0.9,2-2s-0.9-2-2-2h-5v7h2v-2.5h3v-2h-3zm3.5,5v-1.5h-3.5c-1.1,0-2,0.9-2,2s0.9,2,2,2h5v-7h-2v2.5h-3v2h3z"/>
+        </svg>
+    ),
+  },
+   {
+    title: "Certificate of Participation (Finalist)",
+    issuer: "NMIMS Navi Mumbai",
+    date: "Issued 2023",
+    logo: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+          <path fill="#A51C30" d="M3,3v18h18V3H3z M12,14.25L9,16l1.12-3.5L8,10.25h3.6L12,7l1.4,3.25H17l-2.12,2.25L16,16L12,14.25z"/>
         </svg>
     ),
   },
@@ -109,7 +182,7 @@ export function Certifications() {
       <div className="mx-auto mt-12 grid max-w-5xl gap-8 md:grid-cols-2 lg:grid-cols-3">
         {certifications.map((cert, i) => (
           <motion.div
-            key={cert.title}
+            key={cert.title + i}
             custom={i}
             variants={cardVariants}
             initial="hidden"
