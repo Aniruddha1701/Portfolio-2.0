@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { motion } from "framer-motion"
 import Image from "next/image"
-import { Lightbulb, Leaf } from "lucide-react"
+import { Leaf } from "lucide-react"
 
 const projects = [
   {
@@ -17,15 +17,22 @@ const projects = [
         <motion.div
             animate={{ rotate: [0, 10, -10, 0] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-            className="text-white"
         >
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12h16M12 4v16"/><path d="M12 4a8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8 8 8 0 0 0-8-8z"/><path d="M12 4a8 8 0 0 0-8 8 8 8 0 0 0 8 8"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+                <defs>
+                    <linearGradient id="careplus-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style={{stopColor: '#3B82F6', stopOpacity: 1}} />
+                        <stop offset="100%" style={{stopColor: '#10B981', stopOpacity: 1}} />
+                    </linearGradient>
+                </defs>
+                <path fill="url(#careplus-gradient)" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
+            </svg>
         </motion.div>
     ),
     tags: ["Web App", "Healthcare", "React.js", "Appwrite"],
     liveUrl: "https://careplus-demo.vercel.app",
     sourceUrl: "https://github.com/Aniruddha1701/careplus",
-    image: "https://images.unsplash.com/photo-1603398938378-e54eab446dde?q=80&w=600&h=400&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1576091160550-2173dba9996a?q=80&w=600&h=400&auto=format&fit=crop",
     imageHint: "healthcare doctor",
   },
   {
@@ -36,7 +43,15 @@ const projects = [
             animate={{ scale: [1, 1.1, 1] }}
             transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
         >
-            <Lightbulb size={48} className="text-white"/>
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+                <defs>
+                    <linearGradient id="gourmet-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style={{stopColor: '#F59E0B', stopOpacity: 1}} />
+                        <stop offset="100%" style={{stopColor: '#EF4444', stopOpacity: 1}} />
+                    </linearGradient>
+                </defs>
+                <path fill="url(#gourmet-gradient)" d="M12,1C8.2,1,5.2,2.8,3.6,5.6C2,8.4,2.2,11.8,4.2,14.4l-1.5,4.7l4.7-1.5c2.6,2,6,2.2,8.8,0.6c2.8-1.6,4.6-4.6,4.6-8.4c0-4.9-3.9-8.9-8.8-8.9L12,1z M13,11h-2V6h2V11z M13,14h-2v-2h2V14z"/>
+            </svg>
         </motion.div>
     ),
     tags: ["AI", "Python", "Streamlit", "Django"],
@@ -52,15 +67,22 @@ const projects = [
         <motion.div
             animate={{ y: [-5, 5, -5] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-            className="text-white"
         >
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+                <defs>
+                    <linearGradient id="imaginai-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style={{stopColor: '#8B5CF6', stopOpacity: 1}} />
+                        <stop offset="100%" style={{stopColor: '#EC4899', stopOpacity: 1}} />
+                    </linearGradient>
+                </defs>
+                <path fill="url(#imaginai-gradient)" d="M21.5,2h-19C1.1,2,0,3.1,0,4.5v15C0,20.9,1.1,22,2.5,22h19c1.4,0,2.5-1.1,2.5-2.5v-15C24,3.1,22.9,2,21.5,2z M6,16l-3-3l3-3L9,13L6,16z M10,18l-3-3l6-6l3,3L10,18z M18,8l-3,3l-3-3L15,5L18,8z"/>
+            </svg>
         </motion.div>
     ),
     tags: ["AI", "Tooling", "React.js", "Stability AI"],
     liveUrl: "https://image-generator-aniruddha1701.vercel.app/settings",
     sourceUrl: "https://github.com/Aniruddha1701/imaginai",
-    image: "https://images.unsplash.com/photo-1509343256512-d77a5cb3791b?q=80&w=600&h=400&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1518314916381-77a37c2a49ae?q=80&w=600&h=400&auto=format&fit=crop",
     imageHint: "abstract art",
   },
   {
@@ -71,7 +93,15 @@ const projects = [
             animate={{ rotate: 360 }}
             transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
         >
-            <Leaf size={48} className="text-white"/>
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+                <defs>
+                    <linearGradient id="wildlife-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style={{stopColor: '#22C55E', stopOpacity: 1}} />
+                        <stop offset="100%" style={{stopColor: '#FBBF24', stopOpacity: 1}} />
+                    </linearGradient>
+                </defs>
+                <path fill="url(#wildlife-gradient)" d="M20.5,10.6c-1.2-1.2-2.8-1.9-4.5-1.9c-1.7,0-3.3,0.7-4.5,1.9c-1.2,1.2-1.9,2.8-1.9,4.5c0,1.7,0.7,3.3,1.9,4.5c1.2,1.2,2.8,1.9,4.5,1.9s3.3-0.7,4.5-1.9c1.2-1.2,1.9-2.8,1.9-4.5C22.4,13.4,21.7,11.8,20.5,10.6z M12.5,4.2V2.5C12.5,2.2,12.3,2,12,2s-0.5,0.2-0.5,0.5V4.2c-3.5,0.6-6.4,3.5-7,7H2.5C2.2,11.2,2,11.4,2,11.7s0.2,0.5,0.5,0.5H5c0.6,3.5,3.5,6.4,7,7v2.5c0,0.3,0.2,0.5,0.5,0.5s0.5-0.2,0.5-0.5V21c3.5-0.6,6.4-3.5,7-7h2.5c0.3,0,0.5-0.2,0.5-0.5s-0.2-0.5-0.5-0.5H19C18.4,7.7,15.5,4.8,12.5,4.2z"/>
+            </svg>
         </motion.div>
     ),
     tags: ["Web App", "Education"],
