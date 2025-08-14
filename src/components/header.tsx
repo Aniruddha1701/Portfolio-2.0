@@ -1,3 +1,4 @@
+
 "use client"
 
 import Link from "next/link"
@@ -27,12 +28,11 @@ const Clock = () => {
   }, []);
 
   const formatDate = (date: Date) => {
-    const options: Intl.DateTimeFormatOptions = {
-      weekday: 'short',
+    return date.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
-    };
-    return date.toLocaleDateString('en-US', options);
+      year: 'numeric'
+    });
   };
   
   const formatTime = (date: Date) => {
@@ -45,9 +45,10 @@ const Clock = () => {
   }
 
   return (
-    <div className="hidden md:flex items-center justify-center text-xs font-mono text-muted-foreground gap-2">
-      <span>{formatDate(time)}</span>
-      <span>{formatTime(time)}</span>
+    <div className="hidden md:flex items-center justify-center text-xs font-mono text-muted-foreground gap-2 bg-primary/5 border border-primary/10 px-3 py-1.5 rounded-full transition-all hover:shadow-md hover:shadow-primary/10">
+      <span className="tabular-nums">{formatDate(time)}</span>
+      <span className="text-primary/50">|</span>
+      <span className="tabular-nums">{formatTime(time)}</span>
     </div>
   )
 }
