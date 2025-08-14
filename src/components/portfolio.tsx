@@ -58,7 +58,7 @@ const projects = [
     tags: ["AI", "Tooling", "React.js", "Stability AI"],
     liveUrl: "https://image-generator-aniruddha1701.vercel.app/settings",
     sourceUrl: "https://github.com/Aniruddha1701/imaginai",
-    image: "https://images.unsplash.com/photo-1554189097-9497492aa675?q=80&w=600&h=400&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1684493651816-94e439bb9459?q=80&w=600&h=400&auto=format&fit=crop",
     imageHint: "abstract art",
   },
   {
