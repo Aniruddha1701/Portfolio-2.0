@@ -10,6 +10,8 @@ import { AnimatePresence } from 'framer-motion';
 export const metadata: Metadata = {
   title: 'Aniruddha Patil | Full Stack Developer',
   description: 'Full Stack Developer with expertise in MERN stack and Machine Learning.',
+  manifest: '/manifest.json',
+  themeColor: '#000000',
 };
 
 export default function RootLayout({
