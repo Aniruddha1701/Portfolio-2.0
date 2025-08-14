@@ -1,7 +1,6 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { MapPin } from "lucide-react"
 
 const SectionTitle = ({ children }: { children: React.ReactNode }) => (
     <motion.h2 
@@ -29,7 +28,7 @@ const SectionDescription = ({ children }: { children: React.ReactNode }) => (
 
 export function Map() {
   return (
-    <div className="container mx-auto px-4 md:px-6 py-12 md:py-24">
+    <div className="container mx-auto px-4 md:px-6">
       <div className="flex flex-col items-center justify-center space-y-4 text-center">
         <div className="space-y-2">
           <SectionTitle>Find Me</SectionTitle>

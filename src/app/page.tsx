@@ -157,7 +157,7 @@ export default function Home() {
           </section>
         </Suspense>
         
-        <section id="map" className="w-full bg-muted/20">
+        <section id="map" className="w-full py-12 md:py-24 bg-muted/20">
           <Map />
         </section>
 
