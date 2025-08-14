@@ -18,7 +18,7 @@ const ParticlesBackground = () => {
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
     let particles: Particle[] = [];
-    const particleCount = Math.floor(width / 10);
+    const particleCount = Math.floor(width / 20);
 
     const mouseMoveHandler = (e: MouseEvent) => {
       mouse.current.x = e.x;
@@ -48,14 +48,14 @@ const ParticlesBackground = () => {
         this.y = Math.random() * height;
         this.vx = (Math.random() - 0.5) * 0.5;
         this.vy = (Math.random() - 0.5) * 0.5;
-        this.radius = Math.random() * 2.5 + 1;
+        this.radius = Math.random() * 1.5 + 0.5;
         
         if (theme === 'light') {
-          this.baseColor = 'rgba(0, 0, 0, 0.4)';
-          this.interactionColor = 'rgba(0, 0, 139, 0.8)'; // Dark Blue
+          this.baseColor = 'rgba(100, 100, 100, 0.3)';
+          this.interactionColor = 'rgba(0, 120, 215, 0.6)';
         } else {
-          this.baseColor = 'rgba(125, 249, 255, 0.5)';
-          this.interactionColor = 'rgba(50, 205, 50, 0.8)'; // Lime Green
+          this.baseColor = 'rgba(125, 249, 255, 0.4)';
+          this.interactionColor = 'rgba(50, 205, 50, 0.7)'; // Lime Green
         }
         this.color = this.baseColor;
       }
@@ -103,7 +103,7 @@ const ParticlesBackground = () => {
       width = canvas.width = window.innerWidth;
       height = canvas.height = document.body.scrollHeight;
       particles = [];
-      const newParticleCount = Math.floor(width / 10);
+      const newParticleCount = Math.floor(width / 20);
       for (let i = 0; i < newParticleCount; i++) {
         particles.push(new Particle());
       }
@@ -123,12 +123,12 @@ const ParticlesBackground = () => {
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dist = Math.hypot(particles[i].x - particles[j].x, particles[i].y - particles[j].y);
-          if (dist < 140) {
+          if (dist < 120) {
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            const lineColor = theme === 'light' ? 'rgba(0, 0, 0, 0.4)' : 'rgba(125, 249, 255, 0.4)';
-            ctx.strokeStyle = `${lineColor.slice(0, -2)}${1 - dist / 140})`;
+            const lineColor = theme === 'light' ? 'rgba(100, 100, 100, 0.2)' : 'rgba(125, 249, 255, 0.2)';
+            ctx.strokeStyle = `${lineColor.slice(0, -4)}${(1 - dist / 120) * (theme === 'light' ? 0.2 : 0.2)})`;
             ctx.stroke();
           }
         }
