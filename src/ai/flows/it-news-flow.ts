@@ -26,6 +26,7 @@ export async function getItNews(): Promise<ItNewsOutput> {
 
 const prompt = ai.definePrompt({
   name: 'itNewsPrompt',
+  input: { schema: z.object({}) },
   output: {schema: ItNewsOutputSchema},
   prompt: `You are a senior tech news analyst. Your task is to provide a concise summary of the three most significant and recent news stories in the information technology sector.
 
@@ -38,7 +39,7 @@ const itNewsFlow = ai.defineFlow(
     outputSchema: ItNewsOutputSchema,
   },
   async () => {
-    const {output} = await prompt();
+    const {output} = await prompt({});
     return output!;
   }
 );
