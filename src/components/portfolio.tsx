@@ -7,46 +7,75 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { motion } from "framer-motion"
 import Image from "next/image"
+import { Stethoscope, Lightbulb, ImageIcon, Leaf } from "lucide-react"
 
 const projects = [
   {
     title: "CarePlus - Healthcare Management System",
     description: "A comprehensive healthcare platform for patient management, appointment scheduling, and secure data handling, built with HIPAA compliance in mind.",
-    emoji: "🩺",
+    logo: (
+        <motion.div
+            animate={{ rotate: [0, 10, -10, 0] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        >
+            <Stethoscope size={48} className="text-white"/>
+        </motion.div>
+    ),
     tags: ["Web App", "Healthcare", "React.js", "Appwrite"],
     liveUrl: "https://careplus-demo.vercel.app",
     sourceUrl: "https://github.com/Aniruddha1701/careplus",
-    image: "https://placehold.co/600x400.png",
+    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ab?q=80&w=600&h=400&auto=format&fit=crop",
     imageHint: "healthcare doctor",
   },
   {
     title: "GourmetGenie - AI-Powered Food Recommendation System",
     description: "An AI-driven food suggestion engine using LightGBM and KNN to provide personalized recommendations based on user preferences and eating habits.",
-    emoji: "🍲",
+    logo: (
+        <motion.div
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+        >
+            <Lightbulb size={48} className="text-white"/>
+        </motion.div>
+    ),
     tags: ["AI", "Python", "Streamlit", "Django"],
     liveUrl: "https://gourmetgenie-demo.streamlit.app",
     sourceUrl: "https://github.com/Aniruddha1701/gourmetgenie",
-    image: "https://placehold.co/600x400.png",
+    image: "https://images.unsplash.com/photo-1490818387583-1baba5e638af?q=80&w=600&h=400&auto=format&fit=crop",
     imageHint: "delicious food",
   },
   {
     title: "ImaginAI - Text-to-Image Generator",
     description: "An open-source text-to-image generator using Stability AI, featuring a responsive interface and secure API management for real-time image creation.",
-    emoji: "🎨",
+    logo: (
+        <motion.div
+            animate={{ y: [-5, 5, -5] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        >
+            <ImageIcon size={48} className="text-white"/>
+        </motion.div>
+    ),
     tags: ["AI", "Tooling", "React.js", "Stability AI"],
     liveUrl: "https://image-generator-aniruddha1701.vercel.app/settings",
     sourceUrl: "https://github.com/Aniruddha1701/imaginai",
-    image: "https://placehold.co/600x400.png",
+    image: "https://images.unsplash.com/photo-1554189097-9497492aa675?q=80&w=600&h=400&auto=format&fit=crop",
     imageHint: "abstract art",
   },
   {
     title: "Wildlife Conservation Platform",
     description: "An educational platform designed to raise awareness and provide information about wildlife conservation efforts and species protection.",
-    emoji: "🐘",
+    logo: (
+        <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+        >
+            <Leaf size={48} className="text-white"/>
+        </motion.div>
+    ),
     tags: ["Web App", "Education"],
     liveUrl: "#",
     sourceUrl: "#",
-    image: "https://placehold.co/600x400.png",
+    image: "https://images.unsplash.com/photo-1474511320723-9a56873867b5?q=80&w=600&h=400&auto=format&fit=crop",
     imageHint: "wildlife elephant",
   },
 ];
@@ -145,11 +174,12 @@ export function Portfolio() {
                     src={project.image}
                     alt={project.title}
                     data-ai-hint={project.imageHint}
-                    fill
+                    width={600}
+                    height={400}
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                     <div className="text-6xl transition-transform duration-500 group-hover:scale-125">{project.emoji}</div>
+                     <div className="text-6xl transition-transform duration-500 group-hover:scale-125">{project.logo}</div>
                   </div>
                 </div>
               </CardHeader>
