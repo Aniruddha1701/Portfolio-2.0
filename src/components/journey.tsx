@@ -116,6 +116,18 @@ const TimelineItem = ({ edu, i }: { edu: typeof journeyData[0], i: number }) => 
     },
   };
 
+  const contentVariants = {
+      hidden: { opacity: 0, y: 20},
+      visible: {
+          opacity: 1,
+          y: 0,
+          transition: {
+            delay: 0.2,
+            duration: 0.5
+          }
+      }
+  }
+
   return (
     <motion.div
       variants={timelineVariants}
@@ -127,15 +139,20 @@ const TimelineItem = ({ edu, i }: { edu: typeof journeyData[0], i: number }) => 
       <div className={`flex items-center ${isEven ? 'flex-row' : 'flex-row-reverse'}`}>
         <div className={`flex-1 ${isEven ? 'text-right pr-8' : 'text-left pl-8'}`}>
           <motion.div
-            whileHover={{ y: -5 }}
-            transition={{ type: "spring", stiffness: 300 }}
+            whileHover={{ 
+                y: -8, 
+                boxShadow: "0 10px 20px -5px hsl(var(--primary) / 0.15)"
+            }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
             className="relative p-6 rounded-lg bg-card/50 border border-primary/10 shadow-lg overflow-hidden group"
           >
             <div className="absolute top-0 left-[-100%] w-full h-full bg-gradient-to-r from-transparent via-primary/10 to-transparent transition-all duration-700 group-hover:left-0"></div>
-            <h3 className="font-bold text-lg">{edu.institution}</h3>
-            <p className="text-primary">{edu.degree}</p>
-            <p className="text-sm text-muted-foreground">{edu.duration}</p>
-            <p className="text-xs text-muted-foreground">{edu.location}</p>
+            <motion.div variants={contentVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+                <h3 className="font-bold text-lg">{edu.institution}</h3>
+                <p className="text-primary">{edu.degree}</p>
+                <p className="text-sm text-muted-foreground mt-1">{edu.duration}</p>
+                <p className="text-xs text-muted-foreground">{edu.location}</p>
+            </motion.div>
           </motion.div>
         </div>
         
@@ -144,6 +161,7 @@ const TimelineItem = ({ edu, i }: { edu: typeof journeyData[0], i: number }) => 
             className="bg-primary rounded-full h-10 w-10 flex items-center justify-center ring-8 ring-background"
             initial={{ scale: 0 }}
             whileInView={{ scale: 1 }}
+            whileHover={{ scale: 1.2, boxShadow: '0 0 20px hsl(var(--primary))' }}
             viewport={{ once: true, amount: 1 }}
             transition={{ delay: 0.4, type: "spring", stiffness: 400, damping: 15 }}
           >
@@ -188,7 +206,8 @@ export function Journey() {
           className="absolute left-1/2 -ml-[1px] top-0 w-[2px] bg-primary"
           style={{
             height: useTransform(pathHeight, (h) => `${h * 100}%`),
-            boxShadow: '0 0 10px hsl(var(--primary))'
+            boxShadow: '0 0 10px hsl(var(--primary))',
+            filter: `drop-shadow(0 0 5px hsl(var(--primary)))`
           }}
         />
 
