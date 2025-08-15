@@ -8,15 +8,18 @@ import { Newspaper, BotMessageSquare } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { motion } from "framer-motion"
 import type { ItNewsOutput } from "@/ai/flows/it-news-flow"
+import { Skeleton } from "./ui/skeleton"
 
 export function ItNews() {
   const [news, setNews] = useState<ItNewsOutput['news'] | null>(null)
   const [isPending, startTransition] = useTransition()
   const { toast } = useToast()
+  const [isLoading, setIsLoading] = useState(true);
+
 
   useEffect(() => {
     startTransition(async () => {
-      setNews(null)
+      setIsLoading(true);
       const result = await handleGetItNews()
       if (result.error) {
         toast({
@@ -27,14 +30,34 @@ export function ItNews() {
       } else {
         setNews(result.news || [])
       }
+      setIsLoading(false);
     })
   }, [toast])
+
+  if (isLoading) {
+    return (
+        <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-1">
+            {[...Array(3)].map((_, index) => (
+                <Card key={index}>
+                    <CardHeader>
+                        <Skeleton className="h-6 w-3/4" />
+                    </CardHeader>
+                    <CardContent>
+                        <Skeleton className="h-4 w-full" />
+                        <Skeleton className="h-4 w-full mt-2" />
+                        <Skeleton className="h-4 w-2/3 mt-2" />
+                    </CardContent>
+                </Card>
+            ))}
+        </div>
+    )
+  }
 
   return (
     <div className="container mx-auto px-4 md:px-6 max-w-4xl">
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-4">
-          {isPending && (
+          {isPending && !news && (
             <div className="flex items-center justify-center space-x-2">
               <div className="h-2 w-2 animate-pulse rounded-full bg-primary"></div>
               <div className="h-2 w-2 animate-pulse rounded-full bg-primary [animation-delay:0.2s]"></div>
