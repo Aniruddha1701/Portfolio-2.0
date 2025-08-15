@@ -6,6 +6,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { motion } from "framer-motion"
+import { Github, Globe } from "lucide-react"
 
 const projects = [
   {
@@ -16,7 +17,7 @@ const projects = [
             animate={{ rotate: [0, 10, -10, 0] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
         >
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24">
                 <defs>
                     <linearGradient id="careplus-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" style={{stopColor: '#3B82F6', stopOpacity: 1}} />
@@ -39,7 +40,7 @@ const projects = [
             animate={{ scale: [1, 1.1, 1] }}
             transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
         >
-             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+             <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24">
                 <defs>
                     <linearGradient id="gourmet-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" style={{stopColor: '#F59E0B', stopOpacity: 1}} />
@@ -59,10 +60,10 @@ const projects = [
     description: "An open-source text-to-image generator using Stability AI, featuring a responsive interface and secure API management for real-time image creation.",
     logo: (
         <motion.div
-            animate={{ y: [-5, 5, -5] }}
+            animate={{ y: [-3, 3, -3] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
         >
-             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+             <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24">
                 <defs>
                     <linearGradient id="imaginai-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" style={{stopColor: '#8B5CF6', stopOpacity: 1}} />
@@ -85,7 +86,7 @@ const projects = [
             animate={{ rotate: 360 }}
             transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
         >
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24">
                 <defs>
                     <linearGradient id="wildlife-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" style={{stopColor: '#22C55E', stopOpacity: 1}} />
@@ -186,28 +187,41 @@ export function Portfolio() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
-            whileHover={{ y: -10, scale: 1.05 }}
+            whileHover={{ y: -10 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
           >
-            <Card className="flex flex-col text-center overflow-hidden h-full bg-card/50 border-primary/10 transition-all duration-300 ease-in-out hover:shadow-2xl hover:shadow-primary/20">
-              <CardHeader className="flex-grow flex flex-col items-center justify-center p-6">
-                <div className="mb-4">{project.logo}</div>
-                <CardTitle>{project.title}</CardTitle>
-              </CardHeader>
-              <CardContent className="flex-grow p-6 pt-0">
-                <p className="mt-2 text-sm text-muted-foreground">{project.description}</p>
-                <div className="mt-4 flex flex-wrap gap-2 justify-center">
-                  {project.tags.map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}
+            <Card className="group relative flex flex-col overflow-hidden h-full bg-card/50 border border-primary/10 transition-all duration-300 ease-in-out hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/10">
+                <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute top-4 right-4 flex items-center gap-1.5">
+                    <div className="w-3 h-3 rounded-full bg-red-500/50 group-hover:bg-red-500 transition-colors"></div>
+                    <div className="w-3 h-3 rounded-full bg-yellow-500/50 group-hover:bg-yellow-500 transition-colors"></div>
+                    <div className="w-3 h-3 rounded-full bg-green-500/50 group-hover:bg-green-500 transition-colors"></div>
                 </div>
-              </CardContent>
-              <CardFooter className="flex justify-center gap-2 p-6 pt-0">
-                <Button asChild>
-                  <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">Live Demo</a>
-                </Button>
-                <Button asChild variant="outline">
-                  <a href={project.sourceUrl} target="_blank" rel="noopener noreferrer">Source Code</a>
-                </Button>
-              </CardFooter>
+
+                <CardHeader className="flex flex-row items-center gap-4 p-6 z-10">
+                    <div className="flex-shrink-0">{project.logo}</div>
+                    <CardTitle className="text-lg font-semibold leading-tight">{project.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="flex-grow p-6 pt-0 z-10">
+                    <p className="text-sm text-muted-foreground mb-4">{project.description}</p>
+                    <div className="flex flex-wrap gap-2">
+                        {project.tags.map(tag => <Badge key={tag} variant="secondary" className="text-xs">{tag}</Badge>)}
+                    </div>
+                </CardContent>
+                <CardFooter className="flex justify-start gap-4 p-6 pt-0 z-10">
+                    <Button asChild size="sm">
+                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                            <Globe />
+                            <span>Live Demo</span>
+                        </a>
+                    </Button>
+                    <Button asChild variant="outline" size="sm">
+                        <a href={project.sourceUrl} target="_blank" rel="noopener noreferrer">
+                            <Github />
+                            <span>Source</span>
+                        </a>
+                    </Button>
+                </CardFooter>
             </Card>
           </motion.div>
         ))}
