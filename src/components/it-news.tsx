@@ -14,12 +14,9 @@ export function ItNews() {
   const [news, setNews] = useState<ItNewsOutput['news'] | null>(null)
   const [isPending, startTransition] = useTransition()
   const { toast } = useToast()
-  const [isLoading, setIsLoading] = useState(true);
-
 
   useEffect(() => {
     startTransition(async () => {
-      setIsLoading(true);
       const result = await handleGetItNews()
       if (result.error) {
         toast({
@@ -30,15 +27,14 @@ export function ItNews() {
       } else {
         setNews(result.news || [])
       }
-      setIsLoading(false);
     })
   }, [toast])
 
-  if (isLoading) {
+  if (isPending || !news) {
     return (
         <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-1">
             {[...Array(3)].map((_, index) => (
-                <Card key={index}>
+                <Card key={index} className="bg-card/50 border-primary/10">
                     <CardHeader>
                         <Skeleton className="h-6 w-3/4" />
                     </CardHeader>
@@ -57,15 +53,6 @@ export function ItNews() {
     <div className="container mx-auto px-4 md:px-6 max-w-4xl">
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-4">
-          {isPending && !news && (
-            <div className="flex items-center justify-center space-x-2">
-              <div className="h-2 w-2 animate-pulse rounded-full bg-primary"></div>
-              <div className="h-2 w-2 animate-pulse rounded-full bg-primary [animation-delay:0.2s]"></div>
-              <div className="h-2 w-2 animate-pulse rounded-full bg-primary [animation-delay:0.4s]"></div>
-              <span className="text-sm text-muted-foreground">AI is scanning the latest headlines...</span>
-            </div>
-          )}
-
           {news && (
              <motion.div 
                 className="grid gap-6 md:grid-cols-1 lg:grid-cols-1"
@@ -80,7 +67,7 @@ export function ItNews() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                  >
-                    <Card>
+                    <Card className="bg-card/50 border-primary/10">
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2 text-primary">
                                 <Newspaper />
