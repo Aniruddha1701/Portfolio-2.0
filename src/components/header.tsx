@@ -17,9 +17,10 @@ const navLinks = [
 ]
 
 const Clock = () => {
-  const [time, setTime] = useState(new Date());
+  const [time, setTime] = useState<Date | null>(null);
 
   useEffect(() => {
+    setTime(new Date());
     const timerId = setInterval(() => {
       setTime(new Date());
     }, 1000);
@@ -27,28 +28,28 @@ const Clock = () => {
     return () => clearInterval(timerId);
   }, []);
 
-  const formatDate = (date: Date) => {
-    return date.toLocaleDateString('en-US', {
+  const formatDateTime = (date: Date | null) => {
+    if (!date) return { date: '', time: '' };
+    const dateString = date.toLocaleDateString('en-US', {
       month: 'short',
-      day: 'numeric',
-      year: 'numeric'
+      day: '2-digit',
+      year: 'numeric',
     });
-  };
-  
-  const formatTime = (date: Date) => {
-    return date.toLocaleTimeString('en-US', {
+     const timeString = date.toLocaleTimeString('en-US', {
       hour: '2-digit',
       minute: '2-digit',
-      second: '2-digit',
       hour12: true,
     });
-  }
+    return { date: dateString, time: timeString };
+  };
+
+  const { date: formattedDate, time: formattedTime } = formatDateTime(time);
 
   return (
     <div className="hidden md:flex items-center justify-center text-xs font-mono text-muted-foreground gap-2 bg-primary/5 border border-primary/10 px-3 py-1.5 rounded-full transition-all hover:shadow-md hover:shadow-primary/10">
-      <span className="tabular-nums">{formatDate(time)}</span>
+      <span className="tabular-nums">{formattedDate}</span>
       <span className="text-primary/50">|</span>
-      <span className="tabular-nums">{formatTime(time)}</span>
+      <span className="tabular-nums">{formattedTime}</span>
     </div>
   )
 }
