@@ -23,6 +23,9 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     remotePatterns: [
       {
         protocol: 'https',
@@ -39,8 +42,13 @@ const nextConfig: NextConfig = {
     ],
   },
   experimental: {
-    // Empty experimental block for now
+    optimizeCss: true,
+    webVitalsAttribution: ['CLS', 'LCP', 'FCP', 'FID', 'TTFB', 'INP']
   },
+  compress: true,
+  poweredByHeader: false,
+  reactStrictMode: true,
+  productionBrowserSourceMaps: false,
   allowedDevOrigins: [
     "http://localhost:3000",
     "https://*.cluster-cd3bsnf6r5bemwki2bxljme5as.cloudworkstations.dev"

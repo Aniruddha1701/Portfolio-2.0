@@ -26,7 +26,11 @@ const SectionDescription = ({ children }: { children: React.ReactNode }) => (
     </motion.p>
 )
 
-export function Map() {
+interface MapProps {
+  location?: string;
+}
+
+export function Map({ location }: MapProps) {
   return (
     <div className="container mx-auto px-4 md:px-6">
       <div className="flex flex-col items-center justify-center space-y-4 text-center">

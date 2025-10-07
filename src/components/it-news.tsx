@@ -18,7 +18,7 @@ export function ItNews() {
   useEffect(() => {
     startTransition(async () => {
       const result = await handleGetItNews()
-      if (result.error) {
+      if ('error' in result) {
         toast({
           variant: "destructive",
           title: "Error fetching news",
