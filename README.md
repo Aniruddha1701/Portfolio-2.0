@@ -1,70 +1,153 @@
 <div align="center">
 
-# 🚀 Portfolio 2.0
+<!-- Animated Header -->
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=300&section=header&text=Portfolio%202.0&fontSize=90&fontAlignY=35&animation=twinkling&fontColor=fff&desc=Modern%20Full-Stack%20Portfolio%20with%20AI-Powered%20Features&descAlignY=55&descSize=25" width="100%"/>
 
-### Modern Full-Stack Portfolio with AI-Powered Features
+<p align="center">
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=28&duration=3000&pause=1000&color=00D9FF&center=true&vCenter=true&multiline=true&repeat=true&width=800&height=100&lines=Next.js+15+%7C+TypeScript+%7C+MongoDB;AI-Powered+%7C+Secure+%7C+Lightning+Fast" alt="Typing SVG" />
+</p>
 
-[![Next.js](https://img.shields.io/badge/Next.js-15.3.3-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-Latest-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.0-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+<!-- Badges with Animation -->
+<p align="center">
+  <a href="https://nextjs.org/">
+    <img src="https://img.shields.io/badge/Next.js-15.3.3-black?style=for-the-badge&logo=next.js&logoColor=white&labelColor=000000" alt="Next.js"/>
+  </a>
+  <a href="https://www.typescriptlang.org/">
+    <img src="https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript"/>
+  </a>
+  <a href="https://www.mongodb.com/">
+    <img src="https://img.shields.io/badge/MongoDB-Latest-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB"/>
+  </a>
+  <a href="https://tailwindcss.com/">
+    <img src="https://img.shields.io/badge/Tailwind_CSS-3.0-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind"/>
+  </a>
+</p>
 
-[Live Demo](https://your-portfolio-url.com) • [Report Bug](https://github.com/Aniruddha1701/Portfolio-2.0/issues) • [Request Feature](https://github.com/Aniruddha1701/Portfolio-2.0/issues)
+<!-- Action Buttons -->
+<p align="center">
+  <a href="https://your-portfolio-url.com">
+    <img src="https://img.shields.io/badge/🚀_Live_Demo-00D9FF?style=for-the-badge&logoColor=white" alt="Live Demo"/>
+  </a>
+  <a href="https://github.com/Aniruddha1701/Portfolio-2.0/issues">
+    <img src="https://img.shields.io/badge/🐛_Report_Bug-FF6B6B?style=for-the-badge&logoColor=white" alt="Report Bug"/>
+  </a>
+  <a href="https://github.com/Aniruddha1701/Portfolio-2.0/issues">
+    <img src="https://img.shields.io/badge/✨_Request_Feature-4ECDC4?style=for-the-badge&logoColor=white" alt="Request Feature"/>
+  </a>
+</p>
+
+<!-- Stats -->
+<p align="center">
+  <img src="https://img.shields.io/github/stars/Aniruddha1701/Portfolio-2.0?style=social" alt="Stars"/>
+  <img src="https://img.shields.io/github/forks/Aniruddha1701/Portfolio-2.0?style=social" alt="Forks"/>
+  <img src="https://img.shields.io/github/watchers/Aniruddha1701/Portfolio-2.0?style=social" alt="Watchers"/>
+</p>
 
 </div>
 
 ---
 
+<div align="center">
+
 ## 📸 Preview
 
-<div align="center">
-  <img src="public/preview.png" alt="Portfolio Preview" width="800px" />
+<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="900">
+
+### 🌟 Live Application Screenshots
+
+<table>
+  <tr>
+    <td><img src="public/preview.png" alt="Home" width="400"/></td>
+    <td><img src="public/preview.png" alt="Projects" width="400"/></td>
+  </tr>
+  <tr>
+    <td align="center"><b>🏠 Hero Section</b></td>
+    <td align="center"><b>🚀 Projects Showcase</b></td>
+  </tr>
+  <tr>
+    <td><img src="public/preview.png" alt="Admin" width="400"/></td>
+    <td><img src="public/preview.png" alt="Smart Lab" width="400"/></td>
+  </tr>
+  <tr>
+    <td align="center"><b>🔐 Admin Dashboard</b></td>
+    <td align="center"><b>🧪 AI Smart Lab</b></td>
+  </tr>
+</table>
+
+<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="900">
+
 </div>
+
+<div align="center">
 
 ## ✨ Highlights
 
+<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="900">
+
+</div>
+
 <table>
 <tr>
-<td width="50%">
+<td width="50%" align="center">
+<img src="https://user-images.githubusercontent.com/74038190/212257472-08e52665-c503-4bd9-aa20-f5a4dae769b5.gif" width="100">
 
 ### 🎨 **Modern Design**
-- Stunning dark/light mode
-- Smooth animations with Framer Motion
-- Interactive particle backgrounds
-- Responsive across all devices
+
+```yaml
+✨ Stunning dark/light mode
+🌊 Smooth animations with Framer Motion
+🎆 Interactive particle backgrounds
+📱 Responsive across all devices
+```
 
 </td>
-<td width="50%">
+<td width="50%" align="center">
+<img src="https://user-images.githubusercontent.com/74038190/212257454-16e3712e-945a-4ca2-b238-408ad0bf87e6.gif" width="100">
 
 ### 🤖 **AI-Powered**
-- Google Gemini AI integration
-- Smart IT news aggregator
-- Intelligent content curation
-- Real-time updates
+
+```yaml
+🧠 Google Gemini AI integration
+📰 Smart IT news aggregator
+🎯 Intelligent content curation
+⚡ Real-time updates
+```
 
 </td>
 </tr>
 <tr>
-<td width="50%">
+<td width="50%" align="center">
+<img src="https://user-images.githubusercontent.com/74038190/212257465-7ce8d493-cac5-494e-982a-5a9deb852c4b.gif" width="100">
 
 ### 🔐 **Secure Admin Panel**
-- Email OTP authentication
-- JWT-based sessions
-- Full CRUD operations
-- Image & resume upload
+
+```yaml
+📧 Email OTP authentication
+🔑 JWT-based sessions
+⚙️ Full CRUD operations
+📁 Image & resume upload
+```
 
 </td>
-<td width="50%">
+<td width="50%" align="center">
+<img src="https://user-images.githubusercontent.com/74038190/212257468-1e9a91f1-b626-4baa-b15d-5c385dfa7ed2.gif" width="100">
 
 ### ⚡ **Performance**
-- PWA support
-- Optimized images
-- Server-side rendering
-- SEO optimized
+
+```yaml
+📱 PWA support
+🖼️ Optimized images
+🚀 Server-side rendering
+🔍 SEO optimized
+```
 
 </td>
 </tr>
 </table>
+
+<div align="center">
+<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="900">
+</div>
 
 ---
 
@@ -119,65 +202,106 @@ graph LR
 
 ---
 
-## 🛠️ Tech Stack
-
 <div align="center">
 
-### Frontend
-![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=next.js&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat-square&logo=tailwind-css&logoColor=white)
-![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=flat-square&logo=framer&logoColor=white)
-![Shadcn/ui](https://img.shields.io/badge/Shadcn/ui-000000?style=flat-square&logo=shadcnui&logoColor=white)
+## 🛠️ Tech Stack
 
-### Backend
-![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=node.js&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white)
-![Mongoose](https://img.shields.io/badge/Mongoose-880000?style=flat-square&logo=mongoose&logoColor=white)
-![JWT](https://img.shields.io/badge/JWT-000000?style=flat-square&logo=jsonwebtokens&logoColor=white)
+<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="900">
 
-### AI & Tools
-![Google Gemini](https://img.shields.io/badge/Google_Gemini-8E75B2?style=flat-square&logo=google&logoColor=white)
-![Nodemailer](https://img.shields.io/badge/Nodemailer-0F9DCE?style=flat-square&logo=nodemailer&logoColor=white)
-![Zod](https://img.shields.io/badge/Zod-3E67B1?style=flat-square&logo=zod&logoColor=white)
+<img src="https://user-images.githubusercontent.com/74038190/212257467-871d32b7-e401-42e8-a166-fcfd7baa4c6b.gif" width="100">
+
+### 🌈 Frontend Technologies
+
+<p>
+  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white" />
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
+  <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white" />
+  <img src="https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white" />
+  <img src="https://img.shields.io/badge/Shadcn/ui-000000?style=for-the-badge&logo=shadcnui&logoColor=white" />
+</p>
+
+### 🔧 Backend & Database
+
+<p>
+  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white" />
+  <img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" />
+  <img src="https://img.shields.io/badge/Mongoose-880000?style=for-the-badge&logo=mongoose&logoColor=white" />
+  <img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white" />
+  <img src="https://img.shields.io/badge/API_Routes-FF6B6B?style=for-the-badge&logo=fastapi&logoColor=white" />
+</p>
+
+### 🤖 AI & Integration
+
+<p>
+  <img src="https://img.shields.io/badge/Google_Gemini-8E75B2?style=for-the-badge&logo=google&logoColor=white" />
+  <img src="https://img.shields.io/badge/Genkit-4285F4?style=for-the-badge&logo=google&logoColor=white" />
+  <img src="https://img.shields.io/badge/Nodemailer-0F9DCE?style=for-the-badge&logo=nodemailer&logoColor=white" />
+  <img src="https://img.shields.io/badge/Zod-3E67B1?style=for-the-badge&logo=zod&logoColor=white" />
+</p>
+
+<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="900">
 
 </div>
 
 ---
 
+<div align="center">
+
 ## 🚀 Quick Start
 
-### Prerequisites
+<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="900">
 
-```bash
-Node.js >= 18.0
-MongoDB (local or Atlas)
-Gmail account (for SMTP)
-Google AI API key (optional)
+</div>
+
+### 📦 Prerequisites
+
+<table>
+<tr>
+<td>
+
+```yaml
+✅ Node.js >= 18.0
+✅ MongoDB (local or Atlas)
+✅ Gmail account (for SMTP)
+✅ Google AI API key (optional)
 ```
 
-### Installation
+</td>
+<td>
+<img src="https://user-images.githubusercontent.com/74038190/212257460-738ff738-247f-4445-a718-cdd0ca76e2db.gif" width="300">
+</td>
+</tr>
+</table>
+
+### 🛠️ Installation
 
 ```bash
-# 1. Clone the repository
+# 📥 1. Clone the repository
 git clone https://github.com/Aniruddha1701/Portfolio-2.0.git
 cd Portfolio-2.0
 
-# 2. Install dependencies
+# 📦 2. Install dependencies
 npm install
 
-# 3. Set up environment variables
+# ⚙️ 3. Set up environment variables
 cp .env.example .env.local
 # Edit .env.local with your credentials
 
-# 4. Initialize database
+# 💾 4. Initialize database
 node scripts/ensure-admin.js
 
-# 5. Run development server
+# 🚀 5. Run development server
 npm run dev
 ```
 
-🎉 Open [http://localhost:9002](http://localhost:9002) in your browser!
+<div align="center">
+
+### 🎉 Open [http://localhost:9002](http://localhost:9002) in your browser!
+
+<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="900">
+
+</div>
 
 ---
 
@@ -378,16 +502,38 @@ docker run -p 3000:3000 portfolio
 
 ---
 
-## 📊 Performance
-
 <div align="center">
 
-| Metric | Score |
-|--------|-------|
-| ⚡ Performance | 95+ |
-| ♿ Accessibility | 100 |
-| 🎯 Best Practices | 100 |
-| 🔍 SEO | 100 |
+## 📊 Performance Metrics
+
+<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="900">
+
+<table>
+<tr>
+<td align="center" width="25%">
+<img src="https://user-images.githubusercontent.com/74038190/212257468-1e9a91f1-b626-4baa-b15d-5c385dfa7ed2.gif" width="80"><br>
+<b>⚡ Performance</b><br>
+<img src="https://img.shields.io/badge/95+-00D9FF?style=for-the-badge" />
+</td>
+<td align="center" width="25%">
+<img src="https://user-images.githubusercontent.com/74038190/212257465-7ce8d493-cac5-494e-982a-5a9deb852c4b.gif" width="80"><br>
+<b>♿ Accessibility</b><br>
+<img src="https://img.shields.io/badge/100-4ECDC4?style=for-the-badge" />
+</td>
+<td align="center" width="25%">
+<img src="https://user-images.githubusercontent.com/74038190/212257454-16e3712e-945a-4ca2-b238-408ad0bf87e6.gif" width="80"><br>
+<b>🎯 Best Practices</b><br>
+<img src="https://img.shields.io/badge/100-95E1D3?style=for-the-badge" />
+</td>
+<td align="center" width="25%">
+<img src="https://user-images.githubusercontent.com/74038190/212257472-08e52665-c503-4bd9-aa20-f5a4dae769b5.gif" width="80"><br>
+<b>🔍 SEO</b><br>
+<img src="https://img.shields.io/badge/100-F38181?style=for-the-badge" />
+</td>
+</tr>
+</table>
+
+<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="900">
 
 </div>
 
@@ -486,18 +632,46 @@ Built with amazing technologies:
 
 ---
 
-## 📞 Contact & Support
-
 <div align="center">
 
-**Questions? Issues? Suggestions?**
+## 📞 Contact & Support
 
-[Open an Issue](https://github.com/Aniruddha1701/Portfolio-2.0/issues) • [Email Support](mailto:your-email@gmail.com)
+<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="900">
 
----
+<table>
+<tr>
+<td align="center" width="33%">
+<img src="https://user-images.githubusercontent.com/74038190/216122041-518ac897-8d92-4c6b-9b3f-ca01dcaf38ee.png" width="80" /><br>
+<b>Questions?</b><br>
+<a href="https://github.com/Aniruddha1701/Portfolio-2.0/issues">
+<img src="https://img.shields.io/badge/Ask_Question-00D9FF?style=for-the-badge" />
+</a>
+</td>
+<td align="center" width="33%">
+<img src="https://user-images.githubusercontent.com/74038190/216122065-2f028bae-25d6-4a3c-bc9f-175394ed5011.png" width="80" /><br>
+<b>Found a Bug?</b><br>
+<a href="https://github.com/Aniruddha1701/Portfolio-2.0/issues">
+<img src="https://img.shields.io/badge/Report_Bug-FF6B6B?style=for-the-badge" />
+</a>
+</td>
+<td align="center" width="33%">
+<img src="https://user-images.githubusercontent.com/74038190/216120981-b9507c36-0e04-4469-8e27-c99271b45ba5.png" width="80" /><br>
+<b>Need Support?</b><br>
+<a href="mailto:your-email@gmail.com">
+<img src="https://img.shields.io/badge/Email_Me-4ECDC4?style=for-the-badge" />
+</a>
+</td>
+</tr>
+</table>
+
+<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="900">
 
 ### ⭐ Star this repo if you find it helpful!
 
+<img src="https://user-images.githubusercontent.com/74038190/212284158-e840e285-664b-44d7-b79b-e264b5e54825.gif" width="400">
+
 **Made with ❤️ by [Aniruddha](https://github.com/Aniruddha1701)**
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=150&section=footer" width="100%"/>
 
 </div>
