@@ -117,7 +117,7 @@ const PortfolioComponent = ({ projects = [] }: PortfolioProps) => {
       );
 
   return (
-    <div className="container px-4 md:px-6">
+    <div id="portfolio" className="container px-4 md:px-6">
       <motion.div 
         className="flex flex-col items-center justify-center space-y-4 text-center"
         initial={{ opacity: 0, y: 20 }}

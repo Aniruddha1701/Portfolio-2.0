@@ -166,6 +166,9 @@ export default function HeroEnhanced({ name, city, title, bio, hasResume = false
             <Button
               size="lg"
               className="group relative overflow-hidden bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0"
+              onClick={() => {
+                document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
               <span className="relative z-10 flex items-center gap-2">
                 View My Work
