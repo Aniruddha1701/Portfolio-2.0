@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/db/mongodb';
 import OTP from '@/models/OTP';
 import jwt from 'jsonwebtoken';
-import { cookies } from 'next/headers';
+
 
 export async function POST(request: NextRequest) {
   try {
@@ -60,6 +60,13 @@ export async function POST(request: NextRequest) {
       { expiresIn: '7d' }
     );
 
+    // Use a response object to set cookies properly
+    const response = NextResponse.json({
+      success: true,
+      message: 'OTP verified successfully',
+      redirect: '/admin/dashboard'
+    });
+    
     const cookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -68,17 +75,13 @@ export async function POST(request: NextRequest) {
       path: '/'
     };
     
-    cookies().set('auth-token', token, cookieOptions);
-    cookies().set('admin-token', token, cookieOptions);
-    cookies().set('admin-session', token, cookieOptions);
+    response.cookies.set('auth-token', token, cookieOptions);
+    response.cookies.set('admin-token', token, cookieOptions);
+    response.cookies.set('admin-session', token, cookieOptions);
 
     await OTP.deleteMany({ email, verified: true });
 
-    return NextResponse.json({
-      success: true,
-      message: 'OTP verified successfully',
-      redirect: '/admin/dashboard'
-    });
+    return response;
 
   } catch (error: any) {
     console.error('Verify OTP Error:', error);
