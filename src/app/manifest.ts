@@ -4,7 +4,7 @@ async function getPortfolioData() {
   try {
     const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:9002';
     const response = await fetch(`${baseUrl}/api/portfolio`, {
-      cache: 'no-store',
+      next: { revalidate: 3600 }, // Cache for 1 hour instead of no-store
     });
     
     if (!response.ok) {
@@ -13,7 +13,7 @@ async function getPortfolioData() {
     
     return await response.json();
   } catch (error) {
-    console.error('Error fetching portfolio for manifest:', error);
+    // Silently handle error and return default data
     return null;
   }
 }
