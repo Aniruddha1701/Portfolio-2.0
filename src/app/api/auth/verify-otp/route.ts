@@ -61,14 +61,18 @@ export async function POST(request: NextRequest) {
       { expiresIn: '7d' }
     );
 
-    // Set cookie
-    cookies().set('admin-token', token, {
+    // Set cookies
+    const cookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: 'lax' as const,
       maxAge: 60 * 60 * 24 * 7, // 7 days
       path: '/'
-    });
+    };
+    
+    cookies().set('auth-token', token, cookieOptions);
+    cookies().set('admin-token', token, cookieOptions);
+    cookies().set('admin-session', token, cookieOptions);
 
     // Clean up verified OTPs for this email
     await OTP.deleteMany({ email, verified: true });

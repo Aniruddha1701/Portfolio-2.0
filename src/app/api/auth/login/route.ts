@@ -69,29 +69,18 @@ export async function POST(request: NextRequest) {
     );
     
     // Set HTTP-only cookies (multiple names for compatibility)
-    response.cookies.set('auth-token', token, {
+    const isProduction = process.env.NODE_ENV === 'production';
+    const cookieOptions = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      secure: isProduction,
+      sameSite: 'lax' as const,
       maxAge: 60 * 60 * 24 * 7, // 7 days
       path: '/'
-    });
+    };
     
-    response.cookies.set('admin-token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7, // 7 days
-      path: '/'
-    });
-    
-    response.cookies.set('admin-session', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7, // 7 days
-      path: '/'
-    });
+    response.cookies.set('auth-token', token, cookieOptions);
+    response.cookies.set('admin-token', token, cookieOptions);
+    response.cookies.set('admin-session', token, cookieOptions);
     
     console.log('Login successful for:', admin.email);
     

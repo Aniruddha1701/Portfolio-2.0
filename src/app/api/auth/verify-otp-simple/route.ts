@@ -60,13 +60,17 @@ export async function POST(request: NextRequest) {
       { expiresIn: '7d' }
     );
 
-    cookies().set('admin-token', token, {
+    const cookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: 'lax' as const,
       maxAge: 60 * 60 * 24 * 7,
       path: '/'
-    });
+    };
+    
+    cookies().set('auth-token', token, cookieOptions);
+    cookies().set('admin-token', token, cookieOptions);
+    cookies().set('admin-session', token, cookieOptions);
 
     await OTP.deleteMany({ email, verified: true });
 
