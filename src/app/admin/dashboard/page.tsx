@@ -371,12 +371,12 @@ export default function AdminDashboard() {
   const addSkill = () => {
     setPortfolio({
       ...portfolio,
-      skills: [...portfolio.skills, { category: '', items: [] }]
+      skills: [...(portfolio.skills || []), { category: '', items: [] }]
     });
   };
 
   const updateSkill = (index: number, field: string, value: any) => {
-    const newSkills = [...portfolio.skills];
+    const newSkills = [...(portfolio.skills || [])];
     if (field === 'items') {
       newSkills[index].items = value.split(',').map((s: string) => s.trim()).filter((s: string) => s);
     } else {
@@ -388,14 +388,14 @@ export default function AdminDashboard() {
   const removeSkill = (index: number) => {
     setPortfolio({
       ...portfolio,
-      skills: portfolio.skills.filter((_: any, i: number) => i !== index)
+      skills: (portfolio.skills || []).filter((_: any, i: number) => i !== index)
     });
   };
 
   const addProject = () => {
     setPortfolio({
       ...portfolio,
-      projects: [...portfolio.projects, {
+      projects: [...(portfolio.projects || []), {
         title: '',
         description: '',
         technologies: [],
@@ -403,13 +403,13 @@ export default function AdminDashboard() {
         liveUrl: '',
         githubUrl: '',
         featured: false,
-        order: portfolio.projects.length
+        order: (portfolio.projects || []).length
       }]
     });
   };
 
   const updateProject = (index: number, field: string, value: any) => {
-    const newProjects = [...portfolio.projects];
+    const newProjects = [...(portfolio.projects || [])];
     if (field === 'technologies') {
       newProjects[index].technologies = value.split(',').map((s: string) => s.trim()).filter((s: string) => s);
     } else {
@@ -421,14 +421,14 @@ export default function AdminDashboard() {
   const removeProject = (index: number) => {
     setPortfolio({
       ...portfolio,
-      projects: portfolio.projects.filter((_: any, i: number) => i !== index)
+      projects: (portfolio.projects || []).filter((_: any, i: number) => i !== index)
     });
   };
 
   const addExperience = () => {
     setPortfolio({
       ...portfolio,
-      experience: [...portfolio.experience, {
+      experience: [...(portfolio.experience || []), {
         institution: '', // company name
         degree: '', // position/role
         duration: '',
@@ -443,7 +443,7 @@ export default function AdminDashboard() {
   };
 
   const updateExperience = (index: number, field: string, value: any) => {
-    const newExperience = [...portfolio.experience];
+    const newExperience = [...(portfolio.experience || [])];
     if (field === 'highlights') {
       newExperience[index].highlights = value.split('\n').filter((s: string) => s.trim());
     } else if (field === 'current') {
@@ -490,14 +490,14 @@ export default function AdminDashboard() {
   const removeExperience = (index: number) => {
     setPortfolio({
       ...portfolio,
-      experience: portfolio.experience.filter((_: any, i: number) => i !== index)
+      experience: (portfolio.experience || []).filter((_: any, i: number) => i !== index)
     });
   };
 
   const addEducation = () => {
     setPortfolio({
       ...portfolio,
-      education: [...portfolio.education, {
+      education: [...(portfolio.education || []), {
         institution: '',
         degree: '',
         duration: '',
@@ -514,7 +514,7 @@ export default function AdminDashboard() {
   };
 
   const updateEducation = (index: number, field: string, value: any) => {
-    const newEducation = [...portfolio.education];
+    const newEducation = [...(portfolio.education || [])];
     if (field === 'achievements') {
       newEducation[index].achievements = value.split('\n').filter((s: string) => s.trim());
     } else if (field === 'current') {
@@ -571,7 +571,7 @@ export default function AdminDashboard() {
   const removeEducation = (index: number) => {
     setPortfolio({
       ...portfolio,
-      education: portfolio.education.filter((_: any, i: number) => i !== index)
+      education: (portfolio.education || []).filter((_: any, i: number) => i !== index)
     });
   };
 
