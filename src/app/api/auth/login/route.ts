@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
     
-    // Set HTTP-only cookies
+    // Set HTTP-only cookies (multiple names for compatibility)
     response.cookies.set('auth-token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -77,7 +77,14 @@ export async function POST(request: NextRequest) {
       path: '/'
     });
     
-    // Also set simple session cookie for easier verification
+    response.cookies.set('admin-token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+      path: '/'
+    });
+    
     response.cookies.set('admin-session', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',

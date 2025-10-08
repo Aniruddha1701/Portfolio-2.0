@@ -73,25 +73,8 @@ export async function POST(request: NextRequest) {
 // PUT - Update portfolio (Admin only)
 export async function PUT(request: NextRequest) {
   try {
-    // Verify authentication - try multiple methods
-    let user = await verifyAuth(request);
-    
-    // If primary auth fails, check for admin-session cookie
-    if (!user) {
-      const adminSession = request.cookies.get('admin-session');
-      if (adminSession) {
-        console.log('Found admin-session cookie, attempting verification');
-        try {
-          const jwt = await import('jsonwebtoken');
-          user = jwt.default.verify(
-            adminSession.value,
-            process.env.NEXTAUTH_SECRET || 'your-secret-key-here-change-this-in-production'
-          ) as any;
-        } catch (e) {
-          console.error('Failed to verify admin-session:', e);
-        }
-      }
-    }
+    // Verify authentication
+    const user = await verifyAuth(request);
     
     if (!user) {
       console.log('Auth failed - no valid session found');
