@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/db/mongodb';
 import OTP from '@/models/OTP';
 import jwt from 'jsonwebtoken';
+import { getJWTSecret } from '@/lib/auth/jwt-secret';
 
 
 export async function POST(request: NextRequest) {
@@ -56,7 +57,7 @@ export async function POST(request: NextRequest) {
         role: 'admin',
         verifiedAt: new Date().toISOString()
       },
-      process.env.JWT_SECRET || 'your-secret-key-change-in-production',
+      getJWTSecret(),
       { expiresIn: '7d' }
     );
 

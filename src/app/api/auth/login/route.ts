@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { getJWTSecret } from '@/lib/auth/jwt-secret';
 import dbConnect from '@/lib/db/mongoose';
 import Admin from '@/models/Admin';
 import { createSession } from '@/lib/session';
@@ -50,7 +51,7 @@ export async function POST(request: NextRequest) {
         email: admin.email,
         role: admin.role 
       },
-      process.env.NEXTAUTH_SECRET || 'your-secret-key-here-change-this-in-production',
+      getJWTSecret(),
       { expiresIn: '7d' }
     );
     

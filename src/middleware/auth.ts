@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { NextRequest } from 'next/server';
+import { getJWTSecret } from '@/lib/auth/jwt-secret';
 
 export interface JWTPayload {
   id: string;
@@ -23,7 +24,7 @@ export async function verifyAuth(request: NextRequest): Promise<JWTPayload | nul
     
     const decoded = jwt.verify(
       token,
-      process.env.NEXTAUTH_SECRET || 'your-secret-key-here-change-this-in-production'
+      getJWTSecret()
     ) as JWTPayload;
     
     return decoded;

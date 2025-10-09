@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
+import { getJWTSecret } from '@/lib/auth/jwt-secret';
 
 // GET - Verify current authentication status
 export async function GET(request: NextRequest) {
@@ -15,7 +16,7 @@ export async function GET(request: NextRequest) {
     
     const user = jwt.verify(
       adminToken.value,
-      process.env.JWT_SECRET || 'your-secret-key-change-in-production'
+      getJWTSecret()
     );
     
     return NextResponse.json(

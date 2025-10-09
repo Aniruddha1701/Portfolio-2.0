@@ -22,7 +22,8 @@ export async function fetchPortfolioData() {
 
 export async function fetchPortfolioDataServer() {
   try {
-    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:9002';
+    const baseUrl = process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_URL || 
+      (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:9002');
     const response = await fetch(`${baseUrl}/api/portfolio`, {
       method: 'GET',
       cache: 'no-store',

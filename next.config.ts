@@ -7,7 +7,7 @@ const withPWA = require('next-pwa')({
   dest: 'public',
   register: true,
   skipWaiting: true,
-  disable: isDev,
+  disable: true, // Temporarily disable PWA to fix chunk loading
   fallbacks: {
     document: '/offline',
   }

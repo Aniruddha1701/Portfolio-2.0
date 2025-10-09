@@ -2,7 +2,8 @@ import { MetadataRoute } from 'next';
 
 async function getPortfolioData() {
   try {
-    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:9002';
+    const baseUrl = process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_URL || 
+      (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:9002');
     const response = await fetch(`${baseUrl}/api/portfolio`, {
       next: { revalidate: 3600 }, // Cache for 1 hour instead of no-store
     });

@@ -21,7 +21,8 @@ export async function generateMetadata(): Promise<Metadata> {
       title: portfolioMeta.title,
       description: portfolioMeta.description,
       type: 'website',
-      url: process.env.NEXT_PUBLIC_URL || 'http://localhost:9002',
+      url: process.env.NEXT_PUBLIC_URL || process.env.NEXTAUTH_URL || 
+        (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:9002'),
     },
     twitter: {
       card: 'summary_large_image',
