@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { getJWTSecret } from '@/lib/auth/jwt-secret';
+import { getAuthCookieConfig } from '@/lib/auth/cookie-config';
 import dbConnect from '@/lib/db/mongoose';
 import Admin from '@/models/Admin';
 import { createSession } from '@/lib/session';
@@ -70,14 +71,7 @@ export async function POST(request: NextRequest) {
     );
     
     // Set HTTP-only cookies (multiple names for compatibility)
-    const isProduction = process.env.NODE_ENV === 'production';
-    const cookieOptions = {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: 'lax' as const,
-      maxAge: 60 * 60 * 24 * 7, // 7 days
-      path: '/'
-    };
+    const cookieOptions = getAuthCookieConfig();
     
     response.cookies.set('auth-token', token, cookieOptions);
     response.cookies.set('admin-token', token, cookieOptions);

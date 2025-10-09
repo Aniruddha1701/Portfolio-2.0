@@ -73,21 +73,43 @@ export async function POST(request: NextRequest) {
 // PUT - Update portfolio (Admin only)
 export async function PUT(request: NextRequest) {
   try {
+    // Add detailed logging for debugging
+    console.log('PUT /api/portfolio - Request received');
+    console.log('Request headers:', {
+      origin: request.headers.get('origin'),
+      referer: request.headers.get('referer'),
+      cookie: request.headers.get('cookie') ? 'present' : 'missing'
+    });
+    
     // Verify authentication
     const user = await verifyAuth(request);
     
     if (!user) {
       console.log('Auth failed - no valid session found');
-      console.log('Available cookies:', request.cookies.getAll());
+      console.log('Available cookies:', request.cookies.getAll().map(c => ({ name: c.name, hasValue: !!c.value })));
+      console.log('Environment:', {
+        nodeEnv: process.env.NODE_ENV,
+        hasJwtSecret: !!process.env.NEXTAUTH_SECRET || !!process.env.JWT_SECRET
+      });
       return NextResponse.json(
         { error: 'Unauthorized - Please log in again' },
         { status: 401 }
       );
     }
     
-    console.log('Authenticated user:', user.email || user);
+    console.log('User authenticated:', user.email || user.id);
     
-    await dbConnect();
+    // Connect to database with retry logic
+    try {
+      await dbConnect();
+      console.log('Database connected successfully');
+    } catch (dbError) {
+      console.error('Database connection failed:', dbError);
+      return NextResponse.json(
+        { error: 'Database connection failed. Please try again.' },
+        { status: 503 }
+      );
+    }
     
     const data = await request.json();
     const { _id, ...updateData } = data;
@@ -138,9 +160,11 @@ export async function PUT(request: NextRequest) {
     }
     
     console.log('Portfolio ID:', portfolioId);
+    console.log('Update data keys:', Object.keys(updateData));
     
     if (portfolioId) {
       // Update existing portfolio
+      console.log('Attempting to update portfolio with ID:', portfolioId);
       const portfolio = await Portfolio.findByIdAndUpdate(
         portfolioId,
         updateData,
@@ -148,6 +172,7 @@ export async function PUT(request: NextRequest) {
       );
       
       if (!portfolio) {
+        console.log('Portfolio not found with ID:', portfolioId);
         return NextResponse.json(
           { error: 'Portfolio not found' },
           { status: 404 }
@@ -155,12 +180,23 @@ export async function PUT(request: NextRequest) {
       }
       
       console.log('Portfolio updated successfully');
-      return NextResponse.json(portfolio, { status: 200 });
+      return NextResponse.json(portfolio, { 
+        status: 200,
+        headers: {
+          'Cache-Control': 'no-store'
+        }
+      });
     } else {
       // No portfolio exists, create a new one
       console.log('Creating new portfolio');
       const portfolio = await Portfolio.create(updateData);
-      return NextResponse.json(portfolio, { status: 201 });
+      console.log('New portfolio created with ID:', portfolio._id);
+      return NextResponse.json(portfolio, { 
+        status: 201,
+        headers: {
+          'Cache-Control': 'no-store'
+        }
+      });
     }
     
   } catch (error: any) {
