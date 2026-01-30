@@ -19,9 +19,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        body: ['Poppins', 'Inter', ...fontFamily.sans],
-        headline: ['Poppins', 'Inter', ...fontFamily.sans],
-        code: ['Source Code Pro', ...fontFamily.mono],
+        body: ['Plus Jakarta Sans', 'Inter', ...fontFamily.sans],
+        headline: ['Space Grotesk', 'Plus Jakarta Sans', ...fontFamily.sans],
+        code: ['JetBrains Mono', 'Fira Code', ...fontFamily.mono],
       },
       colors: {
         background: 'hsl(var(--background))',

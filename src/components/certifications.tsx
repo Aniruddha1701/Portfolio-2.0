@@ -1,396 +1,435 @@
 "use client"
 
-import { motion } from "framer-motion";
-import { Card, CardContent } from "@/components/ui/card";
-import { Building, Award, ExternalLink, Shield, Code, Cloud, Brain, Database, Globe } from "lucide-react";
+import { motion, useMotionValue, useMotionTemplate } from "framer-motion";
+import { Card } from "@/components/ui/card";
+import { Award, ExternalLink, Shield, Code, Cloud, Brain, Database, Globe, CheckCircle2, Sparkles, Star, Zap } from "lucide-react";
+import Image from "next/image";
+import { useRef, useState } from "react";
 
 interface CertificationsProps {
   certifications?: any[];
 }
 
-// Comprehensive logo system for certificate issuers
+// Holographic color palette based on issuer
+const getHolographicColors = (issuer: string, title: string) => {
+  const issuerLower = issuer?.toLowerCase() || '';
+  const titleLower = title?.toLowerCase() || '';
+
+  if (issuerLower.includes('oracle')) return { primary: '#F80000', secondary: '#FF6B35', accent: '#FFD93D' };
+  if (issuerLower.includes('google')) return { primary: '#4285F4', secondary: '#34A853', accent: '#FBBC05' };
+  if (issuerLower.includes('microsoft') || issuerLower.includes('azure')) return { primary: '#00A4EF', secondary: '#7FBA00', accent: '#FFB900' };
+  if (issuerLower.includes('aws') || issuerLower.includes('amazon')) return { primary: '#FF9900', secondary: '#232F3E', accent: '#FF6600' };
+  if (titleLower.includes('ai') || titleLower.includes('machine learning')) return { primary: '#A855F7', secondary: '#EC4899', accent: '#8B5CF6' };
+  if (titleLower.includes('cloud') || titleLower.includes('devops')) return { primary: '#06B6D4', secondary: '#3B82F6', accent: '#8B5CF6' };
+  if (titleLower.includes('data')) return { primary: '#10B981', secondary: '#14B8A6', accent: '#06B6D4' };
+
+  return { primary: '#8B5CF6', secondary: '#EC4899', accent: '#06B6D4' };
+};
+
+// Premium logo system with 3D floating effect
 const getCertificateLogo = (cert: any) => {
   const issuer = cert.issuer?.toLowerCase() || '';
   const title = cert.title?.toLowerCase() || '';
-  
+
+  const logoWrapper = (children: React.ReactNode, gradientFrom: string, gradientTo: string) => (
+    <motion.div
+      className="relative"
+      whileHover={{ scale: 1.15, rotateY: 15 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+    >
+      {/* Floating glow ring */}
+      <div className="absolute -inset-2 rounded-2xl bg-gradient-to-r opacity-0 group-hover:opacity-70 blur-xl transition-all duration-700 animate-pulse"
+        style={{ background: `linear-gradient(135deg, ${gradientFrom}, ${gradientTo})` }}
+      />
+      {/* Main logo container */}
+      <div
+        className="relative w-16 h-16 rounded-2xl flex items-center justify-center backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden"
+        style={{ background: `linear-gradient(135deg, ${gradientFrom}20, ${gradientTo}10)` }}
+      >
+        {/* Holographic shine overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        {/* Animated border gradient */}
+        <div className="absolute inset-0 rounded-2xl p-[1px]">
+          <div className="absolute inset-0 rounded-2xl animate-spin-slow"
+            style={{
+              background: `conic-gradient(from 0deg, ${gradientFrom}, ${gradientTo}, transparent, ${gradientFrom})`,
+              opacity: 0.5
+            }}
+          />
+        </div>
+        <div className="relative z-10">{children}</div>
+      </div>
+    </motion.div>
+  );
+
   // Oracle
   if (issuer.includes('oracle')) {
-    return (
-      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 32 32">
-        <path fill="#F80000" d="M16 0C7.2 0 0 7.2 0 16s7.2 16 16 16s16-7.2 16-16S24.8 0 16 0zm8.4 22.5c-2.1 2.1-5 3.3-8.1 3.3s-6.1-1.2-8.2-3.3s-3.3-5.1-3.3-8.3s1.2-6.2 3.3-8.3S13.2 2.6 16.3 2.6s6 1.2 8.1 3.3s3.3 5.1 3.3 8.3s-1.2 6.2-3.3 8.3zm-8.2-17c-4.7 0-8.5 3.8-8.5 8.5s3.8 8.5 8.5 8.5s8.5-3.8 8.5-8.5s-3.8-8.5-8.5-8.5zm0 14.3c-3.2 0-5.8-2.6-5.8-5.8s2.6-5.8 5.8-5.8s5.8 2.6 5.8 5.8s-2.6 5.8-5.8 5.8z"/>
-      </svg>
+    return logoWrapper(
+      <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 32 32">
+        <path fill="#F80000" d="M16 0C7.2 0 0 7.2 0 16s7.2 16 16 16s16-7.2 16-16S24.8 0 16 0zm8.4 22.5c-2.1 2.1-5 3.3-8.1 3.3s-6.1-1.2-8.2-3.3s-3.3-5.1-3.3-8.3s1.2-6.2 3.3-8.3S13.2 2.6 16.3 2.6s6 1.2 8.1 3.3s3.3 5.1 3.3 8.3s-1.2 6.2-3.3 8.3zm-8.2-17c-4.7 0-8.5 3.8-8.5 8.5s3.8 8.5 8.5 8.5s8.5-3.8 8.5-8.5s-3.8-8.5-8.5-8.5zm0 14.3c-3.2 0-5.8-2.6-5.8-5.8s2.6-5.8 5.8-5.8s5.8 2.6 5.8 5.8s-2.6 5.8-5.8 5.8z" />
+      </svg>, "#F80000", "#FF6B35"
     );
   }
-  
+
   // Google
   if (issuer.includes('google')) {
-    return (
-      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
-        <path fill="#EA4335" d="M24 9.5c3.9 0 6.6 1.7 8.1 3.1l5.9-5.9C34.5 3.5 29.8 1.5 24 1.5C14.7 1.5 6.8 7.3 3.5 15.4l6.9 5.4C11.8 14.8 17.3 9.5 24 9.5z"/>
-        <path fill="#4285F4" d="M46.1 24.5c0-1.6-.1-2.7-.4-3.9H24v7.7h12.7c-.6 3-2.1 5.2-4.3 6.7l6.8 5.3C43 36.8 46.1 31.3 46.1 24.5z"/>
-        <path fill="#FBBC05" d="M10.4 28.6c-.5-1.4-.7-2.9-.7-4.6s.3-3.2.7-4.6L3.5 14C2 17 1.1 20.4 1.1 24s.9 7 2.4 10L10.4 28.6z"/>
-        <path fill="#34A853" d="M24 46.5c5.8 0 10.7-1.9 14.2-5.2l-6.8-5.3c-1.9 1.3-4.4 2.1-7.4 2.1c-5.7 0-10.5-3.8-12.2-9l-6.9 5.4C8.2 42.2 15.4 46.5 24 46.5z"/>
-      </svg>
+    return logoWrapper(
+      <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 48 48">
+        <path fill="#EA4335" d="M24 9.5c3.9 0 6.6 1.7 8.1 3.1l5.9-5.9C34.5 3.5 29.8 1.5 24 1.5C14.7 1.5 6.8 7.3 3.5 15.4l6.9 5.4C11.8 14.8 17.3 9.5 24 9.5z" />
+        <path fill="#4285F4" d="M46.1 24.5c0-1.6-.1-2.7-.4-3.9H24v7.7h12.7c-.6 3-2.1 5.2-4.3 6.7l6.8 5.3C43 36.8 46.1 31.3 46.1 24.5z" />
+        <path fill="#FBBC05" d="M10.4 28.6c-.5-1.4-.7-2.9-.7-4.6s.3-3.2.7-4.6L3.5 14C2 17 1.1 20.4 1.1 24s.9 7 2.4 10L10.4 28.6z" />
+        <path fill="#34A853" d="M24 46.5c5.8 0 10.7-1.9 14.2-5.2l-6.8-5.3c-1.9 1.3-4.4 2.1-7.4 2.1c-5.7 0-10.5-3.8-12.2-9l-6.9 5.4C8.2 42.2 15.4 46.5 24 46.5z" />
+      </svg>, "#4285F4", "#34A853"
     );
   }
-  
+
   // Microsoft / Azure
   if (issuer.includes('microsoft') || issuer.includes('azure')) {
-    return (
-      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
-        <rect x="4" y="4" width="18" height="18" fill="#F25022"/>
-        <rect x="26" y="4" width="18" height="18" fill="#7FBA00"/>
-        <rect x="4" y="26" width="18" height="18" fill="#00A4EF"/>
-        <rect x="26" y="26" width="18" height="18" fill="#FFB900"/>
-      </svg>
+    return logoWrapper(
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 48 48">
+        <rect x="4" y="4" width="18" height="18" fill="#F25022" />
+        <rect x="26" y="4" width="18" height="18" fill="#7FBA00" />
+        <rect x="4" y="26" width="18" height="18" fill="#00A4EF" />
+        <rect x="26" y="26" width="18" height="18" fill="#FFB900" />
+      </svg>, "#00A4EF", "#7FBA00"
     );
   }
-  
+
   // AWS
   if (issuer.includes('aws') || issuer.includes('amazon')) {
-    return (
-      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
-        <path fill="#252F3E" d="M13.5 21.7c0 .8.1 1.4.2 1.9.2.5.4 1 .7 1.5.1.2.1.3.1.4 0 .2-.1.3-.3.5l-1 .7c-.1.1-.3.1-.4.1s-.3-.1-.5-.2c-.2-.2-.4-.4-.6-.7-.1-.3-.3-.5-.4-.9-1.2 1.5-2.8 2.2-4.7 2.2-1.3 0-2.4-.4-3.2-1.1-.8-.8-1.2-1.8-1.2-3.1 0-1.4.5-2.5 1.5-3.3s2.3-1.2 3.9-1.2c.5 0 1.1 0 1.7.1.6.1 1.2.2 1.8.4v-1.2c0-1.2-.3-2.1-.8-2.6-.5-.5-1.4-.7-2.6-.7-.6 0-1.1.1-1.7.2-.6.1-1.2.3-1.7.5-.3.1-.5.2-.6.2-.1 0-.2 0-.3 0-.2 0-.3-.2-.3-.5v-.8c0-.3 0-.4.1-.6.1-.1.2-.2.4-.3.6-.3 1.2-.5 2-.7.8-.2 1.7-.3 2.6-.3 2 0 3.4.4 4.2 1.3.9.9 1.3 2.3 1.3 4.1v5.4zm-6.5 2.3c.5 0 1.1-.1 1.6-.3.6-.2 1.1-.5 1.5-1.1.3-.3.4-.6.5-1 .1-.4.2-.8.2-1.4v-.7c-.5-.1-1-.2-1.5-.3-.5-.1-1-.1-1.5-.1-1.1 0-1.9.2-2.4.6-.5.4-.8 1-.8 1.8 0 .8.2 1.3.6 1.7.4.4.9.5 1.7.5zm13 1.6c-.3 0-.5 0-.7-.2-.2-.1-.3-.3-.3-.6l-3.7-12.2c-.1-.3-.1-.5-.1-.6 0-.3.1-.4.4-.4h1.5c.3 0 .5 0 .7.1.2.1.3.3.3.6l2.6 10.3 2.5-10.3c.1-.3.1-.5.3-.6.2-.1.4-.1.7-.1h1.2c.3 0 .5 0 .7.1.2.1.3.3.3.6l2.5 10.4L32 12.1c.1-.3.2-.5.3-.6.2-.1.4-.1.7-.1h1.4c.3 0 .4.1.4.4 0 .1 0 .2 0 .3 0 .1 0 .2-.1.3l-3.8 12.2c-.1.3-.2.5-.3.6-.2.1-.4.2-.7.2h-1.3c-.3 0-.5 0-.7-.1-.2-.1-.3-.3-.3-.6l-2.4-10-2.4 10c-.1.3-.1.5-.3.6-.2.1-.4.1-.7.1h-1.3zm20.3.5c-.8 0-1.6-.1-2.4-.3-.8-.2-1.4-.4-1.8-.6-.3-.2-.4-.3-.5-.5-.1-.2-.1-.3-.1-.5v-.8c0-.3.1-.5.4-.5.1 0 .2 0 .3 0 .1 0 .3.1.4.1.6.3 1.2.5 1.8.6.7.1 1.3.2 2 .2 1.1 0 1.9-.2 2.5-.5.6-.3.9-.8.9-1.5 0-.4-.1-.8-.4-1.1-.3-.3-.8-.6-1.6-.9l-2.3-.7c-1.2-.4-2-.9-2.6-1.6-.5-.7-.8-1.5-.8-2.4 0-.7.1-1.3.4-1.8.3-.5.7-1 1.2-1.3.5-.4 1-.6 1.7-.8.6-.2 1.3-.3 2-.3.4 0 .7 0 1.1.1.4 0 .7.1 1.1.2.3.1.6.2.9.2.3.1.5.2.7.3.2.1.3.2.4.3.1.1.2.2.2.3.1.1.1.3.1.5v.7c0 .3-.1.5-.4.5-.1 0-.3 0-.5-.1-.9-.4-1.9-.6-3-.6-.9 0-1.7.2-2.2.5-.5.3-.8.8-.8 1.5 0 .4.1.8.4 1.1.3.3.9.6 1.8 1l2.2.7c1.1.4 2 .9 2.5 1.5.5.6.8 1.4.8 2.3 0 .7-.1 1.4-.4 2-.3.6-.7 1.1-1.2 1.5-.5.4-1.1.7-1.9 1-.7.2-1.6.3-2.5.3z"/>
-        <path fill="#FF9900" d="M35.8 33.5c-3.9 2.9-9.6 4.4-14.5 4.4-6.9 0-13-2.5-17.7-6.8-.4-.3 0-.8.4-.5 5 2.9 11.2 4.7 17.6 4.7 4.3 0 9.1-.9 13.5-2.8.6-.3 1.2.4.7 1zm1.6-1.9c-.5-.6-3.3-.3-4.6-.1-.4.1-.4-.3-.1-.5 2.2-1.6 5.9-1.1 6.3-.6.4.5-.1 4.1-2.2 5.8-.3.3-.6.1-.5-.2.5-1 1.6-3.2 1.1-3.8z"/>
-      </svg>
+    return logoWrapper(
+      <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 48 48">
+        <path fill="#FF9900" d="M35.8 33.5c-3.9 2.9-9.6 4.4-14.5 4.4-6.9 0-13-2.5-17.7-6.8-.4-.3 0-.8.4-.5 5 2.9 11.2 4.7 17.6 4.7 4.3 0 9.1-.9 13.5-2.8.6-.3 1.2.4.7 1zm1.6-1.9c-.5-.6-3.3-.3-4.6-.1-.4.1-.4-.3-.1-.5 2.2-1.6 5.9-1.1 6.3-.6.4.5-.1 4.1-2.2 5.8-.3.3-.6.1-.5-.2.5-1 1.6-3.2 1.1-3.8z" />
+        <path fill="#E6E6E6" d="M24.2 4.2c11 0 20 9 20 20s-9 20-20 20-20-9-20-20 9-20 20-20z" opacity=".1" />
+      </svg>, "#FF9900", "#FFD93D"
     );
   }
-  
-  // IIT (Indian Institute of Technology)
-  if (issuer.includes('iit') || issuer.includes('indian institute')) {
-    return (
-      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 100 100">
-        <rect width="100" height="100" fill="#003366"/>
-        <text x="50" y="40" fontFamily="Arial, sans-serif" fontSize="28" fontWeight="bold" textAnchor="middle" fill="white">IIT</text>
-        <text x="50" y="65" fontFamily="Arial, sans-serif" fontSize="14" textAnchor="middle" fill="white">BOMBAY</text>
-      </svg>
-    );
-  }
-  
-  // Tata
-  if (issuer.includes('tata')) {
-    return (
-      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="45" fill="#54B4D3"/>
-        <text x="50" y="65" fontFamily="Arial, sans-serif" fontSize="45" fontWeight="bold" textAnchor="middle" fill="white">T</text>
-      </svg>
-    );
-  }
-  
-  // Coursera
-  if (issuer.includes('coursera')) {
-    return (
-      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
-        <path fill="#0056D2" d="M47.8 23.3c-.1-2.4-.6-4.8-1.5-7-.9-2.2-2.2-4.2-3.8-5.9-1.6-1.7-3.6-3-5.7-4-4.4-2-9.4-2.2-14-.5-2.2.8-4.2 2-5.9 3.6-1.7 1.5-3.1 3.4-4.1 5.5-2 4.4-2.1 9.4-.4 13.9.8 2.2 2.1 4.2 3.6 5.9 1.6 1.7 3.5 3.1 5.6 4.1 2.2 1 4.5 1.5 6.9 1.5 1.8 0 3.6-.3 5.3-.9 2.2-.8 4.2-2 5.9-3.5 1.7-1.6 3.1-3.5 4.1-5.6 1-2.2 1.6-4.6 1.6-7.1zm-7.5 0c0 1.5-.3 3-.9 4.4-.6 1.4-1.4 2.6-2.5 3.6-1.1 1-2.3 1.8-3.7 2.3-1.4.5-2.9.8-4.4.8-1.5 0-3-.3-4.4-.8-1.4-.5-2.6-1.3-3.7-2.3-1-1-1.9-2.2-2.5-3.6-.6-1.4-.9-2.8-.9-4.4 0-1.5.3-3 .9-4.4.6-1.3 1.4-2.5 2.5-3.5 1-1 2.3-1.8 3.7-2.3 1.4-.5 2.9-.8 4.4-.8 1.5 0 3 .3 4.4.8 1.4.5 2.6 1.3 3.7 2.3 1 1 1.9 2.2 2.5 3.5.6 1.4.9 2.9.9 4.4z"/>
-      </svg>
-    );
-  }
-  
-  // Udemy
-  if (issuer.includes('udemy')) {
-    return (
-      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
-        <path fill="#A435F0" d="M23.5 0L0 13.5v13.8c0 10.2 10.5 18.5 23.5 20.7 13-2.2 23.5-10.5 23.5-20.7V13.5L23.5 0zm0 7.3l16.2 9.3v10.2c0 6.8-7.2 12.4-16.2 13.9-9-1.5-16.2-7.1-16.2-13.9V16.6L23.5 7.3z"/>
-      </svg>
-    );
-  }
-  
-  // LinkedIn Learning
-  if (issuer.includes('linkedin')) {
-    return (
-      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
-        <path fill="#0A66C2" d="M44.5 0H3.5C1.6 0 0 1.5 0 3.4v41.2C0 46.5 1.6 48 3.5 48h41c1.9 0 3.5-1.5 3.5-3.4V3.4C48 1.5 46.4 0 44.5 0zM14.2 40.9H7.1V18h7.1v22.9zM10.7 14.9c-2.3 0-4.1-1.8-4.1-4.1s1.8-4.1 4.1-4.1 4.1 1.8 4.1 4.1-1.9 4.1-4.1 4.1zM40.9 40.9h-7.1V29.8c0-2.7 0-6.1-3.7-6.1s-4.3 2.9-4.3 5.9v11.3h-7.1V18h6.8v3.1h.1c.9-1.8 3.2-3.7 6.6-3.7 7.1 0 8.4 4.7 8.4 10.7v12.8z"/>
-      </svg>
-    );
-  }
-  
-  // NMIMS
-  if (issuer.includes('nmims')) {
-    return (
-      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 100 100">
-        <rect width="100" height="100" fill="#800020"/>
-        <text x="50" y="55" fontFamily="Arial, sans-serif" fontSize="22" fontWeight="bold" textAnchor="middle" fill="white">NMIMS</text>
-      </svg>
-    );
-  }
-  
-  // IBM
-  if (issuer.includes('ibm')) {
-    return (
-      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
-        <path fill="#1F70C1" d="M0 32h8v2H0zM0 36h8v2H0zM10 32h8v2h-8zM10 36h8v2h-8zM10 28h8v2h-8zM10 24h8v2h-8zM0 28h8v2H0zM0 24h8v2H0zM20 32h8v2h-8zM20 36h8v2h-8zM20 28h8v2h-8zM20 24h8v2h-8zM20 20h8v2h-8zM20 16h8v2h-8zM20 12h8v2h-8zM30 32h8v2h-8zM30 36h8v2h-8zM30 28h8v2h-8zM30 24h8v2h-8zM30 20h8v2h-8zM30 16h8v2h-8zM30 12h8v2h-8zM40 32h8v2h-8zM40 36h8v2h-8zM40 28h8v2h-8zM40 24h8v2h-8z"/>
-      </svg>
-    );
-  }
-  
-  // Meta/Facebook
-  if (issuer.includes('meta') || issuer.includes('facebook')) {
-    return (
-      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
-        <path fill="#0081FB" d="M24 0C10.745 0 0 10.745 0 24s10.745 24 24 24 24-10.745 24-24S37.255 0 24 0zm6 24l-1.5 9h-6v15h-6V33h-4.5v-9h4.5v-6c0-4.97 2.03-9 9-9h6v9h-4.5c-.825 0-1.5.675-1.5 1.5V24h6z"/>
-      </svg>
-    );
-  }
-  
-  // Check for AI/ML related certifications
-  if (title.includes('ai') || title.includes('machine learning') || title.includes('deep learning') || title.includes('genai')) {
-    return <Brain className="w-12 h-12 text-purple-500" />;
-  }
-  
-  // Check for Cloud certifications
-  if (title.includes('cloud') || title.includes('devops')) {
-    return <Cloud className="w-12 h-12 text-blue-500" />;
-  }
-  
-  // Check for coding/programming certifications
-  if (title.includes('python') || title.includes('javascript') || title.includes('java') || title.includes('cpp') || title.includes('programming')) {
-    return <Code className="w-12 h-12 text-green-500" />;
-  }
-  
-  // Check for data related certifications
-  if (title.includes('data') || title.includes('analytics') || title.includes('database')) {
-    return <Database className="w-12 h-12 text-orange-500" />;
-  }
-  
-  // Check for web development
-  if (title.includes('web') || title.includes('frontend') || title.includes('backend') || title.includes('fullstack')) {
-    return <Globe className="w-12 h-12 text-cyan-500" />;
-  }
-  
-  // Default certificate logo
-  return (
-    <div className="relative">
-      <Shield className="w-12 h-12 text-primary" />
-      <Award className="w-6 h-6 text-primary absolute -bottom-1 -right-1" />
-    </div>
-  );
+
+  // Icons based on type
+  if (title.includes('ai') || title.includes('machine learning')) return logoWrapper(<Brain className="w-8 h-8 text-purple-400" />, "#A855F7", "#EC4899");
+  if (title.includes('cloud') || title.includes('devops')) return logoWrapper(<Cloud className="w-8 h-8 text-cyan-400" />, "#06B6D4", "#3B82F6");
+  if (title.includes('data')) return logoWrapper(<Database className="w-8 h-8 text-emerald-400" />, "#10B981", "#14B8A6");
+
+  // Default
+  return logoWrapper(<Award className="w-8 h-8 text-violet-400" />, "#8B5CF6", "#EC4899");
 };
 
-const SectionTitle = ({ children }: { children: React.ReactNode }) => (
-    <motion.h2 
-      className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline text-primary"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.5 }}
-      transition={{ duration: 0.5 }}
-    >
-      {children}
-    </motion.h2>
-)
+// Container animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.3,
+    }
+  }
+};
 
-const SectionDescription = ({ children }: { children: React.ReactNode }) => (
-    <motion.p 
-      className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.5 }}
-      transition={{ duration: 0.5, delay: 0.2 }}
-    >
-      {children}
-    </motion.p>
-)
-
+// Card animation variants - cleaner slide up
 const cardVariants = {
-    hidden: { opacity: 0, y: 50, scale: 0.9 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        delay: i * 0.15,
-        duration: 0.5,
-        ease: "easeOut",
-      },
-    }),
+  hidden: {
+    opacity: 0,
+    y: 40,
+    scale: 0.95,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 70,
+      damping: 15,
+    }
+  }
 };
 
 const CertificateCard = ({ cert, i }: { cert: any, i: number }) => {
-    const logo = getCertificateLogo(cert);
-    const issueDateFormatted = cert.issueDate ? new Date(cert.issueDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : '';
-    const expiryDateFormatted = cert.expiryDate ? new Date(cert.expiryDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : '';
-    
-    return (
+  const logo = getCertificateLogo(cert);
+  const colors = getHolographicColors(cert.issuer, cert.title);
+  const issueDateFormatted = cert.issueDate ? new Date(cert.issueDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : '';
+
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Spotlight effect
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const { left, top } = e.currentTarget.getBoundingClientRect();
+    mouseX.set(e.clientX - left);
+    mouseY.set(e.clientY - top);
+  };
+
+  return (
+    <motion.div
+      variants={cardVariants}
+      className="h-full group relative"
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      whileHover={{ y: -5 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+    >
+      {/* Spotlight Overlay */}
       <motion.div
-        custom={i}
-        variants={cardVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-        whileHover={{ y: -8 }}
-        style={{ perspective: "1000px" }}
-      >
-        <motion.div
-            className="h-full"
-            whileHover={{ 
-              scale: 1.02, 
-              rotateX: 2, 
-              rotateY: -2,
-              transition: { type: "spring", stiffness: 300, damping: 20 }
+        className="pointer-events-none absolute -inset-px rounded-[26px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30"
+        style={{
+          background: useMotionTemplate`
+              radial-gradient(
+                500px circle at ${mouseX}px ${mouseY}px,
+                ${colors.primary}40,
+                transparent 80%
+              )
+            `,
+        }}
+      />
+
+      {/* Outer Glow (static/pulsing) */}
+      <div
+        className="absolute -inset-1 rounded-[28px] blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-700"
+        style={{ background: colors.primary }}
+      />
+
+      {/* Animated border gradient */}
+      <div className="absolute -inset-[1px] rounded-[26px] overflow-hidden opacity-50 group-hover:opacity-100 transition-opacity duration-500">
+        <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent" />
+        <div className="absolute inset-[1px] rounded-3xl bg-[#0d0d12]" />
+      </div>
+
+      <Card className="relative h-full min-h-[340px] overflow-hidden rounded-3xl border-0 bg-gradient-to-br from-[#12121a] via-[#0f0f16] to-[#0a0a10]">
+
+        {/* Subtle aurora background */}
+        <div className="absolute inset-0 opacity-20 overflow-hidden">
+          <motion.div
+            className="absolute -top-20 -left-20 w-64 h-64 rounded-full blur-[80px]"
+            style={{ background: colors.primary }}
+            animate={{ scale: [1, 1.1, 1], opacity: [0.5, 0.7, 0.5] }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </div>
+
+        <div className="relative p-6 flex flex-col h-full z-10">
+          {/* Header with logo and issuer */}
+          <div className="flex items-center gap-4 mb-5">
+            {logo}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1">
+                <Shield className="w-3.5 h-3.5 flex-shrink-0" style={{ color: colors.primary }} />
+                <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: colors.primary }}>
+                  {cert.issuer}
+                </span>
+              </div>
+              {issueDateFormatted && (
+                <span className="text-[11px] text-gray-500 font-medium">
+                  Issued {issueDateFormatted}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Title - prominent */}
+          <h3 className="text-xl md:text-[22px] font-bold leading-snug text-white mb-4 line-clamp-2 group-hover:text-transparent group-hover:bg-clip-text transition-all duration-500"
+            style={{
+              backgroundImage: isHovered ? `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})` : 'none'
             }}
-        >
-          <Card className="relative h-full flex flex-col bg-gradient-to-br from-amber-50/90 via-white/95 to-amber-50/90 dark:from-zinc-900/95 dark:via-zinc-800/95 dark:to-zinc-900/95 backdrop-blur-sm overflow-hidden group shadow-xl hover:shadow-2xl transition-all duration-500">
-            {/* Certificate border pattern */}
-            <div className="absolute inset-0 pointer-events-none">
-              <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                <rect x="8" y="8" width="calc(100% - 16)" height="calc(100% - 16)" fill="none" stroke="url(#goldGradient)" strokeWidth="2" strokeDasharray="5 3" opacity="0.3"/>
-                <defs>
-                  <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#D4AF37" />
-                    <stop offset="50%" stopColor="#F4E4C1" />
-                    <stop offset="100%" stopColor="#D4AF37" />
-                  </linearGradient>
-                </defs>
-              </svg>
+          >
+            {cert.title}
+          </h3>
+
+          {/* Credential ID if available */}
+          {cert.credentialId && (
+            <div className="flex items-center gap-2 mb-4 px-3 py-2 rounded-lg bg-white/[0.03] border border-white/[0.06]">
+              <Code className="w-3.5 h-3.5 text-gray-500" />
+              <span className="text-xs text-gray-400 font-mono truncate">
+                ID: {cert.credentialId}
+              </span>
             </div>
-            
-            {/* Certificate seal/stamp */}
-            <div className="absolute top-4 right-4 z-20">
-              <motion.div 
-                className="relative"
-                whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.8 }}
+          )}
+
+          {/* Spacer */}
+          <div className="flex-1" />
+
+          {/* Footer */}
+          <div className="space-y-4 pt-4 border-t border-white/[0.06]">
+            {/* Verified badge */}
+            <div className="flex items-center justify-between">
+              <motion.div
+                className="relative flex items-center gap-2 px-4 py-2 rounded-xl overflow-hidden bg-emerald-500/10 border border-emerald-500/20"
+                whileHover={{ scale: 1.02 }}
               >
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 dark:from-amber-600 dark:to-amber-800 shadow-lg flex items-center justify-center">
-                  <Award className="w-8 h-8 text-white" />
-                </div>
-                <div className="absolute inset-0 rounded-full border-2 border-dashed border-amber-300 dark:border-amber-700 animate-spin-slow" />
+                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                <span className="text-sm font-semibold text-emerald-400">Verified</span>
               </motion.div>
+
+              {/* Quick action hint */}
+              <div className="flex items-center gap-1 text-xs text-gray-500">
+                <Zap className="w-3 h-3" style={{ color: colors.accent }} />
+                <span>Active</span>
+              </div>
             </div>
-            
-            <div className="relative z-10 flex flex-col h-full p-6">
-                {/* Certificate Header */}
-                <div className="text-center mb-6">
-                    <p className="text-xs font-semibold text-amber-700 dark:text-amber-400 uppercase tracking-[0.3em] mb-3">
-                      Certificate of Achievement
-                    </p>
-                    <h3 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-2 tracking-wide">
-                      {cert.title}
-                    </h3>
-                    <div className="w-24 h-0.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto mt-3" />
-                </div>
-                
-                {/* Issuer Logo Section */}
-                <div className="flex justify-center mb-6">
-                    <motion.div 
-                      className="bg-white dark:bg-zinc-900 p-4 rounded-2xl shadow-inner border-2 border-amber-200 dark:border-amber-800"
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                    >
-                      {logo}
-                    </motion.div>
-                </div>
 
-                {/* Certificate Body */}
-                <div className="text-center space-y-4 mb-6">
-                    <div>
-                      <p className="text-sm text-muted-foreground mb-1">Issued by</p>
-                      <p className="font-semibold text-lg text-foreground">{cert.issuer || 'Certification Authority'}</p>
-                    </div>
-                    
-                    {/* Credential ID */}
-                    {cert.credentialId && (
-                      <div className="inline-block px-4 py-2 bg-amber-100/50 dark:bg-amber-900/20 rounded-lg border border-amber-300 dark:border-amber-700">
-                        <p className="text-xs text-muted-foreground">Credential ID</p>
-                        <p className="font-mono text-sm font-semibold text-foreground">{cert.credentialId}</p>
-                      </div>
-                    )}
-                </div>
-
-                {/* Certificate Footer */}
-                <div className="mt-auto">
-                    {/* Date Information */}
-                    <div className="flex justify-between items-center mb-4 text-xs text-muted-foreground">
-                      {issueDateFormatted && (
-                        <div>
-                          <p className="font-semibold mb-1">Issued</p>
-                          <p>{issueDateFormatted}</p>
-                        </div>
-                      )}
-                      {expiryDateFormatted && (
-                        <div className="text-right">
-                          <p className="font-semibold mb-1">Expires</p>
-                          <p>{expiryDateFormatted}</p>
-                        </div>
-                      )}
-                      {!expiryDateFormatted && cert.issueDate && (
-                        <div className="text-right">
-                          <p className="font-semibold mb-1">No Expiry</p>
-                          <p className="text-green-600 dark:text-green-400">Lifetime Valid</p>
-                        </div>
-                      )}
-                    </div>
-                    
-                    {/* Verification Link */}
-                    {cert.verifyUrl && (
-                      <motion.a
-                        href={cert.verifyUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-medium text-sm rounded-lg transition-all duration-300 shadow-md hover:shadow-lg"
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                      >
-                        <Shield className="h-4 w-4" />
-                        <span>Verify Certificate</span>
-                        <ExternalLink className="h-3 w-3" />
-                      </motion.a>
-                    )}
-                </div>
-
-                {/* Background watermark */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none">
-                    <Award className="w-48 h-48 text-foreground" />
-                </div>
-                
-                {/* Shimmer effect */}
-                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-[1500ms] bg-gradient-to-r from-transparent via-white/5 to-transparent pointer-events-none" />
-            </div>
-          </Card>
-        </motion.div>
-      </motion.div>
-    )
-}
+            {/* View Credential Button - Only visible on hover/always visible but styled */}
+            {cert.verifyUrl && (
+              <motion.a
+                href={cert.verifyUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative flex items-center justify-center gap-2.5 w-full py-3.5 rounded-2xl text-sm font-bold overflow-hidden"
+                style={{
+                  background: `linear-gradient(135deg, ${colors.primary}15, ${colors.secondary}10)`,
+                  border: `1px solid ${colors.primary}30`,
+                }}
+                whileHover={{
+                  scale: 1.02,
+                  boxShadow: `0 0 20px ${colors.primary}20`
+                }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Sparkles className="w-4 h-4 relative z-10" style={{ color: colors.primary }} />
+                <span className="relative z-10 bg-gradient-to-r bg-clip-text text-transparent"
+                  style={{ backgroundImage: `linear-gradient(90deg, ${colors.primary}, ${colors.secondary})` }}
+                >
+                  View Credential
+                </span>
+                <ExternalLink className="w-4 h-4 relative z-10" style={{ color: colors.secondary }} />
+              </motion.a>
+            )}
+          </div>
+        </div>
+      </Card>
+    </motion.div>
+  )
+};
 
 export function Certifications({ certifications = [] }: CertificationsProps) {
-  // Use only data from MongoDB - no fallbacks
   const displayCertifications = certifications || [];
-  
+
   return (
-    <div className="container mx-auto px-4 md:px-6">
-      <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
-        <div className="space-y-2">
-          <SectionTitle>Professional Certifications</SectionTitle>
-          <SectionDescription>
-            Recognized achievements and verified credentials from leading institutions and platforms
-          </SectionDescription>
-        </div>
+    <div className="container mx-auto px-4 md:px-6 relative">
+      {/* Background aurora effect */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        <motion.div
+          className="absolute top-1/4 left-1/4 w-96 h-96 bg-violet-500/10 rounded-full blur-[120px]"
+          animate={{
+            x: [0, 100, 0],
+            y: [0, 50, 0],
+            scale: [1, 1.2, 1]
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-pink-500/10 rounded-full blur-[100px]"
+          animate={{
+            x: [0, -80, 0],
+            y: [0, -40, 0],
+            scale: [1, 1.3, 1]
+          }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        />
       </div>
-      
-      {displayCertifications.length > 0 ? (
-        <motion.div 
-          className="mx-auto grid max-w-6xl gap-8 md:grid-cols-2 lg:grid-cols-3"
+
+      {/* Section Header */}
+      <motion.div
+        className="flex flex-col items-center justify-center space-y-6 text-center mb-20"
+        initial={{ opacity: 0, y: -30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        {/* Floating badge with glow */}
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          whileInView={{ scale: 1, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2, duration: 0.6, type: "spring" }}
+          className="relative"
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-violet-500 to-pink-500 rounded-full blur-xl opacity-50 animate-pulse" />
+          <div className="relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-violet-500/20 to-pink-500/20 border border-violet-500/30 backdrop-blur-sm">
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+            >
+              <Award className="w-5 h-5 text-violet-400" />
+            </motion.div>
+            <span className="text-sm font-semibold bg-gradient-to-r from-violet-400 to-pink-400 bg-clip-text text-transparent">
+              Professional Credentials
+            </span>
+            <Sparkles className="w-4 h-4 text-pink-400 animate-pulse" />
+          </div>
+        </motion.div>
+
+        {/* Main title with gradient animation */}
+        <motion.h2
+          className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3, duration: 0.6 }}
+        >
+          <span className="text-white">Certified </span>
+          <span className="relative inline-block">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-pink-400 to-cyan-400 bg-[length:200%_auto] animate-gradient">
+              Excellence
+            </span>
+            {/* Underline glow */}
+            <motion.div
+              className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-violet-500 via-pink-500 to-cyan-500 rounded-full"
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.8, duration: 0.8 }}
+            />
+          </span>
+        </motion.h2>
+
+        <motion.p
+          className="max-w-[700px] text-gray-400 md:text-lg lg:text-xl leading-relaxed"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5, duration: 0.6 }}
+        >
+          Industry-recognized certifications that demonstrate{" "}
+          <span className="text-violet-400 font-medium">expertise</span>,{" "}
+          <span className="text-pink-400 font-medium">dedication</span>, and{" "}
+          <span className="text-cyan-400 font-medium">technical mastery</span>
+        </motion.p>
+      </motion.div>
+
+      {displayCertifications.length > 0 ? (
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-[1200px] mx-auto"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
         >
           {displayCertifications.map((cert, i) => (
             <CertificateCard key={cert.title + i} cert={cert} i={i} />
           ))}
         </motion.div>
       ) : (
-        <motion.div 
-          className="mt-12 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+        <motion.div
+          className="text-center p-20 border border-dashed border-white/10 rounded-3xl bg-gradient-to-br from-gray-900/50 to-gray-950/50 backdrop-blur-xl relative overflow-hidden"
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
         >
-          <div className="inline-flex flex-col items-center gap-4 p-8 rounded-xl bg-card/50 border-2 border-dashed border-primary/20">
-            <Award className="w-16 h-16 text-primary/40" />
-            <p className="text-muted-foreground">No certifications data available</p>
-            <p className="text-sm text-muted-foreground/60">Certifications will appear here once added to the database</p>
-          </div>
+          <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 to-pink-500/5" />
+          <motion.div
+            className="w-24 h-24 mx-auto mb-8 rounded-3xl bg-gradient-to-br from-violet-500/20 to-pink-500/20 flex items-center justify-center border border-violet-500/20"
+            animate={{ rotate: [0, 5, -5, 0] }}
+            transition={{ duration: 4, repeat: Infinity }}
+          >
+            <Award className="w-12 h-12 text-violet-400/50" />
+          </motion.div>
+          <p className="text-gray-500 text-xl font-medium">No certifications available yet</p>
         </motion.div>
       )}
     </div>
   )
 }
+

@@ -1,6 +1,6 @@
 "use client"
 
-import { motion, useScroll, useTransform } from "framer-motion"
+import { motion, useScroll, useTransform, useSpring } from "framer-motion"
 import { useState, useEffect } from "react"
 import { Menu, X, Home, User, Briefcase, Award, BookOpen, Trophy, FlaskConical, Settings, Lock } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -17,9 +17,16 @@ const navItems = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [activeSection, setActiveSection] = useState("home")
-  const { scrollY } = useScroll()
+  const { scrollY, scrollYProgress } = useScroll()
   const navOpacity = useTransform(scrollY, [0, 100], [0.7, 1])
   const navBlur = useTransform(scrollY, [0, 100], [10, 20])
+
+  // Smooth scroll progress for indicator
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  })
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,6 +54,12 @@ export default function Navbar() {
 
   return (
     <>
+      {/* Scroll Progress Indicator - Top of viewport */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary z-[60] origin-left"
+        style={{ scaleX }}
+      />
+
       {/* Desktop Navigation */}
       <motion.nav
         className="fixed top-4 left-1/2 -translate-x-1/2 z-50 hidden md:block"
@@ -55,39 +68,53 @@ export default function Navbar() {
           backdropFilter: `blur(${navBlur}px)`,
         }}
       >
-        <div className="glass-morphism rounded-full px-6 py-3 border border-white/10 flex items-center gap-4">
+        <div className="glass-morphism rounded-full px-6 py-3 border border-white/10 flex items-center gap-4 shadow-lg shadow-black/5">
           <ul className="flex items-center gap-8">
             {navItems.map((item) => (
               <li key={item.label}>
-                <button
+                <motion.button
                   onClick={() => scrollToSection(item.href)}
                   className={cn(
-                    "relative flex items-center gap-2 text-sm font-medium transition-all duration-300",
+                    "relative flex items-center gap-2 text-sm font-medium transition-all duration-300 group",
                     activeSection === item.href.slice(1)
                       ? "text-primary"
                       : "text-muted-foreground hover:text-foreground"
                   )}
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <item.icon className="w-4 h-4" />
+                  <motion.span
+                    className={cn(
+                      "transition-all duration-300",
+                      activeSection === item.href.slice(1) ? "scale-110" : "group-hover:scale-110"
+                    )}
+                    animate={activeSection === item.href.slice(1) ? { rotate: [0, 10, -10, 0] } : {}}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <item.icon className="w-4 h-4" />
+                  </motion.span>
                   <span>{item.label}</span>
                   {activeSection === item.href.slice(1) && (
                     <motion.div
                       layoutId="activeSection"
-                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary"
+                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-primary via-accent to-primary rounded-full"
+                      style={{
+                        boxShadow: "0 0 10px rgba(139, 92, 246, 0.5), 0 0 20px rgba(139, 92, 246, 0.3)"
+                      }}
                       transition={{ type: "spring", bounce: 0.2 }}
                     />
                   )}
-                </button>
+                </motion.button>
               </li>
             ))}
           </ul>
           {/* Admin Button Separator */}
-          <div className="h-6 w-px bg-white/20" />
+          <div className="h-6 w-px bg-gradient-to-b from-transparent via-white/20 to-transparent" />
           {/* Admin Button */}
           <motion.a
             href="/admin/login"
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 hover:border-primary/40 transition-all duration-300"
-            whileHover={{ scale: 1.05 }}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-primary/10 to-accent/10 hover:from-primary/20 hover:to-accent/20 text-primary border border-primary/20 hover:border-primary/40 transition-all duration-300"
+            whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(139, 92, 246, 0.3)" }}
             whileTap={{ scale: 0.95 }}
           >
             <Lock className="w-4 h-4" />

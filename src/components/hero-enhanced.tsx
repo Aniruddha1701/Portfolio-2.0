@@ -1,8 +1,8 @@
 "use client"
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
-import { useEffect, useState } from "react"
-import { ArrowRight, Sparkles, Download, Send } from "lucide-react"
+import { useEffect } from "react"
+import { ArrowRight, Download, Send, Sparkles } from "lucide-react"
 import { Button } from "./ui/button"
 
 interface HeroEnhancedProps {
@@ -16,8 +16,9 @@ interface HeroEnhancedProps {
 export default function HeroEnhanced({ name, city, title, bio, hasResume = false }: HeroEnhancedProps) {
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
-  
-  const springConfig = { damping: 25, stiffness: 150 }
+
+  // Smoother, heavier feel for professional 3D effect
+  const springConfig = { damping: 30, stiffness: 200, mass: 2 }
   const x = useSpring(mouseX, springConfig)
   const y = useSpring(mouseY, springConfig)
 
@@ -27,22 +28,23 @@ export default function HeroEnhanced({ name, city, title, bio, hasResume = false
       mouseX.set((e.clientX - rect.left) / rect.width - 0.5)
       mouseY.set((e.clientY - rect.top) / rect.height - 0.5)
     }
-    
+
     window.addEventListener("mousemove", handleMouseMove)
     return () => window.removeEventListener("mousemove", handleMouseMove)
   }, [mouseX, mouseY])
 
-  const rotateX = useTransform(y, [-0.5, 0.5], [5, -5])
-  const rotateY = useTransform(x, [-0.5, 0.5], [-5, 5])
+  // SUBTLE rotation logic - less is more for "Professional" look
+  const rotateX = useTransform(y, [-0.5, 0.5], [2, -2])
+  const rotateY = useTransform(x, [-0.5, 0.5], [-2, 2])
 
   const words = title.split(" ")
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Animated background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-transparent to-cyan-900/20 animate-pulse-slow" />
-      
-      {/* 3D Card Container */}
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900/20 via-background to-background">
+      {/* Subtle Background Elements */}
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
+
+      {/* 3D Container */}
       <motion.div
         style={{
           rotateX,
@@ -51,194 +53,155 @@ export default function HeroEnhanced({ name, city, title, bio, hasResume = false
         }}
         className="relative z-10 max-w-5xl mx-auto px-6"
       >
-        {/* Floating decoration */}
+        {/* Abstract minimalistic decoration */}
         <motion.div
-          className="absolute -top-20 -right-20 w-40 h-40"
+          className="absolute -top-32 -right-32 w-64 h-64 bg-primary/10 rounded-full blur-3xl"
           animate={{
-            y: [0, -20, 0],
-            rotate: [0, 180, 360],
+            scale: [1, 1.1, 1],
+            opacity: [0.3, 0.5, 0.3],
           }}
           transition={{
-            duration: 10,
+            duration: 8,
             repeat: Infinity,
-            ease: "linear"
+            ease: "easeInOut"
           }}
-        >
-          <Sparkles className="w-full h-full text-primary/20" />
-        </motion.div>
+        />
 
-        {/* Main content */}
-        <div className="text-center space-y-8" style={{ transform: "translateZ(50px)" }}>
-          {/* Animated greeting */}
+        <div className="text-center space-y-8" style={{ transform: "translateZ(30px)" }}>
+          {/* Welcome Tag */}
           <motion.div
-            initial={{ opacity: 0, y: -50 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="relative inline-block"
+            transition={{ duration: 0.6 }}
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary/30 border border-white/5 backdrop-blur-sm"
           >
-            <span className="text-sm md:text-base font-medium text-primary/80 tracking-widest uppercase">
-              Welcome to my portfolio
+            <Sparkles className="w-3.5 h-3.5 text-accent" />
+            <span className="text-xs md:text-sm font-medium text-muted-foreground tracking-wide uppercase">
+              Portfolio 2.0
             </span>
-            <motion.div
-              className="absolute -bottom-2 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent"
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 1, delay: 0.5 }}
-            />
           </motion.div>
 
-          {/* Animated Name */}
-          <motion.h1
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative"
-          >
-            <span className="text-5xl md:text-7xl lg:text-8xl font-bold">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-cyan-400 animate-gradient">
-                {name}
-              </span>
-            </span>
-            
-            {/* Glow effect */}
-            <div className="absolute inset-0 blur-3xl opacity-30">
-              <span className="text-5xl md:text-7xl lg:text-8xl font-bold text-primary">
-                {name}
-              </span>
-            </div>
-          </motion.h1>
-
-          {/* City */}
-          {city && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-lg md:text-xl text-muted-foreground/70 -mt-4"
+          {/* Name */}
+          <div className="relative">
+            <motion.h1
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight font-headline"
             >
-              <span className="flex items-center justify-center gap-2">
+              <span className="text-gradient text-glow drop-shadow-2xl">
+                {name}
+              </span>
+            </motion.h1>
+          </div>
+
+          {/* Title & Location */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+            className="flex flex-col items-center gap-4"
+          >
+            <div className="flex flex-wrap justify-center gap-x-3 gap-y-1 text-2xl md:text-4xl font-light text-muted-foreground">
+              {words.map((word, index) => (
+                <motion.span
+                  key={index}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 + index * 0.1 }}
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </div>
+
+            {city && (
+              <span className="text-sm md:text-base text-muted-foreground/60 flex items-center gap-1.5">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
                 {city}
               </span>
-            </motion.div>
-          )}
-
-          {/* Animated Title */}
-          <motion.div className="flex flex-wrap justify-center gap-2 md:gap-4">
-            {words.map((word, index) => (
-              <motion.span
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ 
-                  duration: 0.5, 
-                  delay: 0.4 + index * 0.1,
-                  type: "spring",
-                  stiffness: 100
-                }}
-                className="text-2xl md:text-4xl font-light text-muted-foreground"
-              >
-                {word}
-              </motion.span>
-            ))}
+            )}
           </motion.div>
 
-          {/* Bio with typing effect */}
+          {/* Bio */}
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            className="max-w-2xl mx-auto text-lg md:text-xl text-muted-foreground/80 leading-relaxed"
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="max-w-2xl mx-auto text-lg text-muted-foreground/80 leading-relaxed font-light"
           >
             {bio}
           </motion.p>
 
-          {/* CTA Buttons */}
+          {/* Actions */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1 }}
-            className="flex flex-wrap gap-4 justify-center mt-8"
+            transition={{ duration: 0.8, delay: 0.8 }}
+            className="flex flex-wrap gap-4 justify-center pt-8"
           >
             <Button
               size="lg"
-              className="group relative overflow-hidden bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0"
-              onClick={() => {
-                document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' });
-              }}
+              className="group relative overflow-hidden bg-primary hover:bg-primary/90 text-primary-foreground min-w-[160px] h-12 rounded-full transition-all duration-300 shadow-lg shadow-primary/25 hover:shadow-primary/40 shimmer-btn"
+              onClick={() => document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' })}
             >
               <span className="relative z-10 flex items-center gap-2">
-                View My Work
+                View Work
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </span>
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-cyan-600 to-blue-600"
-                initial={{ x: "100%" }}
-                whileHover={{ x: 0 }}
-                transition={{ duration: 0.3 }}
-              />
             </Button>
 
             {hasResume && (
               <Button
                 size="lg"
                 variant="outline"
-                className="group border-primary/30 hover:border-primary glass-effect"
+                className="group min-w-[160px] h-12 rounded-full border-white/10 hover:bg-white/5 transition-all duration-300 backdrop-blur-sm"
                 onClick={async () => {
                   try {
                     const response = await fetch('/api/resume/download');
-                    if (response.ok) {
-                      window.open('/api/resume/download', '_blank');
-                    } else {
-                      console.error('Resume not available');
-                    }
+                    if (response.ok) window.open('/api/resume/download', '_blank');
                   } catch (error) {
-                    console.error('Error downloading resume:', error);
+                    console.error(error);
                   }
                 }}
               >
-                <Download className="w-4 h-4 mr-2" />
-                Download CV
+                <Download className="w-4 h-4 mr-2 group-hover:-translate-y-0.5 transition-transform" />
+                Resume
               </Button>
             )}
 
             <Button
               size="lg"
               variant="outline"
-              className="group border-primary/30 hover:border-primary glass-effect"
+              className="min-w-[160px] h-12 rounded-full border-white/10 hover:bg-white/5 backdrop-blur-sm"
+              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
             >
               <Send className="w-4 h-4 mr-2" />
-              Contact Me
+              Contact
             </Button>
           </motion.div>
         </div>
       </motion.div>
 
-      {/* Animated scroll indicator */}
+      {/* Scroll Indicator */}
       <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 1.5 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5, duration: 1 }}
       >
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="flex flex-col items-center gap-2 text-muted-foreground/60"
-        >
-          <span className="text-sm">Scroll to explore</span>
-          <div className="w-6 h-10 border-2 border-primary/30 rounded-full flex justify-center">
-            <motion.div
-              animate={{ y: [0, 20, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="w-1 h-2 bg-primary rounded-full mt-2"
-            />
-          </div>
-        </motion.div>
+        <div className="w-[1px] h-16 bg-gradient-to-b from-transparent via-primary/50 to-transparent">
+          <motion.div
+            className="w-full h-1/2 bg-primary"
+            animate={{ y: [0, 32, 0], opacity: [0, 1, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </div>
       </motion.div>
     </section>
   )
 }
+

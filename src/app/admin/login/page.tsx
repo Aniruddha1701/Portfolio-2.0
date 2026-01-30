@@ -37,7 +37,7 @@ export default function AdminLogin() {
 
       setMaskedEmail(data.email);
       setSuccessMessage('OTP sent to your email!');
-      
+
       setStep('otp');
       setError('');
     } catch (err) {
@@ -76,7 +76,7 @@ export default function AdminLogin() {
   const handleOtpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const otpCode = otp.join('');
-    
+
     if (otpCode.length !== 6) {
       setError('Please enter a complete 6-digit OTP');
       return;
@@ -135,30 +135,56 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
-      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-10"></div>
-      
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-950 via-purple-950/50 to-gray-950 relative overflow-hidden">
+      {/* Animated grid background */}
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-5"></div>
+
+      {/* Animated floating orbs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -left-40 w-80 h-80 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob" />
+        <div className="absolute -bottom-40 -right-40 w-80 h-80 bg-pink-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob animation-delay-4000" />
+      </div>
+
+      {/* Radial gradient overlay */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_rgba(0,0,0,0.4)_100%)]"></div>
+
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="relative z-10 w-full max-w-md"
+        initial={{ opacity: 0, y: 20, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="relative z-10 w-full max-w-md mx-4"
       >
-        <div className="bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-white/20">
+        <div className="bg-gray-900/60 backdrop-blur-2xl rounded-3xl shadow-2xl p-8 border border-white/10 relative overflow-hidden noise-overlay">
+          {/* Subtle gradient accent at top */}
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500"></div>
+
           {/* Header */}
           <div className="text-center mb-8">
             <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: "spring", duration: 0.5 }}
-              className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full mb-4"
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ type: "spring", duration: 0.8, bounce: 0.4 }}
+              className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl mb-6 shadow-lg shadow-purple-500/30"
             >
               <Shield className="w-10 h-10 text-white" />
             </motion.div>
-            <h1 className="text-3xl font-bold text-white mb-2">Admin Portal</h1>
-            <p className="text-gray-300">
+            <motion.h1
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-3xl font-bold text-white mb-2 font-headline"
+            >
+              Admin Portal
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="text-gray-400"
+            >
               {step === 'credentials' ? 'Enter your credentials to continue' : 'Verify your identity'}
-            </p>
+            </motion.p>
           </div>
 
           <AnimatePresence mode="wait">
@@ -172,17 +198,17 @@ export default function AdminLogin() {
                 className="space-y-6"
               >
                 {/* Email Input */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-300 tracking-wide">
                     Email Address
                   </label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <div className="relative group">
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 group-focus-within:text-purple-400 transition-colors" />
                     <input
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 transition-colors"
+                      className="w-full pl-12 pr-4 py-3.5 bg-gray-800/50 border border-gray-700/50 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:bg-gray-800/70 focus:ring-4 focus:ring-purple-500/10 transition-all duration-300"
                       placeholder="admin@example.com"
                       required
                     />
@@ -190,17 +216,17 @@ export default function AdminLogin() {
                 </div>
 
                 {/* Password Input */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-300 tracking-wide">
                     Password
                   </label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <div className="relative group">
+                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 group-focus-within:text-purple-400 transition-colors" />
                     <input
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 transition-colors"
+                      className="w-full pl-12 pr-4 py-3.5 bg-gray-800/50 border border-gray-700/50 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:bg-gray-800/70 focus:ring-4 focus:ring-purple-500/10 transition-all duration-300"
                       placeholder="••••••••"
                       required
                     />
@@ -211,14 +237,14 @@ export default function AdminLogin() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-semibold hover:from-purple-600 hover:to-pink-600 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50"
+                  className="w-full py-3.5 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold hover:from-purple-500 hover:to-pink-500 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-[1.02] active:scale-[0.98] shimmer-btn"
                 >
                   {loading ? (
                     <Loader2 className="w-5 h-5 animate-spin" />
                   ) : (
                     <>
                       Continue
-                      <ArrowRight className="w-5 h-5" />
+                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </>
                   )}
                 </button>
@@ -239,7 +265,7 @@ export default function AdminLogin() {
                 </div>
 
                 {/* OTP Input */}
-                <div className="flex justify-center gap-2">
+                <div className="flex justify-center gap-3">
                   {otp.map((digit, index) => (
                     <input
                       key={index}
@@ -254,7 +280,7 @@ export default function AdminLogin() {
                           prevInput?.focus();
                         }
                       }}
-                      className="w-12 h-14 text-center text-xl font-bold bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-purple-500 transition-colors"
+                      className="w-12 h-14 text-center text-2xl font-bold bg-gray-800/50 border-2 border-gray-700/50 rounded-xl text-white focus:outline-none focus:border-purple-500 focus:bg-gray-800/70 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300"
                       maxLength={1}
                       required
                     />
@@ -265,7 +291,7 @@ export default function AdminLogin() {
                 <button
                   type="submit"
                   disabled={loading || otp.join('').length !== 6}
-                  className="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-semibold hover:from-purple-600 hover:to-pink-600 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50"
+                  className="w-full py-3.5 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold hover:from-purple-500 hover:to-pink-500 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-[1.02] active:scale-[0.98] shimmer-btn"
                 >
                   {loading ? (
                     <Loader2 className="w-5 h-5 animate-spin" />
@@ -283,7 +309,7 @@ export default function AdminLogin() {
                     type="button"
                     onClick={handleResendOtp}
                     disabled={loading}
-                    className="text-purple-400 hover:text-purple-300 text-sm transition-colors disabled:opacity-50"
+                    className="text-purple-400 hover:text-purple-300 text-sm transition-all hover:underline underline-offset-4 disabled:opacity-50 disabled:hover:no-underline"
                   >
                     Didn't receive the code? Resend OTP
                   </button>
@@ -299,9 +325,10 @@ export default function AdminLogin() {
                       setError('');
                       setSuccessMessage('');
                     }}
-                    className="text-gray-400 hover:text-gray-300 text-sm transition-colors"
+                    className="text-gray-500 hover:text-gray-300 text-sm transition-colors flex items-center gap-1 mx-auto"
                   >
-                    ← Back to login
+                    <ArrowRight className="w-4 h-4 rotate-180" />
+                    Back to login
                   </button>
                 </div>
               </motion.form>
@@ -339,9 +366,17 @@ export default function AdminLogin() {
         </div>
 
         {/* Footer */}
-        <div className="text-center mt-6 text-gray-400 text-sm">
-          <p>Secure admin access with 2FA protection</p>
-        </div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="text-center mt-8"
+        >
+          <div className="flex items-center justify-center gap-2 text-gray-500 text-sm">
+            <Shield className="w-4 h-4" />
+            <span>Secure admin access with 2FA protection</span>
+          </div>
+        </motion.div>
       </motion.div>
     </div>
   );
