@@ -311,7 +311,7 @@ export default function AdminLogin() {
                     disabled={loading}
                     className="text-purple-400 hover:text-purple-300 text-sm transition-all hover:underline underline-offset-4 disabled:opacity-50 disabled:hover:no-underline"
                   >
-                    Didn't receive the code? Resend OTP
+                    Didn&apos;t receive the code? Resend OTP
                   </button>
                 </div>
 

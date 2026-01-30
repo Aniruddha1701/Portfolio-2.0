@@ -3,27 +3,27 @@
 import { motion } from "framer-motion"
 
 const SectionTitle = ({ children }: { children: React.ReactNode }) => (
-    <motion.h2 
-      className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline text-primary"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.5 }}
-      transition={{ duration: 0.5 }}
-    >
-      {children}
-    </motion.h2>
+  <motion.h2
+    className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline text-primary"
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, amount: 0.5 }}
+    transition={{ duration: 0.5 }}
+  >
+    {children}
+  </motion.h2>
 )
 
 const SectionDescription = ({ children }: { children: React.ReactNode }) => (
-    <motion.p 
-      className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.5 }}
-      transition={{ duration: 0.5, delay: 0.2 }}
-    >
-      {children}
-    </motion.p>
+  <motion.p
+    className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, amount: 0.5 }}
+    transition={{ duration: 0.5, delay: 0.2 }}
+  >
+    {children}
+  </motion.p>
 )
 
 interface MapProps {
@@ -37,11 +37,11 @@ export function Map({ location }: MapProps) {
         <div className="space-y-2">
           <SectionTitle>Find Me</SectionTitle>
           <SectionDescription>
-            I'm based in Pune, Maharashtra. Feel free to reach out for collaborations or opportunities.
+            I&apos;m based in Pune, Maharashtra. Feel free to reach out for collaborations or opportunities.
           </SectionDescription>
         </div>
       </div>
-      <motion.div 
+      <motion.div
         className="mt-12 rounded-lg overflow-hidden border-2 border-primary/20 shadow-lg"
         initial={{ opacity: 0, scale: 0.9 }}
         whileInView={{ opacity: 1, scale: 1 }}

@@ -36,10 +36,10 @@ export function Footer({ personalInfo, socialLinks }: FooterProps) {
           >
             <div>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 font-headline">
-                Let's <span className="text-primary text-glow">Connect</span>
+                Let&apos;s <span className="text-primary text-glow">Connect</span>
               </h2>
               <p className="text-muted-foreground text-base md:text-lg max-w-md leading-relaxed">
-                Have a project in mind or just want to chat? Feel free to reach out. I'm always open to discussing new opportunities.
+                Have a project in mind or just want to chat? Feel free to reach out. I&apos;m always open to discussing new opportunities.
               </p>
             </div>
 

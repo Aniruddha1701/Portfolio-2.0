@@ -234,7 +234,7 @@ export function WordleGame({ onClose }: { onClose?: () => void }) {
                                 Developer Insight: O(n) Evaluation
                             </h4>
                             <p className="font-medium text-white/90">
-                                "The core challenge in Wordle is correctly handling repeated letters and evaluation order, which requires a two-pass matching algorithm."
+                                &quot;The core challenge in Wordle is correctly handling repeated letters and evaluation order, which requires a two-pass matching algorithm.&quot;
                             </p>
 
                             <div className="bg-black/40 p-3 rounded-lg border border-white/5 font-mono text-[10px] sm:text-xs text-gray-400 overflow-x-auto">
