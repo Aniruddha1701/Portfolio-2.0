@@ -187,18 +187,23 @@ graph LR
 - 📧 **Contact Form** - Email integration with validation
 - 🎨 **Animations** - Smooth transitions and effects
 - 🔒 **Secure** - JWT authentication & rate limiting
+- 🕹️ **Interactive Terminal** - CLI-based navigation for developers
+- 🧠 **Brain Teasers** - Built-in Wordle clone for logic demos
+- ⚡ **Tech Radar** - Real-time AI news feed
 
 ### 📦 Portfolio Sections
 
 | Section | Description |
 |---------|-------------|
 | 🏠 **Hero** | Animated introduction with personal branding |
-| 👤 **About** | Journey timeline with education & experience |
+| 👤 **About** | Interactive Journey timeline with education & experience |
 | 💼 **Skills** | Categorized skills with proficiency levels |
 | 🚀 **Projects** | Showcase with live demos & GitHub links |
+| 💻 **Terminal** | Developer-focused command line interface |
+| 🎮 **Playground** | Logic games and extensive UI demos |
 | 🏆 **Certifications** | Professional achievements display |
 | 🧪 **Smart Lab** | AI-powered IT news aggregator |
-| 📬 **Contact** | Email-based contact system |
+| 🔐 **Admin** | High-end glassmorphism dashboard |
 
 ---
 
