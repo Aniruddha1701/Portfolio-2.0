@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db/mongodb';
 import Portfolio from '@/models/Portfolio';
+import ResumeRequest from '@/models/ResumeRequest'; // Added
 import { readFile } from 'fs/promises';
 import path from 'path';
 
@@ -8,6 +9,33 @@ export async function GET(request: NextRequest) {
   try {
     // Connect to database
     await connectDB();
+
+    const { searchParams } = new URL(request.url);
+    const token = searchParams.get('token');
+
+    // 1. Token Validation
+    if (!token) {
+        // If an admin requests it natively from dashboard, we might want to let them bypass, 
+        // but for now strictly enforce the token.
+        return NextResponse.json({ error: 'Access Denied. Missing authorization token.' }, { status: 403 });
+    }
+
+    const resumeRequest = await ResumeRequest.findOne({ token });
+
+    if (!resumeRequest) {
+        return NextResponse.json({ error: 'Access Denied. Invalid token.' }, { status: 403 });
+    }
+
+    if (resumeRequest.status !== 'approved') {
+         return NextResponse.json({ error: 'Access Denied. This request has not been approved.' }, { status: 403 });
+    }
+
+    // Check expiration
+    if (new Date() > new Date(resumeRequest.expiresAt)) {
+         return NextResponse.json({ error: 'Access Denied. This token has expired.' }, { status: 410 });
+    }
+
+    // 2. Fetch Portfolio data
     const portfolio = await Portfolio.findOne();
     
     if (!portfolio || !portfolio.personalInfo?.resume) {

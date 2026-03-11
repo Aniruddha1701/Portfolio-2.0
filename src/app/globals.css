@@ -68,15 +68,32 @@
   }
 
   html {
-    scroll-behavior: smooth;
+    /* scroll-behavior handled by Lenis for buttery smooth scrolling */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  html.lenis, html.lenis body {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
   }
 
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
-    /* Removed cursor: none to fix accessibility/usability unless custom cursor is key feature. 
-       If Custom cursor is strictly required, re-enable carefully. Assuming user wants 'Professional', standard cursor or very subtle custom is better */
-    /* cursor: none; */
+    overscroll-behavior-y: none;
     transition: background-color 0.5s ease, color 0.5s ease;
   }
 
@@ -332,6 +349,82 @@
 
   .card-animated-border:hover::before {
     opacity: 1;
+  }
+
+  /* Ultra premium card — matches Portfolio/Certifications dark glass style */
+  .card-ultra {
+    background: linear-gradient(135deg, #111118 0%, #0e0e14 50%, #0a0a10 100%);
+    border: none;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .card-ultra::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 1.5rem;
+    right: 1.5rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(139,92,246,0.35), rgba(236,72,153,0.35), transparent);
+    z-index: 10;
+  }
+
+  /* Animated border wrapper — use as a parent div around .card-ultra */
+  .card-ultra-border {
+    position: relative;
+    border-radius: 1.625rem;
+  }
+
+  .card-ultra-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: linear-gradient(135deg,
+        rgba(139,92,246,0.25),
+        rgba(236,72,153,0.12),
+        rgba(6,182,212,0.15),
+        rgba(139,92,246,0.25));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0.4;
+    transition: opacity 0.5s ease;
+  }
+
+  .card-ultra-border:hover::before {
+    opacity: 1;
+  }
+
+  /* Aurora glow blob reusable */
+  .aurora-blob {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(60px);
+    opacity: 0.3;
+    pointer-events: none;
+    animation: blob 10s ease-in-out infinite;
+  }
+
+  .aurora-blob-purple {
+    background: #8B5CF6;
+  }
+
+  .aurora-blob-pink {
+    background: #EC4899;
+  }
+
+  .aurora-blob-cyan {
+    background: #06B6D4;
+  }
+
+  .aurora-blob-blue {
+    background: #3B82F6;
   }
 
   /* Hover lift effect */

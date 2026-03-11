@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import {
     Home, User, Briefcase, GraduationCap, FolderOpen,
-    MessageSquare, Settings, Wrench, Menu, X, LogOut, Code2
+    MessageSquare, Settings, Wrench, Menu, X, LogOut, Code2, FileText
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -21,6 +21,7 @@ export function Sidebar({ activeTab, setActiveTab, userName, onLogout }: Sidebar
 
     const navItems = [
         { id: "overview", label: "Overview", icon: Home },
+        { id: "requests", label: "Requests", icon: FileText },
         { id: "personal", label: "Personal Info", icon: User },
         { id: "skills", label: "Skills", icon: Code2 },
         { id: "experience", label: "Experience", icon: Briefcase },

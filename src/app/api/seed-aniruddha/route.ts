@@ -13,11 +13,10 @@ export async function GET(request: NextRequest) {
     const aniruddhaPortfolio = await Portfolio.create({
       personalInfo: {
         name: 'Aniruddha Patil',
-        title: 'MERN Stack Expert',
+        title: 'Software Engineer',
         email: 'aniruddhapatil@example.com', // Update with actual email
         phone: '+91 XXXXXXXXXX', // Update with actual phone
-        location: 'Pune, Maharashtra',
-        bio: 'A passionate MERN Stack Expert with expertise in building robust and scalable web applications. Currently pursuing B.Tech in Computer Science at VIT Chennai, with a strong foundation in full-stack development, machine learning, and cloud technologies.',
+        bio: 'A passionate Software Engineer with expertise in building robust and scalable web applications. Recently Graduated B.Tech in Computer Science at VIT Chennai, with a strong foundation in full-stack development, machine learning, and cloud technologies.',
         avatar: 'https://github.com/Aniruddha1701.png', // GitHub avatar
         resume: '/resume.pdf'
       },
@@ -56,6 +55,20 @@ export async function GET(request: NextRequest) {
         }
       ],
       experience: [
+        {
+          company: 'Ethnus',
+          position: 'Full Stack Developer Internship Program',
+          location: 'Remote',
+          startDate: new Date('2023-08-01'),
+          endDate: new Date('2023-12-01'),
+          current: false,
+          description: [
+            'Developed and deployed 8 key features and functionalities for a hotel booking application, encompassing user authentication, booking management, and real-time availability tracking.',
+            'Engineered MongoDB database solutions for 1,000+ hotel listings, reducing query response time by 40% and enabling seamless scalability for a 50% increase in daily user traffic.',
+            'Collaborated closely with a 4-person team to design and implement a highly intuitive user interface.',
+            'Maintained code quality through regular code reviews and rigorous testing, achieving a 15% improvement in application stability.'
+          ]
+        },
         {
           company: 'Open to Opportunities',
           position: 'Seeking Full Stack Developer Role',

@@ -57,8 +57,18 @@ export function ContactForm() {
     };
 
     return (
-        <Card className="p-6 md:p-8 card-premium border-white/5 bg-secondary/20">
-            <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="card-ultra-border relative group">
+            {/* Outer glow */}
+            <div className="absolute -inset-2 rounded-[28px] blur-2xl opacity-30 bg-gradient-to-br from-violet-500/20 to-pink-500/15 pointer-events-none" />
+
+            <Card className="card-ultra border-0 relative p-6 md:p-8">
+                {/* Aurora background */}
+                <div className="absolute inset-0 opacity-20 overflow-hidden pointer-events-none rounded-3xl">
+                    <div className="absolute -top-16 -left-16 w-40 h-40 rounded-full blur-[70px] bg-violet-500 animate-blob" />
+                    <div className="absolute -bottom-12 -right-12 w-32 h-32 rounded-full blur-[50px] bg-pink-500 animate-blob animation-delay-2000" />
+                </div>
+
+            <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
                 <div className="grid gap-4 md:grid-cols-2">
                     <div className="space-y-2">
                         <Label htmlFor="name">Name</Label>
@@ -67,7 +77,7 @@ export function ContactForm() {
                             name="name"
                             placeholder="Your name"
                             required
-                            className="bg-background/50 border-white/10 focus:border-primary/50"
+                            className="bg-white/[0.03] border-white/[0.08] focus:border-violet-500/50 rounded-xl"
                         />
                     </div>
                     <div className="space-y-2">
@@ -78,7 +88,7 @@ export function ContactForm() {
                             type="email"
                             placeholder="your@email.com"
                             required
-                            className="bg-background/50 border-white/10 focus:border-primary/50"
+                            className="bg-white/[0.03] border-white/[0.08] focus:border-violet-500/50 rounded-xl"
                         />
                     </div>
                 </div>
@@ -89,7 +99,7 @@ export function ContactForm() {
                         name="subject"
                         placeholder="What's this about?"
                         required
-                        className="bg-background/50 border-white/10 focus:border-primary/50"
+                        className="bg-white/[0.03] border-white/[0.08] focus:border-violet-500/50 rounded-xl"
                     />
                 </div>
                 <div className="space-y-2">
@@ -100,14 +110,14 @@ export function ContactForm() {
                         placeholder="Your message..."
                         rows={5}
                         required
-                        className="bg-background/50 border-white/10 focus:border-primary/50 resize-none"
+                        className="bg-white/[0.03] border-white/[0.08] focus:border-violet-500/50 resize-none rounded-xl"
                     />
                 </div>
                 <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                     <Button
                         type="submit"
                         disabled={isSubmitting}
-                        className="w-full group bg-primary hover:bg-primary/90 text-primary-foreground"
+                        className="w-full group bg-gradient-to-r from-violet-600 to-pink-600 hover:from-violet-500 hover:to-pink-500 text-white rounded-xl py-3 shadow-lg shadow-violet-500/20 hover:shadow-violet-500/30 transition-all duration-300"
                     >
                         {isSubmitting ? (
                             <>
@@ -128,6 +138,7 @@ export function ContactForm() {
                     </Button>
                 </motion.div>
             </form>
-        </Card>
+            </Card>
+        </div>
     );
 }

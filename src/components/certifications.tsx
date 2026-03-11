@@ -165,84 +165,73 @@ const CertificateCard = ({ cert, i }: { cert: any, i: number }) => {
   return (
     <motion.div
       variants={cardVariants}
-      className="h-full group relative"
+      className="group relative h-full min-h-[340px] flex flex-col rounded-[32px] overflow-hidden"
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       whileHover={{ y: -5 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
     >
-      {/* Spotlight Overlay */}
+      {/* Dynamic Hover Spotlight */}
       <motion.div
-        className="pointer-events-none absolute -inset-px rounded-[26px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30"
+        className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"
         style={{
           background: useMotionTemplate`
-              radial-gradient(
-                500px circle at ${mouseX}px ${mouseY}px,
-                ${colors.primary}40,
-                transparent 80%
-              )
-            `,
+            radial-gradient(
+              450px circle at ${mouseX}px ${mouseY}px,
+              ${colors.primary}15,
+              transparent 80%
+            )
+          `,
         }}
       />
 
-      {/* Outer Glow (static/pulsing) */}
-      <div
-        className="absolute -inset-1 rounded-[28px] blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-700"
-        style={{ background: colors.primary }}
-      />
+      {/* Main Card Body */}
+      <div className="relative z-10 flex flex-col h-full rounded-[30px] m-[1px] bg-[#0c0c11]/80 backdrop-blur-xl border border-white/[0.05] group-hover:border-white/[0.1] transition-colors duration-500 overflow-hidden">
+        
+        {/* Subtle top edge glow on hover */}
+        <div 
+          className="absolute top-0 left-10 right-10 h-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          style={{ background: `linear-gradient(90deg, transparent, ${colors.primary}80, transparent)` }}
+        />
 
-      {/* Animated border gradient */}
-      <div className="absolute -inset-[1px] rounded-[26px] overflow-hidden opacity-50 group-hover:opacity-100 transition-opacity duration-500">
-        <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent" />
-        <div className="absolute inset-[1px] rounded-3xl bg-[#0d0d12]" />
-      </div>
+        {/* Ambient colored blur in top right */}
+        <div 
+          className="absolute -top-16 -right-16 w-48 h-48 rounded-full blur-[60px] opacity-20 mix-blend-screen transition-opacity duration-500 group-hover:opacity-40"
+          style={{ background: colors.primary }}
+        />
 
-      <Card className="relative h-full min-h-[340px] overflow-hidden rounded-3xl border-0 bg-gradient-to-br from-[#12121a] via-[#0f0f16] to-[#0a0a10]">
-
-        {/* Subtle aurora background */}
-        <div className="absolute inset-0 opacity-20 overflow-hidden">
-          <motion.div
-            className="absolute -top-20 -left-20 w-64 h-64 rounded-full blur-[80px]"
-            style={{ background: colors.primary }}
-            animate={{ scale: [1, 1.1, 1], opacity: [0.5, 0.7, 0.5] }}
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </div>
-
-        <div className="relative p-6 flex flex-col h-full z-10">
+        <div className="relative p-6 px-7 flex flex-col h-full z-10">
           {/* Header with logo and issuer */}
-          <div className="flex items-center gap-4 mb-5">
+          <div className="flex items-center gap-4 mb-6">
             {logo}
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
                 <Shield className="w-3.5 h-3.5 flex-shrink-0" style={{ color: colors.primary }} />
-                <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: colors.primary }}>
+                <span className="text-xs font-semibold uppercase tracking-wider text-white/80">
                   {cert.issuer}
                 </span>
               </div>
               {issueDateFormatted && (
-                <span className="text-[11px] text-gray-500 font-medium">
+                <span className="text-[11px] text-white/40 font-medium">
                   Issued {issueDateFormatted}
                 </span>
               )}
             </div>
           </div>
 
-          {/* Title - prominent */}
-          <h3 className="text-xl md:text-[22px] font-bold leading-snug text-white mb-4 line-clamp-2 group-hover:text-transparent group-hover:bg-clip-text transition-all duration-500"
-            style={{
-              backgroundImage: isHovered ? `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})` : 'none'
-            }}
+          {/* Title */}
+          <h3 className="text-xl md:text-[22px] font-bold leading-snug text-white/90 mb-4 line-clamp-2 transition-colors duration-300 group-hover:text-white"
+            style={{ textShadow: isHovered ? `0 0 20px ${colors.primary}40` : 'none' }}
           >
             {cert.title}
           </h3>
 
           {/* Credential ID if available */}
           {cert.credentialId && (
-            <div className="flex items-center gap-2 mb-4 px-3 py-2 rounded-lg bg-white/[0.03] border border-white/[0.06]">
-              <Code className="w-3.5 h-3.5 text-gray-500" />
-              <span className="text-xs text-gray-400 font-mono truncate">
+            <div className="inline-flex items-center self-start gap-2 mb-4 px-3 py-1.5 rounded-full bg-white/[0.03] border border-white/[0.06]">
+              <Code className="w-3 h-3 text-white/40" />
+              <span className="text-xs text-white/50 font-mono truncate max-w-[200px]">
                 ID: {cert.credentialId}
               </span>
             </div>
@@ -251,54 +240,48 @@ const CertificateCard = ({ cert, i }: { cert: any, i: number }) => {
           {/* Spacer */}
           <div className="flex-1" />
 
-          {/* Footer */}
-          <div className="space-y-4 pt-4 border-t border-white/[0.06]">
-            {/* Verified badge */}
+          {/* Footer content */}
+          <div className="space-y-4 pt-5 border-t border-white/[0.04]">
+            {/* Status indicators */}
             <div className="flex items-center justify-between">
               <motion.div
-                className="relative flex items-center gap-2 px-4 py-2 rounded-xl overflow-hidden bg-emerald-500/10 border border-emerald-500/20"
+                className="relative flex items-center gap-2 px-3 py-1.5 rounded-full overflow-hidden bg-emerald-500/[0.08] border border-emerald-500/20"
                 whileHover={{ scale: 1.02 }}
               >
-                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <span className="text-sm font-semibold text-emerald-400">Verified</span>
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-xs font-semibold text-emerald-400/90 tracking-wide uppercase">Verified</span>
               </motion.div>
 
-              {/* Quick action hint */}
-              <div className="flex items-center gap-1 text-xs text-gray-500">
+              <div className="flex items-center gap-1.5 text-[11px] font-semibold text-white/30 uppercase tracking-widest">
                 <Zap className="w-3 h-3" style={{ color: colors.accent }} />
                 <span>Active</span>
               </div>
             </div>
 
-            {/* View Credential Button - Only visible on hover/always visible but styled */}
+            {/* View Credential Button */}
             {cert.verifyUrl && (
               <motion.a
                 href={cert.verifyUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="relative flex items-center justify-center gap-2.5 w-full py-3.5 rounded-2xl text-sm font-bold overflow-hidden"
+                className="relative flex items-center justify-center gap-2.5 w-full py-3 rounded-xl text-sm font-semibold overflow-hidden transition-all duration-300"
                 style={{
-                  background: `linear-gradient(135deg, ${colors.primary}15, ${colors.secondary}10)`,
-                  border: `1px solid ${colors.primary}30`,
+                  background: isHovered ? `linear-gradient(135deg, ${colors.primary}15, transparent)` : 'rgba(255,255,255,0.02)',
+                  border: `1px solid ${isHovered ? `${colors.primary}40` : 'rgba(255,255,255,0.05)'}`,
                 }}
-                whileHover={{
-                  scale: 1.02,
-                  boxShadow: `0 0 20px ${colors.primary}20`
-                }}
+                whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <Sparkles className="w-4 h-4 relative z-10" style={{ color: colors.primary }} />
-                <span className="relative z-10 bg-gradient-to-r bg-clip-text text-transparent"
-                  style={{ backgroundImage: `linear-gradient(90deg, ${colors.primary}, ${colors.secondary})` }}
-                >
+                <Sparkles className="w-4 h-4 transition-colors" style={{ color: isHovered ? colors.primary : 'rgba(255,255,255,0.4)' }} />
+                <span className="text-white/80 group-hover:text-white transition-colors">
                   View Credential
                 </span>
-                <ExternalLink className="w-4 h-4 relative z-10" style={{ color: colors.secondary }} />
+                <ExternalLink className="w-4 h-4 transition-colors" style={{ color: isHovered ? colors.secondary : 'rgba(255,255,255,0.4)' }} />
               </motion.a>
             )}
           </div>
         </div>
-      </Card>
+      </div>
     </motion.div>
   )
 };
@@ -370,18 +353,39 @@ export function Certifications({ certifications = [] }: CertificationsProps) {
           transition={{ delay: 0.3, duration: 0.6 }}
         >
           <span className="text-white">Certified </span>
-          <span className="relative inline-block">
+          <span className="relative inline-block mt-4 md:mt-0">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-pink-400 to-cyan-400 bg-[length:200%_auto] animate-gradient">
               Excellence
             </span>
-            {/* Underline glow */}
-            <motion.div
-              className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-violet-500 via-pink-500 to-cyan-500 rounded-full"
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
+            {/* Curvy underline SVG */}
+            <motion.svg
+              className="absolute -bottom-4 left-0 w-[110%] -ml-[5%] overflow-visible"
+              viewBox="0 0 200 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.8, duration: 0.8 }}
-            />
+              transition={{ delay: 0.8, duration: 0.2 }}
+            >
+              <motion.path
+                d="M 0 10 Q 50 -5 100 10 T 200 10"
+                stroke="url(#gradient-cert-line)"
+                strokeWidth="4"
+                strokeLinecap="round"
+                initial={{ pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.9, duration: 0.8, ease: "easeOut" }}
+              />
+              <defs>
+                <linearGradient id="gradient-cert-line" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#8b5cf6" />
+                  <stop offset="50%" stopColor="#ec4899" />
+                  <stop offset="100%" stopColor="#06b6d4" />
+                </linearGradient>
+              </defs>
+            </motion.svg>
           </span>
         </motion.h2>
 

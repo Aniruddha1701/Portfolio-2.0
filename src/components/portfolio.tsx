@@ -188,164 +188,152 @@ const ProjectCard = ({ project, index }: { project: Project, index: number }) =>
   const cardRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [5, -5]), { stiffness: 150, damping: 20 });
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-5, 5]), { stiffness: 150, damping: 20 });
+  const mouseX = useMotionValue(0.5);
+  const mouseY = useMotionValue(0.5);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    mouseX.set(x);
-    mouseY.set(y);
+    mouseX.set((e.clientX - rect.left) / rect.width);
+    mouseY.set((e.clientY - rect.top) / rect.height);
   };
 
   const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
+    mouseX.set(0.5);
+    mouseY.set(0.5);
     setIsHovered(false);
   };
+
+  const spotlightX = useSpring(useTransform(mouseX, [0, 1], [0, 100]), { stiffness: 200, damping: 30 });
+  const spotlightY = useSpring(useTransform(mouseY, [0, 1], [0, 100]), { stiffness: 200, damping: 30 });
 
   return (
     <motion.div
       variants={cardVariants}
       className="h-full group"
-      style={{ perspective: 1000 }}
     >
       <motion.div
         ref={cardRef}
         className="relative h-full"
-        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={handleMouseLeave}
       >
-        {/* Outer glow */}
-        <motion.div
-          className="absolute -inset-2 rounded-[28px] blur-2xl opacity-0 group-hover:opacity-40 transition-all duration-700"
-          style={{
-            background: `radial-gradient(ellipse at center, ${colors.primary}40, ${colors.secondary}20, transparent 70%)`,
-          }}
-        />
-
-        {/* Animated border gradient */}
-        <div className="absolute -inset-[2px] rounded-[26px] overflow-hidden">
-          <motion.div
-            className="absolute inset-0"
-            style={{
-              background: `conic-gradient(from 0deg at 50% 50%, ${colors.primary}60, ${colors.secondary}60, ${colors.accent}60, ${colors.primary}60)`,
-            }}
-            animate={{ rotate: 360 }}
-            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-          />
-          <div className="absolute inset-[2px] rounded-3xl bg-[#0c0c12]" />
-        </div>
-
-        {/* Card inner */}
-        <Card className="relative h-full min-h-[320px] overflow-hidden rounded-3xl border-0 bg-gradient-to-br from-[#111118] via-[#0e0e14] to-[#0a0a10]">
-          {/* Aurora background */}
-          <div className="absolute inset-0 opacity-40 overflow-hidden">
-            <motion.div
-              className="absolute -top-16 -left-16 w-48 h-48 rounded-full blur-[60px]"
-              style={{ background: colors.primary }}
-              animate={{ x: [0, 20, 0], y: [0, 15, 0] }}
-              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-            />
-            <motion.div
-              className="absolute -bottom-12 -right-12 w-40 h-40 rounded-full blur-[50px]"
-              style={{ background: colors.secondary }}
-              animate={{ x: [0, -15, 0], y: [0, -10, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            />
-          </div>
-
-          {/* Shimmer overlay */}
-          <motion.div
-            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-            style={{
-              background: `linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.06) 50%, transparent 60%)`,
-              backgroundSize: '200% 100%',
-            }}
-            animate={isHovered ? { backgroundPosition: ['100% 0%', '-100% 0%'] } : {}}
-            transition={{ duration: 1.5, repeat: Infinity }}
-          />
-
-          {/* Top highlight */}
+        <Card className="relative h-full min-h-[360px] overflow-hidden rounded-2xl border border-white/[0.06] bg-[#0a0a12] hover:border-white/[0.12] transition-all duration-500">
+          {/* Left accent stripe */}
           <div
-            className="absolute top-0 left-6 right-6 h-px"
-            style={{ background: `linear-gradient(90deg, transparent, ${colors.primary}50, ${colors.secondary}50, transparent)` }}
+            className="absolute left-0 top-0 bottom-0 w-1 rounded-l-2xl transition-all duration-500 group-hover:w-1.5"
+            style={{ background: `linear-gradient(180deg, ${colors.primary}, ${colors.secondary})` }}
           />
 
-          <div className="relative p-6 flex flex-col h-full z-10">
-            {/* Header */}
-            <div className="flex items-start gap-4 mb-4">
-              <ProjectLogo title={project.title} colors={colors} />
+          {/* Mouse-following spotlight gradient */}
+          <motion.div
+            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+            style={{
+              background: useTransform(
+                [spotlightX, spotlightY],
+                ([x, y]) => `radial-gradient(600px circle at ${x}% ${y}%, ${colors.primary}12, transparent 50%)`
+              ),
+            }}
+          />
+
+          {/* Subtle noise texture */}
+          <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+            mixBlendMode: 'overlay'
+          }} />
+
+          <div className="relative p-6 md:p-8 flex flex-col h-full z-10 pl-8">
+            {/* Header — project number + logo + title */}
+            <div className="flex items-start gap-4 mb-5">
+              {/* Numbered badge */}
+              <div
+                className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center text-lg font-black border transition-all duration-500"
+                style={{
+                  background: `linear-gradient(135deg, ${colors.primary}15, ${colors.secondary}08)`,
+                  borderColor: isHovered ? `${colors.primary}40` : 'rgba(255,255,255,0.06)',
+                  color: colors.primary,
+                  boxShadow: isHovered ? `0 0 25px ${colors.primary}20` : 'none',
+                }}
+              >
+                {String(index + 1).padStart(2, '0')}
+              </div>
+
               <div className="flex-1 min-w-0">
-                <h3 className="text-lg md:text-xl font-bold leading-tight text-white group-hover:text-transparent group-hover:bg-clip-text transition-all duration-500 line-clamp-2"
+                <motion.h3
+                  className="text-xl md:text-2xl font-bold leading-tight text-white mb-1"
                   style={{
-                    backgroundImage: isHovered ? `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})` : 'none'
+                    backgroundImage: isHovered ? `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})` : 'none',
+                    WebkitBackgroundClip: isHovered ? 'text' : 'unset',
+                    WebkitTextFillColor: isHovered ? 'transparent' : 'white',
+                    transition: 'all 0.5s ease',
                   }}
                 >
                   {project.title}
-                </h3>
+                </motion.h3>
+
+                {/* Colored underline that expands on hover */}
+                <motion.div
+                  className="h-0.5 rounded-full origin-left"
+                  style={{ background: `linear-gradient(90deg, ${colors.primary}, ${colors.secondary})` }}
+                  initial={{ scaleX: 0.3, opacity: 0.5 }}
+                  animate={{ scaleX: isHovered ? 1 : 0.3, opacity: isHovered ? 1 : 0.5 }}
+                  transition={{ duration: 0.4, ease: [0.25, 1, 0.5, 1] }}
+                />
               </div>
             </div>
 
             {/* Description */}
-            <p className="text-sm text-gray-400 leading-relaxed line-clamp-3 mb-5">
+            <p className="text-sm md:text-[15px] text-gray-400 leading-relaxed line-clamp-3 mb-6">
               {project.description}
             </p>
 
-            {/* Tech tags */}
+            {/* Tech tags — frosted glass pills with glow border */}
             <div className="flex flex-wrap gap-2 mb-auto">
               {project.technologies?.slice(0, 4).map((tag, tagIndex) => (
                 <motion.span
                   key={tag}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: tagIndex * 0.05, duration: 0.3 }}
-                  className="px-3 py-1.5 text-xs font-medium rounded-lg bg-white/[0.05] border border-white/[0.08] text-gray-300 hover:border-white/20 hover:bg-white/[0.08] transition-all duration-300 cursor-default"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: tagIndex * 0.06, duration: 0.3 }}
+                  className="px-3 py-1.5 text-xs font-semibold rounded-lg backdrop-blur-sm transition-all duration-300 cursor-default"
                   style={{
-                    boxShadow: isHovered ? `0 0 12px ${colors.primary}15` : 'none'
+                    background: isHovered ? `${colors.primary}10` : 'rgba(255,255,255,0.04)',
+                    border: `1px solid ${isHovered ? colors.primary + '30' : 'rgba(255,255,255,0.06)'}`,
+                    color: isHovered ? colors.primary : '#9ca3af',
                   }}
                 >
                   {tag}
                 </motion.span>
               ))}
               {project.technologies && project.technologies.length > 4 && (
-                <span className="px-3 py-1.5 text-xs font-medium rounded-lg bg-white/[0.03] border border-white/[0.06] text-gray-500">
+                <span className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white/[0.03] border border-white/[0.06] text-gray-500">
                   +{project.technologies.length - 4}
                 </span>
               )}
             </div>
 
-            {/* Footer */}
-            <div className="flex gap-3 pt-4 border-t border-white/[0.06] mt-4">
+            {/* Footer — action buttons */}
+            <div className="flex gap-3 pt-5 mt-5 border-t border-white/[0.05]">
               {project.liveUrl && project.liveUrl !== '#' && (
                 <motion.a
                   href={project.liveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all duration-300"
+                  className="flex-1 flex items-center justify-center gap-2.5 py-3 rounded-xl text-sm font-bold transition-all duration-400 text-white"
                   style={{
-                    background: `linear-gradient(135deg, ${colors.primary}15, ${colors.secondary}10)`,
-                    border: `1px solid ${colors.primary}25`,
+                    background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
+                    boxShadow: `0 4px 20px ${colors.primary}30`,
                   }}
                   whileHover={{
-                    scale: 1.02,
-                    boxShadow: `0 0 25px ${colors.primary}20`
+                    scale: 1.03,
+                    boxShadow: `0 8px 30px ${colors.primary}50`,
                   }}
-                  whileTap={{ scale: 0.98 }}
+                  whileTap={{ scale: 0.97 }}
                 >
-                  <Globe className="w-4 h-4" style={{ color: colors.primary }} />
-                  <span className="bg-gradient-to-r bg-clip-text text-transparent"
-                    style={{ backgroundImage: `linear-gradient(90deg, ${colors.primary}, ${colors.secondary})` }}
-                  >
-                    Live Demo
-                  </span>
+                  <Globe className="w-4 h-4" />
+                  Live Demo
+                  <ArrowUpRight className="w-3.5 h-3.5 opacity-70" />
                 </motion.a>
               )}
               {project.githubUrl && (
@@ -353,12 +341,19 @@ const ProjectCard = ({ project, index }: { project: Project, index: number }) =>
                   href={project.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold bg-white/[0.03] border border-white/[0.08] text-gray-300 hover:bg-white/[0.06] hover:border-white/[0.12] transition-all duration-300"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  className="flex-1 flex items-center justify-center gap-2.5 py-3 rounded-xl text-sm font-bold transition-all duration-300 text-gray-300 hover:text-white"
+                  style={{
+                    background: 'rgba(255,255,255,0.03)',
+                    border: `1px solid ${isHovered ? colors.primary + '25' : 'rgba(255,255,255,0.08)'}`,
+                  }}
+                  whileHover={{
+                    scale: 1.03,
+                    backgroundColor: 'rgba(255,255,255,0.06)',
+                  }}
+                  whileTap={{ scale: 0.97 }}
                 >
                   <Github className="w-4 h-4" />
-                  <span>Source</span>
+                  Source
                 </motion.a>
               )}
             </div>
@@ -446,13 +441,35 @@ const PortfolioComponent = ({ projects = [] }: PortfolioProps) => {
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-purple-400 to-cyan-400">
               Work
             </span>
-            <motion.div
-              className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-violet-500 via-purple-500 to-cyan-500 rounded-full"
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
+            {/* Curvy underline SVG */}
+            <motion.svg
+              className="absolute -bottom-4 left-0 w-full overflow-visible"
+              viewBox="0 0 200 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.6, duration: 0.6 }}
-            />
+              transition={{ delay: 0.6, duration: 0.2 }}
+            >
+              <motion.path
+                d="M 0 10 Q 50 -5 100 10 T 200 10"
+                stroke="url(#gradient-portfolio-line)"
+                strokeWidth="4"
+                strokeLinecap="round"
+                initial={{ pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.7, duration: 0.8, ease: "easeOut" }}
+              />
+              <defs>
+                <linearGradient id="gradient-portfolio-line" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#8b5cf6" />
+                  <stop offset="50%" stopColor="#c084fc" />
+                  <stop offset="100%" stopColor="#06b6d4" />
+                </linearGradient>
+              </defs>
+            </motion.svg>
           </span>
         </motion.h2>
 

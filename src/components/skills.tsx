@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Code2, Database, Brain, Wrench, Cloud, Cpu } from "lucide-react"
+import { Code2, Database, Brain, Wrench, Cloud, Cpu, Award } from "lucide-react"
 import { motion } from "framer-motion"
 
 interface Skill {
@@ -68,16 +68,83 @@ const SkillsComponent = ({ skills = [] }: SkillsProps) => {
   return (
     <div className="container px-4 md:px-6">
       <motion.div
-        className="flex flex-col items-center justify-center space-y-4 text-center"
+        className="flex flex-col items-center justify-center text-center mb-12"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-gradient">My Expertise</h2>
-        <p className="text-muted-foreground md:text-xl max-w-2xl">
-          I have a diverse skill set that allows me to build robust and beautiful web applications from front to back.
-        </p>
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          whileInView={{ scale: 1, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1, duration: 0.5 }}
+          className="relative mb-6"
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-violet-500 to-pink-500 rounded-full blur-xl opacity-30" />
+          <div className="relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-violet-500/15 to-pink-500/15 border border-violet-500/25 backdrop-blur-sm">
+            <Award className="w-4 h-4 text-violet-400" />
+            <span className="text-sm font-semibold bg-gradient-to-r from-violet-400 to-pink-400 bg-clip-text text-transparent">
+              Technical Skills
+            </span>
+          </div>
+        </motion.div>
+
+        <motion.h2
+          className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight mb-4"
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+        >
+          <span className="text-white">My </span>
+          <span className="relative inline-block">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400">
+              Expertise
+            </span>
+            {/* Curvy underline SVG */}
+            <motion.svg
+              className="absolute -bottom-4 left-0 w-full overflow-visible"
+              viewBox="0 0 200 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.6, duration: 0.2 }}
+            >
+              <motion.path
+                d="M 0 10 Q 50 -5 100 10 T 200 10"
+                stroke="url(#gradient-skills-line)"
+                strokeWidth="4"
+                strokeLinecap="round"
+                initial={{ pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.7, duration: 0.8, ease: "easeOut" }}
+              />
+              <defs>
+                <linearGradient id="gradient-skills-line" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#8b5cf6" />
+                  <stop offset="50%" stopColor="#c084fc" />
+                  <stop offset="100%" stopColor="#ec4899" />
+                </linearGradient>
+              </defs>
+            </motion.svg>
+          </span>
+        </motion.h2>
+
+        <motion.p
+          className="max-w-[650px] text-gray-400 md:text-lg leading-relaxed"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+        >
+          A diverse skill set that allows me to build{" "}
+          <span className="text-violet-400 font-medium">robust</span> and{" "}
+          <span className="text-pink-400 font-medium">beautiful</span> web applications from front to back
+        </motion.p>
       </motion.div>
       <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {displaySkills.map((skillCategory, index) => (
@@ -91,48 +158,69 @@ const SkillsComponent = ({ skills = [] }: SkillsProps) => {
               ease: [0.25, 1, 0.5, 1]
             }}
             viewport={{ once: true, margin: "-50px" }}
+            whileHover={{ y: -5 }}
+            className="group"
           >
-            <Card className="h-full group glass-effect hover-lift relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <CardHeader className="pb-3 relative z-10">
-                <div className="flex items-center gap-3">
+            {/* Animated border wrapper */}
+            <div className="card-ultra-border h-full">
+              {/* Outer glow */}
+              <div className="absolute -inset-2 rounded-[28px] blur-2xl opacity-0 group-hover:opacity-30 transition-all duration-700 bg-gradient-to-br from-violet-500/30 to-pink-500/20 pointer-events-none" />
+
+              <Card className="card-ultra h-full border-0 relative">
+                {/* Aurora background */}
+                <div className="absolute inset-0 opacity-20 overflow-hidden pointer-events-none">
                   <motion.div
-                    className="p-2 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors"
-                    whileHover={{ rotate: 360, scale: 1.1 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    {getCategoryIcon(skillCategory.category)}
-                  </motion.div>
-                  <CardTitle className="text-lg">{skillCategory.category}</CardTitle>
+                    className="absolute -top-12 -left-12 w-32 h-32 rounded-full blur-[60px] bg-violet-500"
+                    animate={{ x: [0, 15, 0], y: [0, 10, 0] }}
+                    transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                  <motion.div
+                    className="absolute -bottom-8 -right-8 w-28 h-28 rounded-full blur-[50px] bg-pink-500"
+                    animate={{ x: [0, -10, 0], y: [0, -8, 0] }}
+                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                  />
                 </div>
-              </CardHeader>
-              <CardContent className="relative z-10">
-                <div className="flex flex-wrap gap-2">
-                  {skillCategory.items.map((skill, skillIndex) => (
-                    <motion.span
-                      key={skill}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      whileHover={{
-                        scale: 1.1,
-                        boxShadow: "0 5px 15px rgba(0,0,0,0.2)"
-                      }}
-                      transition={{
-                        duration: 0.3,
-                        delay: index * 0.1 + skillIndex * 0.05,
-                        type: "spring",
-                        stiffness: 300
-                      }}
-                      viewport={{ once: true }}
-                      className="px-3 py-1.5 bg-muted/80 backdrop-blur-sm rounded-full text-sm font-medium hover:bg-primary hover:text-primary-foreground transition-all duration-200 cursor-default border border-transparent hover:border-primary/30 flex items-center gap-2 inline-flex"
+
+                <CardHeader className="pb-3 relative z-10">
+                  <div className="flex items-center gap-3">
+                    <motion.div
+                      className="p-2.5 bg-gradient-to-br from-violet-500/15 to-pink-500/10 rounded-xl border border-white/[0.06] group-hover:border-violet-500/20 transition-colors"
+                      whileHover={{ rotate: 360, scale: 1.1 }}
+                      transition={{ duration: 0.5 }}
                     >
-                      {techLogos[skill] && <span className="flex-shrink-0">{techLogos[skill]}</span>}
-                      {skill}
-                    </motion.span>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                      {getCategoryIcon(skillCategory.category)}
+                    </motion.div>
+                    <CardTitle className="text-lg text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-violet-400 group-hover:to-pink-400 transition-all duration-500">{skillCategory.category}</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="relative z-10">
+                  <div className="flex flex-wrap gap-2">
+                    {skillCategory.items.map((skill, skillIndex) => (
+                      <motion.span
+                        key={skill}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        whileHover={{
+                          scale: 1.08,
+                          boxShadow: "0 0 20px rgba(139,92,246,0.25)"
+                        }}
+                        transition={{
+                          duration: 0.3,
+                          delay: index * 0.1 + skillIndex * 0.05,
+                          type: "spring",
+                          stiffness: 300
+                        }}
+                        viewport={{ once: true }}
+                        className="px-3 py-1.5 bg-white/[0.04] backdrop-blur-sm rounded-full text-sm font-medium text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-violet-500/20 hover:to-pink-500/15 transition-all duration-300 cursor-default border border-white/[0.06] hover:border-violet-500/30 flex items-center gap-2 inline-flex"
+                      >
+                        {techLogos[skill] && <span className="flex-shrink-0">{techLogos[skill]}</span>}
+                        {skill}
+                      </motion.span>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </motion.div>
         ))}
       </div>

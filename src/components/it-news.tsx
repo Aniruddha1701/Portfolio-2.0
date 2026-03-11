@@ -7,11 +7,16 @@ import { handleGetItNews } from "@/app/actions"
 import { Newspaper, BotMessageSquare, Sparkles } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { motion } from "framer-motion"
-import type { ItNewsOutput } from "@/ai/flows/it-news-flow"
 import { Skeleton } from "./ui/skeleton"
 
+export interface NewsArticle {
+  headline: string;
+  summary: string;
+  url?: string;
+}
+
 export function ItNews() {
-  const [news, setNews] = useState<ItNewsOutput['news'] | null>(null)
+  const [news, setNews] = useState<NewsArticle[] | null>(null)
   const [isPending, startTransition] = useTransition()
   const { toast } = useToast()
 
@@ -89,49 +94,45 @@ export function ItNews() {
                   }}
                   className="group"
                 >
-                  <Card className="relative overflow-hidden bg-gradient-to-br from-card/90 to-card/50 backdrop-blur-xl border border-primary/20 hover:border-primary/40 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-primary/10">
-                    {/* Animated gradient border */}
-                    <div className="absolute inset-0 rounded-lg p-[1px] bg-gradient-to-r from-primary/0 via-primary/50 to-accent/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <a href={story.url} target="_blank" rel="noopener noreferrer" className="card-ultra-border relative block">
+                    {/* Outer glow */}
+                    <div className="absolute -inset-2 rounded-[28px] blur-2xl opacity-0 group-hover:opacity-30 transition-all duration-700 bg-gradient-to-br from-violet-500/30 to-cyan-500/20 pointer-events-none" />
 
-                    {/* Glass reflection */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent pointer-events-none" />
+                    <Card className="card-ultra border-0 relative overflow-hidden h-full">
+                      {/* Aurora background */}
+                      <div className="absolute inset-0 opacity-20 overflow-hidden pointer-events-none">
+                        <motion.div
+                          className="absolute -top-12 -left-12 w-32 h-32 rounded-full blur-[60px] bg-violet-500"
+                          animate={{ x: [0, 15, 0], y: [0, 10, 0] }}
+                          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                        />
+                      </div>
 
                     <CardHeader className="relative z-10">
                       <CardTitle className="flex items-center gap-3 text-primary">
                         <motion.div
-                          className="p-2 bg-primary/10 rounded-lg"
+                          className="p-2.5 bg-gradient-to-br from-violet-500/15 to-cyan-500/10 rounded-xl border border-white/[0.06]"
                           whileHover={{ rotate: 360, scale: 1.1 }}
                           transition={{ duration: 0.5 }}
                         >
                           <Newspaper className="h-5 w-5" />
                         </motion.div>
-                        <span className="line-clamp-2">{story.headline}</span>
+                        <span className="line-clamp-2 hover:text-cyan-400 transition-colors">{story.headline}</span>
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="relative z-10">
-                      <Alert className="bg-gradient-to-br from-primary/5 to-accent/5 border-primary/20 backdrop-blur-sm">
-                        <div className="flex items-center gap-2">
-                          <BotMessageSquare className="h-4 w-4 text-primary" />
-                          {/* Sparkle effect for AI */}
-                          <motion.div
-                            animate={{
-                              opacity: [0.5, 1, 0.5],
-                              scale: [0.9, 1.1, 0.9],
-                            }}
-                            transition={{ duration: 2, repeat: Infinity }}
-                          >
-                            <Sparkles className="h-3 w-3 text-accent" />
-                          </motion.div>
+                      <Alert className="bg-white/[0.03] border-white/[0.08] backdrop-blur-sm rounded-xl group-hover:bg-white/[0.05] transition-colors">
+                        <div className="flex items-center gap-2 mb-2">
+                          <BotMessageSquare className="h-4 w-4 text-emerald-400" />
+                          <span className="text-primary/90 font-medium text-sm border-b border-emerald-500/30 pb-0.5">Article Snippet</span>
                         </div>
-                        <AlertTitle className="text-primary/90 flex items-center gap-2">
-                          AI Summary
-                        </AlertTitle>
-                        <AlertDescription className="prose prose-sm dark:prose-invert text-muted-foreground">
+                        <AlertDescription className="prose prose-sm dark:prose-invert text-muted-foreground line-clamp-3">
                           {story.summary}
                         </AlertDescription>
                       </Alert>
                     </CardContent>
-                  </Card>
+                    </Card>
+                  </a>
                 </motion.div>
               ))}
             </motion.div>

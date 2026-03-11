@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Tabs, TabsContent } from '@/components/ui/tabs'; // TabsList removed
 import { Sidebar } from '@/components/admin/sidebar';
+import { ResumeRequestsTab } from '@/components/admin/resume-requests-tab';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -683,6 +684,11 @@ export default function AdminDashboard() {
           {/* Tabs Container (Navigation removed, controlled by Sidebar) */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
             {/* TabsList removed - specific triggers hidden */}
+
+            {/* Requests Tab */}
+            <TabsContent value="requests">
+              <ResumeRequestsTab />
+            </TabsContent>
 
             {/* Overview Tab */}
             <TabsContent value="overview">

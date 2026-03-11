@@ -12,7 +12,6 @@ const navItems = [
     { label: "Skills", href: "#skills", icon: Award },
     { label: "Portfolio", href: "#portfolio", icon: Briefcase },
     { label: "Certifications", href: "#certifications", icon: Trophy },
-    { label: "Smart Lab", href: "#smart-lab", icon: FlaskConical },
 ]
 
 export default function FloatingNavbar() {

@@ -1,10 +1,10 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { School, Briefcase, Calendar, MapPin, Building2, GraduationCap, Award } from "lucide-react"
+import { School, Briefcase, Calendar, MapPin, Building2, GraduationCap, Award, ChevronRight } from "lucide-react"
 import Image from "next/image"
-import { useMemo, useState } from "react"
-import { format, differenceInMonths, differenceInYears } from "date-fns"
+import { useMemo } from "react"
+import { format, differenceInMonths } from "date-fns"
 
 // Helper to calculate duration between two dates
 const getDuration = (start: string | Date, end: string | Date | null | undefined) => {
@@ -23,14 +23,17 @@ const getDuration = (start: string | Date, end: string | Date | null | undefined
 
 interface JounreyItem {
   id?: string
-  institution: string // Company or School Name
-  degree?: string // Job Title or Degree
+  institution: string
+  degree?: string
   location?: string
   startDate?: string
   endDate?: string
   current?: boolean
   description?: string[]
   logo?: string
+  field?: string
+  gpa?: string
+  achievements?: string[]
   type: 'education' | 'experience'
 }
 
@@ -43,18 +46,15 @@ interface GroupedExperience {
 
 const Journey = ({ education = [], experience = [] }: { education?: any[], experience?: any[] }) => {
 
-  // Group experiences by company
   const groupedExperiences: GroupedExperience[] = useMemo(() => {
     const groups: { [key: string]: GroupedExperience } = {}
 
-    // Sort by date descending first
     const sortedExp = [...experience].sort((a, b) => {
       return new Date(b.startDate || 0).getTime() - new Date(a.startDate || 0).getTime()
     })
 
     sortedExp.forEach((item) => {
-      // Normalize company name to grouping key
-      const companyName = item.institution || "Unknown Company"
+      const companyName = item.company || item.institution || "Unknown Company"
 
       if (!groups[companyName]) {
         groups[companyName] = {
@@ -67,12 +67,9 @@ const Journey = ({ education = [], experience = [] }: { education?: any[], exper
       groups[companyName].roles.push({ ...item, type: 'experience' })
     })
 
-    // Calculate total duration per group and sort roles descending
     return Object.values(groups).map(group => {
-      // Sort roles by start date descending
       group.roles.sort((a, b) => new Date(b.startDate || 0).getTime() - new Date(a.startDate || 0).getTime())
 
-      // Calculate total duration (simplistic: earliest start to latest end)
       if (group.roles.length > 0) {
         const earliest = group.roles[group.roles.length - 1].startDate
         const latest = group.roles[0].current || group.roles[0].endDate === 'Present'
@@ -85,7 +82,6 @@ const Journey = ({ education = [], experience = [] }: { education?: any[], exper
       }
       return group
     }).sort((a, b) => {
-      // Sort groups by the start date of their most recent role
       const dateA = new Date(a.roles[0]?.startDate || 0).getTime();
       const dateB = new Date(b.roles[0]?.startDate || 0).getTime();
       return dateB - dateA;
@@ -93,166 +89,243 @@ const Journey = ({ education = [], experience = [] }: { education?: any[], exper
   }, [experience])
 
   return (
-    <section className="container max-w-5xl mx-auto px-4 py-20 relative">
-      <div className="flex flex-col items-center mb-20 space-y-4 text-center">
+    <section className="container max-w-4xl mx-auto px-4 py-20 relative">
+      {/* Section Header */}
+      <div className="flex flex-col items-center mb-16 text-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
-          className="inline-block p-2 px-4 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-sm font-medium mb-2"
+          viewport={{ once: true }}
+          className="relative mb-6"
         >
-          Career Path
+          <div className="absolute inset-0 bg-gradient-to-r from-violet-500 to-blue-500 rounded-full blur-xl opacity-30" />
+          <div className="relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-violet-500/15 to-blue-500/15 border border-violet-500/25 backdrop-blur-sm">
+            <Briefcase className="w-4 h-4 text-violet-400" />
+            <span className="text-sm font-semibold bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">
+              Career Path
+            </span>
+          </div>
         </motion.div>
-        <h2 className="text-4xl md:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-purple-100 to-gray-400">
-          Professional <span className="text-purple-400">Journey</span>
-        </h2>
-        <p className="text-gray-400 max-w-2xl text-lg leading-relaxed">
-          A timeline of my growth, technical evolution, and educational milestones.
-        </p>
+
+        <motion.h2
+          className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight mb-4"
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+        >
+          <span className="text-white">Professional </span>
+          <span className="relative inline-block">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-purple-400 to-blue-400">
+              Journey
+            </span>
+            {/* Curvy underline SVG */}
+            <motion.svg
+              className="absolute -bottom-4 left-0 w-full overflow-visible"
+              viewBox="0 0 200 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.6, duration: 0.2 }}
+            >
+              <motion.path
+                d="M 0 10 Q 50 -5 100 10 T 200 10"
+                stroke="url(#gradient-line)"
+                strokeWidth="4"
+                strokeLinecap="round"
+                initial={{ pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.7, duration: 0.8, ease: "easeOut" }}
+              />
+              <defs>
+                <linearGradient id="gradient-line" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#8b5cf6" />
+                  <stop offset="50%" stopColor="#c084fc" />
+                  <stop offset="100%" stopColor="#3b82f6" />
+                </linearGradient>
+              </defs>
+            </motion.svg>
+          </span>
+        </motion.h2>
+
+        <motion.p
+          className="max-w-[600px] text-gray-400 md:text-lg leading-relaxed"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+        >
+          A timeline of my growth, technical evolution, and educational milestones
+        </motion.p>
       </div>
 
+      {/* Experience Section */}
       <div className="relative">
-        {/* Center Timeline Line (Hidden on Mobile) */}
-        <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-purple-500/0 via-purple-500/20 to-purple-500/0 hidden md:block" />
+        {/* Vertical timeline line */}
+        <div className="absolute left-6 md:left-8 top-0 bottom-0 w-px bg-gradient-to-b from-violet-500/40 via-violet-500/15 to-transparent" />
 
-        <div className="space-y-16">
-          {/* Experience Section */}
+        <div className="space-y-8">
           {groupedExperiences.map((group, index) => (
-            <div key={`exp-${index}`} className={`relative flex flex-col md:flex-row items-center ${index % 2 === 0 ? 'md:flex-row-reverse' : ''} gap-8 md:gap-0`}>
-
-              {/* Timeline Dot (Desktop) */}
-              <div className="absolute left-1/2 w-4 h-4 -ml-2 rounded-full border-2 border-purple-500 bg-black z-10 hidden md:block shadow-[0_0_10px_purple] group-hover:scale-125 transition-transform" />
-
-              {/* Date/Duration Side */}
-              <div className={`w-full md:w-1/2 flex ${index % 2 === 0 ? 'md:justify-start md:pl-16' : 'md:justify-end md:pr-16'}`}>
-                <div className={`hidden md:flex flex-col ${index % 2 === 0 ? 'items-start' : 'items-end'}`}>
-                  <span className="text-2xl font-bold text-white/50">{group.totalDuration}</span>
-                  <span className="text-sm text-purple-400 uppercase tracking-widest font-mono mt-1">Duration</span>
-                </div>
+            <motion.div
+              key={`exp-${index}`}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="relative pl-16 md:pl-20 group"
+            >
+              {/* Timeline dot */}
+              <div className="absolute left-4 md:left-6 top-8 w-4 h-4 rounded-full border-2 border-violet-500 bg-[#0a0a12] z-10">
+                <div className="absolute inset-0 rounded-full bg-violet-500/30 animate-ping" style={{ animationDuration: '3s' }} />
               </div>
 
-              {/* Card Content Side */}
-              <div className={`w-full md:w-1/2 md:px-12`}>
-                <motion.div
-                  initial={{ opacity: 0, x: index % 2 === 0 ? 50 : -50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  whileHover={{ y: -5 }}
-                  transition={{ duration: 0.4 }}
-                  className="relative group bg-gray-900/40 backdrop-blur-xl border border-white/10 p-6 md:p-8 rounded-2xl overflow-hidden"
-                >
-                  {/* Gradient Glow */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              {/* Experience Card */}
+              <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:border-violet-500/20 hover:bg-white/[0.04] transition-all duration-500 overflow-hidden">
+                {/* Subtle gradient top bar */}
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet-500/30 to-transparent" />
 
-                  <div className="relative z-10">
-                    <div className="flex items-center gap-4 mb-6">
-                      <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-gray-800 to-black border border-white/10 flex items-center justify-center shrink-0 shadow-lg group-hover:shadow-purple-500/20 transition-all">
+                <div className="p-6 md:p-8">
+                  {/* Company Header */}
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500/15 to-blue-500/10 border border-white/[0.08] group-hover:border-violet-500/25 flex items-center justify-center shrink-0 transition-all duration-500">
                         {group.logo ? (
-                          <Image src={group.logo} alt={group.company} width={32} height={32} className="rounded-lg object-contain" />
+                          <Image src={group.logo} alt={group.company} width={28} height={28} className="rounded-lg object-contain" />
                         ) : (
-                          <Building2 className="w-6 h-6 text-purple-400" />
+                          <Building2 className="w-5 h-5 text-violet-400" />
                         )}
                       </div>
                       <div>
-                        <h3 className="text-xl font-bold text-white group-hover:text-purple-300 transition-colors">{group.company}</h3>
-                        <div className="flex items-center gap-2 text-sm text-gray-400 md:hidden">
+                        <h3 className="text-xl font-bold text-white group-hover:text-violet-300 transition-colors duration-300">{group.company}</h3>
+                        <div className="flex items-center gap-2 text-xs text-gray-500 mt-0.5">
                           <Calendar className="w-3 h-3" />
-                          {group.totalDuration}
+                          <span>{group.totalDuration}</span>
                         </div>
                       </div>
                     </div>
+                  </div>
 
-                    <div className="space-y-6">
-                      {group.roles.map((role, rIndex) => (
-                        <div key={rIndex} className="relative pl-6 border-l border-white/10 last:border-0 pb-1">
-                          <div className="absolute left-[-2px] top-2 w-1 h-1 rounded-full bg-purple-500 shadow-[0_0_8px_purple]" />
-                          <h4 className="text-lg font-semibold text-white flex items-center gap-2">
-                            {role.degree}
-                            {(!role.endDate || role.endDate === 'Present') && (
-                              <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] border border-emerald-500/20">CURRENT</span>
-                            )}
-                          </h4>
-                          <div className="flex items-center gap-3 text-xs text-gray-500 mt-1 mb-3 font-mono">
-                            <span>{role.startDate ? format(new Date(role.startDate), 'MMM yyyy') : ''} - {(!role.endDate || role.endDate === 'Present') ? 'Present' : format(new Date(role.endDate), 'MMM yyyy')}</span>
-                            {role.location && (
-                              <>
-                                <span className="w-1 h-1 rounded-full bg-gray-700" />
-                                <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {role.location}</span>
-                              </>
+                  {/* Roles */}
+                  <div className="space-y-5">
+                    {group.roles.map((role, rIndex) => (
+                      <div key={rIndex} className="relative">
+                        {/* Role connector */}
+                        {rIndex > 0 && (
+                          <div className="absolute -top-2.5 left-3 w-px h-2.5 bg-violet-500/20" />
+                        )}
+
+                        <div className="flex items-start gap-3">
+                          <div className="mt-2 w-1.5 h-1.5 rounded-full bg-violet-500 shrink-0 shadow-[0_0_6px_rgba(139,92,246,0.5)]" />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <h4 className="text-base font-semibold text-white">{role.degree}</h4>
+                              {(!role.endDate || role.endDate === 'Present') && (
+                                <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] border border-emerald-500/20 font-bold tracking-wider">CURRENT</span>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-3 text-xs text-gray-500 mt-1 font-mono">
+                              <span>{role.startDate ? format(new Date(role.startDate), 'MMM yyyy') : ''} – {(!role.endDate || role.endDate === 'Present') ? 'Present' : format(new Date(role.endDate), 'MMM yyyy')}</span>
+                              {role.location && (
+                                <>
+                                  <span className="w-1 h-1 rounded-full bg-gray-700" />
+                                  <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {role.location}</span>
+                                </>
+                              )}
+                            </div>
+
+                            {role.description && (
+                              <ul className="mt-3 space-y-2">
+                                {(Array.isArray(role.description) ? role.description : [role.description]).map((desc, dIndex) => (
+                                  <li key={dIndex} className="text-sm text-gray-400 leading-relaxed flex items-start gap-2.5">
+                                    <ChevronRight className="w-3.5 h-3.5 text-violet-500/50 mt-0.5 shrink-0" />
+                                    <span>{desc}</span>
+                                  </li>
+                                ))}
+                              </ul>
                             )}
                           </div>
-
-                          {role.description && (
-                            <ul className="space-y-2 mt-2">
-                              {(Array.isArray(role.description) ? role.description : [role.description]).map((desc, dIndex) => (
-                                <li key={dIndex} className="text-sm text-gray-400 leading-relaxed flex items-start gap-2">
-                                  <span className="block mt-1.5 w-1 h-1 rounded-full bg-gray-600 shrink-0" />
-                                  {desc}
-                                </li>
-                              ))}
-                            </ul>
-                          )}
                         </div>
-                      ))}
-                    </div>
+                      </div>
+                    ))}
                   </div>
-                </motion.div>
+                </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
+      </div>
 
-        {/* Education Section Title */}
-        <div className="flex items-center justify-center my-20">
-          <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent w-full max-w-md" />
-          <div className="mx-4 p-3 bg-gray-900 border border-white/10 rounded-xl">
-            <GraduationCap className="w-6 h-6 text-blue-400" />
-          </div>
-          <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent w-full max-w-md" />
-        </div>
+      {/* Education Divider */}
+      <div className="flex items-center justify-center my-16">
+        <div className="h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent w-full max-w-sm" />
+        <motion.div
+          className="mx-6 p-3 rounded-2xl bg-blue-500/10 border border-blue-500/20"
+          whileInView={{ rotate: [0, 10, -10, 0] }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+        >
+          <GraduationCap className="w-6 h-6 text-blue-400" />
+        </motion.div>
+        <div className="h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent w-full max-w-sm" />
+      </div>
 
-        {/* Education Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+      {/* Education Section */}
+      <div className="relative">
+        {/* Timeline line */}
+        <div className="absolute left-6 md:left-8 top-0 bottom-0 w-px bg-gradient-to-b from-blue-500/40 via-blue-500/15 to-transparent" />
+
+        <div className="space-y-6">
           {education.map((edu, eIndex) => (
             <motion.div
               key={`edu-${eIndex}`}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              whileHover={{ y: -5 }}
-              className="group relative bg-gray-900/40 backdrop-blur-md border border-white/10 p-6 rounded-2xl overflow-hidden hover:border-blue-500/30 transition-colors"
+              transition={{ delay: eIndex * 0.1 }}
+              className="relative pl-16 md:pl-20 group"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              {/* Timeline dot */}
+              <div className="absolute left-[18px] md:left-[26px] top-6 w-3 h-3 rounded-full border-2 border-blue-500 bg-[#0a0a12] z-10" />
 
-              <div className="relative flex gap-4">
-                <div className="w-12 h-12 rounded-lg bg-blue-500/10 flex items-center justify-center border border-blue-500/20 shrink-0 group-hover:scale-110 transition-transform">
-                  <School className="w-5 h-5 text-blue-400" />
-                </div>
-                <div className="flex-1">
-                  <div className="flex justify-between items-start">
-                    <h3 className="text-lg font-bold text-white group-hover:text-blue-300 transition-colors">{edu.institution}</h3>
-                    <span className="text-xs font-mono text-blue-400/80 bg-blue-500/10 px-2 py-1 rounded">
-                      {edu.startDate ? new Date(edu.startDate).getFullYear() : ''} - {edu.endDate ? new Date(edu.endDate).getFullYear() : 'Present'}
-                    </span>
+              {/* Education Card */}
+              <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:border-blue-500/20 hover:bg-white/[0.04] transition-all duration-500 p-5 md:p-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500/15 to-cyan-500/10 border border-white/[0.08] group-hover:border-blue-500/25 flex items-center justify-center shrink-0 transition-all duration-500">
+                    <School className="w-5 h-5 text-blue-400" />
                   </div>
-                  <h4 className="text-base font-medium text-gray-300 mt-1">{edu.degree} {edu.field && <span className="text-gray-500">in {edu.field}</span>}</h4>
-
-                  {edu.gpa && (
-                    <div className="inline-flex items-center gap-1.5 mt-3 px-2 py-1 bg-yellow-500/10 border border-yellow-500/20 rounded text-xs text-yellow-500">
-                      <Award className="w-3 h-3" />
-                      <span>GPA: {edu.gpa}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <h3 className="text-lg font-bold text-white group-hover:text-blue-300 transition-colors duration-300">{edu.institution}</h3>
+                      <span className="text-xs font-mono text-blue-400/80 bg-blue-500/10 px-2.5 py-1 rounded-lg border border-blue-500/15 shrink-0">
+                        {edu.startDate ? new Date(edu.startDate).getFullYear() : ''} – {edu.endDate ? new Date(edu.endDate).getFullYear() : 'Present'}
+                      </span>
                     </div>
-                  )}
+                    <p className="text-sm text-gray-400 mt-1">
+                      <span className="text-gray-300 font-medium">{edu.degree}</span>
+                      {edu.field && !edu.degree?.toLowerCase().includes(edu.field?.toLowerCase()) && <span className="text-gray-500"> in {edu.field}</span>}
+                    </p>
 
-                  {edu.achievements && edu.achievements.length > 0 && (
-                    <div className="mt-4 pt-4 border-t border-white/5">
-                      {edu.achievements.map((item: string, i: number) => (
-                        <div key={i} className="text-sm text-gray-400 flex items-start gap-2 mb-1">
-                          <span className="mt-1.5 w-1 h-1 rounded-full bg-blue-500/50 block shrink-0" />
-                          {item}
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                    {edu.gpa && (
+                      <div className="inline-flex items-center gap-1.5 mt-3 px-2.5 py-1 bg-yellow-500/10 border border-yellow-500/20 rounded-lg text-xs text-yellow-500">
+                        <Award className="w-3 h-3" />
+                        <span>GPA: {edu.gpa}</span>
+                      </div>
+                    )}
+
+                    {edu.achievements && edu.achievements.length > 0 && (
+                      <div className="mt-3 pt-3 border-t border-white/[0.06]">
+                        {edu.achievements.map((item: string, i: number) => (
+                          <div key={i} className="text-sm text-gray-400 flex items-start gap-2 mb-1.5">
+                            <ChevronRight className="w-3.5 h-3.5 text-blue-500/50 mt-0.5 shrink-0" />
+                            {item}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </motion.div>
