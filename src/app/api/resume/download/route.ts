@@ -35,90 +35,25 @@ export async function GET(request: NextRequest) {
          return NextResponse.json({ error: 'Access Denied. This token has expired.' }, { status: 410 });
     }
 
-    // 2. Fetch Portfolio data
-    const portfolio = await Portfolio.findOne();
+    // 2. Fetch Resume from Database
+    const resumeFile = await ResumeFile.findOne({ filename: 'Resume_Aniruddha.pdf' }).sort({ uploadedAt: -1 });
     
-    if (!portfolio || !portfolio.personalInfo?.resume) {
+    if (!resumeFile) {
       return NextResponse.json(
-        { error: 'No resume available' },
+        { error: 'Resume file not found in database' },
         { status: 404 }
       );
     }
-
-    const resumePath = portfolio.personalInfo.resume;
     
-    // If it's a URL (external resume), redirect to it
-    if (resumePath.startsWith('http://') || resumePath.startsWith('https://')) {
-      return NextResponse.redirect(resumePath);
-    }
-    
-    // For local files, serve them
-    if (resumePath.startsWith('/uploads/')) {
-      const filename = resumePath.replace('/uploads/', '');
-      const filePath = path.join(process.cwd(), 'public', 'uploads', filename);
-      
-      try {
-        const fileBuffer = await readFile(filePath);
-        
-        // Determine content type based on file extension
-        let contentType = 'application/pdf';
-        if (filename.endsWith('.doc')) {
-          contentType = 'application/msword';
-        } else if (filename.endsWith('.docx')) {
-          contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-        }
-        
-        // Get the person's name for the filename
-        const downloadName = portfolio.personalInfo.name 
-          ? `${portfolio.personalInfo.name.replace(/\s+/g, '_')}_Resume.pdf`
-          : 'Resume.pdf';
-        
-        return new NextResponse(fileBuffer, {
-          headers: {
-            'Content-Type': contentType,
-            'Content-Disposition': `attachment; filename="${downloadName}"`,
-            'Content-Length': fileBuffer.length.toString(),
-          },
-        });
-      } catch (error) {
-        console.error('File read error:', error);
-        return NextResponse.json(
-          { error: 'Resume file not found' },
-          { status: 404 }
-        );
-      }
-    }
-    
-    // Fallback for old '/resume.pdf' format
-    if (resumePath === '/resume.pdf') {
-      const filePath = path.join(process.cwd(), 'public', 'resume.pdf');
-      
-      try {
-        const fileBuffer = await readFile(filePath);
-        
-        const downloadName = portfolio.personalInfo.name 
-          ? `${portfolio.personalInfo.name.replace(/\s+/g, '_')}_Resume.pdf`
-          : 'Resume.pdf';
-        
-        return new NextResponse(fileBuffer, {
-          headers: {
-            'Content-Type': 'application/pdf',
-            'Content-Disposition': `attachment; filename="${downloadName}"`,
-            'Content-Length': fileBuffer.length.toString(),
-          },
-        });
-      } catch (error) {
-        return NextResponse.json(
-          { error: 'Resume file not found' },
-          { status: 404 }
-        );
-      }
-    }
-
-    return NextResponse.json(
-      { error: 'Invalid resume path' },
-      { status: 400 }
-    );
+    // Serve the DB buffer directly
+    const downloadName = 'Resume_Aniruddha.pdf';
+    return new NextResponse(resumeFile.data, {
+      headers: {
+        'Content-Type': resumeFile.contentType || 'application/pdf',
+        'Content-Disposition': `attachment; filename="${downloadName}"`,
+        'Content-Length': resumeFile.data.length.toString(),
+      },
+    });
 
   } catch (error) {
     console.error('Resume download error:', error);
