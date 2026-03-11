@@ -1,16 +1,18 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/db/mongodb';
 import ResumeRequest from '@/models/ResumeRequest';
 import ResumeFile from '@/models/ResumeFile';
-import { verifyAuth } from '@/lib/auth';
+import { verifyAuth } from '@/middleware/auth';
 import { sendApprovalEmailToVisitor, sendRejectionEmailToVisitor } from '@/lib/mail';
 
 // GET - Fetch all resume requests (Admin only)
-export async function GET(request: Request) {
-  const authResponse = await verifyAuth(request);
-  if (authResponse) return authResponse;
-
+export async function GET(request: NextRequest) {
   try {
+    const user = await verifyAuth(request);
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     await dbConnect();
     
     // Fetch all requests, sort by newest first
@@ -24,11 +26,13 @@ export async function GET(request: Request) {
 }
 
 // PUT - Update resume request status (approve/reject) (Admin only)
-export async function PUT(request: Request) {
-  const authResponse = await verifyAuth(request);
-  if (authResponse) return authResponse;
-
+export async function PUT(request: NextRequest) {
   try {
+    const user = await verifyAuth(request);
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     await dbConnect();
 
     const data = await request.json();
