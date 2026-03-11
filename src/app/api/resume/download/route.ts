@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db/mongodb';
 import Portfolio from '@/models/Portfolio';
-import ResumeRequest from '@/models/ResumeRequest'; // Added
+import ResumeRequest from '@/models/ResumeRequest';
+import ResumeFile from '@/models/ResumeFile';
 import { readFile } from 'fs/promises';
 import path from 'path';
 
