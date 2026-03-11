@@ -57,7 +57,9 @@ export const sendApprovalEmailToVisitor = async (
   visitorName: string,
   visitorEmail: string,
   downloadToken: string,
-  baseUrl?: string
+  baseUrl?: string,
+  resumeBuffer?: Buffer,
+  resumeFilename?: string
 ) => {
   const adminEmail = process.env.EMAIL_USER;
   let appUrl = baseUrl || process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_URL || 'http://localhost:9002';
@@ -76,8 +78,12 @@ export const sendApprovalEmailToVisitor = async (
       <p style="font-size: 16px; line-height: 1.6; color: #4b5563;">Hi ${visitorName},</p>
       <p style="font-size: 16px; line-height: 1.6; color: #4b5563;">Thank you for your interest! Aniruddha has approved your request to view his resume.</p>
       
+      ${resumeBuffer 
+        ? `<p style="font-size: 16px; line-height: 1.6; color: #4b5563;"><strong>The resume is attached directly to this email.</strong> You can also download it from the secure link below.</p>` 
+        : ''}
+      
       <div style="text-align: center; margin: 35px 0;">
-        <a href="${downloadLink}" style="display: inline-block; padding: 14px 28px; background-color: #8B5CF6; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 6px rgba(139, 92, 246, 0.25);">Download Resume</a>
+        <a href="${downloadLink}" style="display: inline-block; padding: 14px 28px; background-color: #8B5CF6; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 6px rgba(139, 92, 246, 0.25);">Download Secure Link</a>
       </div>
       
       <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb; font-size: 14px; color: #6b7280;">
@@ -87,12 +93,23 @@ export const sendApprovalEmailToVisitor = async (
     </div>
   `;
 
-  return transporter.sendMail({
+  const mailOptions: any = {
     from: `"Aniruddha Patil" <${adminEmail}>`,
     to: visitorEmail,
     subject: `Resume Request Approved`,
     html: htmlContent,
-  });
+  };
+
+  if (resumeBuffer && resumeFilename) {
+      mailOptions.attachments = [
+          {
+              filename: resumeFilename,
+              content: resumeBuffer
+          }
+      ];
+  }
+
+  return transporter.sendMail(mailOptions);
 };
 
 export const sendRejectionEmailToVisitor = async (

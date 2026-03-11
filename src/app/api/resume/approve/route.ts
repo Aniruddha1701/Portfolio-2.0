@@ -1,5 +1,6 @@
 import dbConnect from '@/lib/db/mongodb';
 import ResumeRequest from '@/models/ResumeRequest';
+import ResumeFile from '@/models/ResumeFile';
 import { sendApprovalEmailToVisitor, sendRejectionEmailToVisitor } from '@/lib/mail';
 import { NextResponse } from 'next/server';
 
@@ -47,7 +48,15 @@ export async function GET(request: Request) {
     // Send corresponding email to the visitor
     try {
         if (action === 'approve') {
-            await sendApprovalEmailToVisitor(resumeRequest.name, resumeRequest.email, resumeRequest.token, baseUrl);
+            const resumeFile = await ResumeFile.findOne({ filename: 'Resume_Aniruddha.pdf' }).sort({ uploadedAt: -1 });
+            await sendApprovalEmailToVisitor(
+                resumeRequest.name, 
+                resumeRequest.email, 
+                resumeRequest.token, 
+                baseUrl,
+                resumeFile ? resumeFile.data : undefined,
+                resumeFile ? resumeFile.filename : undefined
+            );
         } else {
             await sendRejectionEmailToVisitor(resumeRequest.name, resumeRequest.email);
         }

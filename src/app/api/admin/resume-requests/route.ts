@@ -1,37 +1,34 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db/mongodb';
 import ResumeRequest from '@/models/ResumeRequest';
-import { verifyAuth } from '@/middleware/auth';
+import ResumeFile from '@/models/ResumeFile';
+import { verifyAuth } from '@/lib/auth';
 import { sendApprovalEmailToVisitor, sendRejectionEmailToVisitor } from '@/lib/mail';
 
 // GET - Fetch all resume requests (Admin only)
-export async function GET(request: NextRequest) {
-  try {
-    const user = await verifyAuth(request);
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+export async function GET(request: Request) {
+  const authResponse = await verifyAuth(request);
+  if (authResponse) return authResponse;
 
+  try {
     await dbConnect();
     
     // Fetch all requests, sort by newest first
     const requests = await ResumeRequest.find({}).sort({ createdAt: -1 });
     
-    return NextResponse.json(requests, { status: 200 });
+    return NextResponse.json(requests);
   } catch (error: any) {
-    console.error('Fetch resume requests error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    console.error('Failed to fetch resume requests:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
 
 // PUT - Update resume request status (approve/reject) (Admin only)
-export async function PUT(request: NextRequest) {
-  try {
-    const user = await verifyAuth(request);
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+export async function PUT(request: Request) {
+  const authResponse = await verifyAuth(request);
+  if (authResponse) return authResponse;
 
+  try {
     await dbConnect();
 
     const data = await request.json();
@@ -65,7 +62,15 @@ export async function PUT(request: NextRequest) {
     // Send corresponding email to the visitor
     try {
         if (status === 'approved') {
-            await sendApprovalEmailToVisitor(resumeRequest.name, resumeRequest.email, resumeRequest.token, baseUrl);
+            const resumeFile = await ResumeFile.findOne({ filename: 'Resume_Aniruddha.pdf' }).sort({ uploadedAt: -1 });
+            await sendApprovalEmailToVisitor(
+                resumeRequest.name, 
+                resumeRequest.email, 
+                resumeRequest.token, 
+                baseUrl,
+                resumeFile ? resumeFile.data : undefined,
+                resumeFile ? resumeFile.filename : undefined
+            );
         } else {
             await sendRejectionEmailToVisitor(resumeRequest.name, resumeRequest.email);
         }
