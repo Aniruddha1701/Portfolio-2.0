@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import connectDB from '@/lib/db/mongodb';
+import dbConnect from '@/lib/db/mongoose';
 import OTP from '@/models/OTP';
 import { generateOTP, sendOTPEmail } from '@/lib/email';
 
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    await connectDB();
+    await dbConnect();
 
     // Check if there's a recent OTP (within last 1 minute)
     const recentOTP = await OTP.findOne({

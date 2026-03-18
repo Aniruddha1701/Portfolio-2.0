@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import connectDB from '@/lib/db/mongodb';
+import dbConnect from '@/lib/db/mongoose';
 import OTP from '@/models/OTP';
 
 // Generate random 6-digit OTP
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
 
     try {
       // Connect to database
-      await connectDB();
+      await dbConnect();
     } catch (dbError: any) {
       console.error('Database connection error:', dbError);
       // Continue without database for now

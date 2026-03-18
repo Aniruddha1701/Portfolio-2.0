@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import connectDB from '@/lib/db/mongodb';
+import dbConnect from '@/lib/db/mongoose';
 import OTP from '@/models/OTP';
 import jwt from 'jsonwebtoken';
 import { getJWTSecret } from '@/lib/auth/jwt-secret';
@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Email and OTP are required' }, { status: 400 });
         }
 
-        await connectDB();
+        await dbConnect();
 
         // Find the OTP record
         const otpRecord = await OTP.findOne({

@@ -1,4 +1,4 @@
-import dbConnect from '@/lib/db/mongodb';
+import dbConnect from '@/lib/db/mongoose';
 import ResumeRequest from '@/models/ResumeRequest';
 import { sendResumeRequestEmailToAdmin } from '@/lib/mail';
 import { NextResponse } from 'next/server';

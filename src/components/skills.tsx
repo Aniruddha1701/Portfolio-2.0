@@ -1,7 +1,6 @@
 "use client"
 
 import React from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Code2, Database, Brain, Wrench, Cloud, Cpu, Award } from "lucide-react"
 import { motion } from "framer-motion"
 
@@ -99,12 +98,12 @@ const SkillsComponent = ({ skills = [] }: SkillsProps) => {
         >
           <span className="text-white">My </span>
           <span className="relative inline-block">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400">
+            <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400">
               Expertise
             </span>
             {/* Curvy underline SVG */}
             <motion.svg
-              className="absolute -bottom-4 left-0 w-full overflow-visible"
+              className="absolute -bottom-6 left-0 w-full overflow-visible z-0"
               viewBox="0 0 200 20"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -150,14 +149,14 @@ const SkillsComponent = ({ skills = [] }: SkillsProps) => {
         {displaySkills.map((skillCategory, index) => (
           <motion.div
             key={skillCategory.category}
-            initial={{ opacity: 0, y: 30, rotateX: -15 }}
-            whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.6,
               delay: index * 0.1,
               ease: [0.25, 1, 0.5, 1]
             }}
-            viewport={{ once: true, margin: "-50px" }}
+            viewport={{ once: true }}
             whileHover={{ y: -5 }}
             className="group"
           >
@@ -166,7 +165,7 @@ const SkillsComponent = ({ skills = [] }: SkillsProps) => {
               {/* Outer glow */}
               <div className="absolute -inset-2 rounded-[28px] blur-2xl opacity-0 group-hover:opacity-30 transition-all duration-700 bg-gradient-to-br from-violet-500/30 to-pink-500/20 pointer-events-none" />
 
-              <Card className="card-ultra h-full border-0 relative">
+              <div className="card-ultra p-6 h-full relative">
                 {/* Aurora background */}
                 <div className="absolute inset-0 opacity-20 overflow-hidden pointer-events-none">
                   <motion.div
@@ -181,19 +180,20 @@ const SkillsComponent = ({ skills = [] }: SkillsProps) => {
                   />
                 </div>
 
-                <CardHeader className="pb-3 relative z-10">
+                <div className="pb-3 relative z-10">
                   <div className="flex items-center gap-3">
                     <motion.div
                       className="p-2.5 bg-gradient-to-br from-violet-500/15 to-pink-500/10 rounded-xl border border-white/[0.06] group-hover:border-violet-500/20 transition-colors"
+                      style={{ color: 'hsl(var(--primary))' }}
                       whileHover={{ rotate: 360, scale: 1.1 }}
                       transition={{ duration: 0.5 }}
                     >
                       {getCategoryIcon(skillCategory.category)}
                     </motion.div>
-                    <CardTitle className="text-lg text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-violet-400 group-hover:to-pink-400 transition-all duration-500">{skillCategory.category}</CardTitle>
+                    <h3 className="text-lg font-semibold text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-violet-400 group-hover:to-pink-400 transition-all duration-500">{skillCategory.category}</h3>
                   </div>
-                </CardHeader>
-                <CardContent className="relative z-10">
+                </div>
+                <div className="relative z-10">
                   <div className="flex flex-wrap gap-2">
                     {skillCategory.items.map((skill, skillIndex) => (
                       <motion.span
@@ -218,8 +218,8 @@ const SkillsComponent = ({ skills = [] }: SkillsProps) => {
                       </motion.span>
                     ))}
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             </div>
           </motion.div>
         ))}

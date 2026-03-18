@@ -10,7 +10,7 @@ const navItems = [
     { label: "Home", href: "#home", icon: Home },
     { label: "About", href: "#about", icon: User },
     { label: "Skills", href: "#skills", icon: Award },
-    { label: "Portfolio", href: "#portfolio", icon: Briefcase },
+    { label: "My Work", href: "#portfolio", icon: Briefcase },
     { label: "Certifications", href: "#certifications", icon: Trophy },
 ]
 
@@ -70,6 +70,8 @@ export default function FloatingNavbar() {
 
             {/* Desktop Floating Navbar */}
             <motion.nav
+                role="navigation"
+                aria-label="Main navigation"
                 className="fixed top-0 left-1/2 -translate-x-1/2 z-50 hidden md:flex items-center justify-center pointer-events-none"
                 style={{ y, width }}
             >
@@ -91,6 +93,7 @@ export default function FloatingNavbar() {
                                 <li key={item.label} className="relative">
                                     <motion.button
                                         onClick={() => scrollToSection(item.href)}
+                                        aria-current={isActive ? "page" : undefined}
                                         className={cn(
                                             "relative px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300",
                                             isActive ? "text-primary-foreground" : "text-muted-foreground hover:text-foreground"
@@ -141,6 +144,8 @@ export default function FloatingNavbar() {
             <div className="fixed top-4 right-4 z-50 md:hidden">
                 <motion.button
                     onClick={() => setIsOpen(!isOpen)}
+                    aria-expanded={isOpen}
+                    aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
                     className="glass-effect p-3 rounded-full text-foreground shadow-lg"
                     whileTap={{ scale: 0.9 }}
                 >
@@ -179,6 +184,7 @@ export default function FloatingNavbar() {
                         onClick={() => setIsOpen(false)}
                     >
                         <motion.nav
+                            aria-label="Mobile navigation menu"
                             className="absolute top-20 left-4 right-4 glass-morphism rounded-3xl p-4 overflow-hidden"
                             initial={{ y: -50, scale: 0.9, opacity: 0 }}
                             animate={{ y: 0, scale: 1, opacity: 1 }}

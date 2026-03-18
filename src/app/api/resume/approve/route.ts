@@ -1,4 +1,4 @@
-import dbConnect from '@/lib/db/mongodb';
+import dbConnect from '@/lib/db/mongoose';
 import ResumeRequest from '@/models/ResumeRequest';
 import ResumeFile from '@/models/ResumeFile';
 import { sendApprovalEmailToVisitor, sendRejectionEmailToVisitor } from '@/lib/mail';

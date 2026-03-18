@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import connectDB from '@/lib/db/mongodb';
+import dbConnect from '@/lib/db/mongoose';
 import OTP from '@/models/OTP';
 import Admin from '@/models/Admin';
 import nodemailer from 'nodemailer';
@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { email, password } = body;
 
-    await connectDB();
+    await dbConnect();
 
     const admin = await Admin.findOne({ email, isActive: true });
     if (!admin || !(await admin.comparePassword(password))) {

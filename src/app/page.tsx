@@ -7,6 +7,7 @@ import { Github, Linkedin, Mail, Brain } from 'lucide-react';
 import HeroEnhanced from '@/components/hero-enhanced';
 import FloatingNavbar from '@/components/floating-navbar';
 import SmoothScroll from '@/components/smooth-scroll';
+import { LoadingScreen } from '@/components/loading-screen';
 
 // Lazy-load below-the-fold components for faster initial load
 const Portfolio = lazy(() => import('@/components/portfolio').then(m => ({ default: m.Portfolio })));
@@ -28,6 +29,20 @@ export default function Home() {
   const [showDemo, setShowDemo] = useState(false);
   const [showTerminal, setShowTerminal] = useState(false);
   const [showMatrix, setShowMatrix] = useState(false);
+  const [showLoadingScreen, setShowLoadingScreen] = useState(true);
+
+  useEffect(() => {
+    // Check if we've already shown the loading screen in this session
+    // const hasSeen = sessionStorage.getItem('hasSeenLoadingScreen');
+    // if (hasSeen) {
+    //   setShowLoadingScreen(false);
+    // }
+  }, []);
+
+  const handleLoadingComplete = () => {
+    setShowLoadingScreen(false);
+    // sessionStorage.setItem('hasSeenLoadingScreen', 'true');
+  };
 
   useEffect(() => {
     const loadPortfolioData = async () => {
@@ -54,35 +69,23 @@ export default function Home() {
     loadPortfolioData();
   }, []);
 
-  if (loading) {
-    return null;
-  }
+  // While fetching data or showing the loading screen, we must handle the display
+  // Make sure we always return the loading screen if it's supposed to be shown
 
-  // If no portfolio data from database, show setup message
-  if (!portfolioData) {
-    return (
-      <div className="flex min-h-screen w-full flex-col bg-transparent items-center justify-center">
-        <div className="text-center space-y-4 p-8">
-          <h1 className="text-4xl font-bold text-primary">Portfolio Not Set Up</h1>
-          <p className="text-lg text-muted-foreground">
-            Please contact the administrator to set up the portfolio data.
-          </p>
-          <p className="text-sm text-muted-foreground">
-            Admin can log in at <a href="/admin/login" className="text-primary hover:underline">/admin/login</a> to configure the portfolio.
-          </p>
-        </div>
-      </div>
-    );
-  }
+  const showFallback = loading && !showLoadingScreen;
+  const showSetupMessage = !loading && !portfolioData;
+  const showMainContent = !loading && portfolioData;
 
   // Extract data from portfolioData
-  const personalInfo = portfolioData.personalInfo || {};
-  const socialLinks = portfolioData.socialLinks || {};
-  const skills = portfolioData.skills || [];
-  const projects = portfolioData.projects || [];
-  const education = portfolioData.education || [];
-  const experience = portfolioData.experience || [];
-  const achievements = portfolioData.achievements || [];
+  const data = portfolioData || {};
+  const personalInfo = data.personalInfo || {};
+  const socialLinks = data.socialLinks || {};
+  const skills = data.skills || [];
+  const projects = data.projects || [];
+  const education = data.education || [];
+  const experience = data.experience || [];
+  const achievements = data.achievements || [];
+  const openToWork = data.settings?.openToWork ?? false;
 
   const SocialLinks = () => (
     <motion.div
@@ -131,7 +134,15 @@ export default function Home() {
   );
 
   return (
-    <SmoothScroll>
+    <>
+      <AnimatePresence>
+        {showLoadingScreen && (
+          <LoadingScreen onComplete={handleLoadingComplete} />
+        )}
+      </AnimatePresence>
+
+      {showMainContent && (
+        <SmoothScroll>
     <div className="flex min-h-screen w-full flex-col bg-transparent">
       <FloatingNavbar />
       <SocialLinks />
@@ -148,7 +159,7 @@ export default function Home() {
 
         <Suspense fallback={<div className="w-full py-24" />}>
           <section id="about" className="w-full py-16 md:py-24 lg:py-32">
-            <Journey education={education} experience={experience} />
+            <Journey education={education} experience={experience} openToWork={openToWork} />
           </section>
         </Suspense>
 
@@ -184,7 +195,7 @@ export default function Home() {
                 <h2 className="text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-400 relative inline-block mb-4 pb-2 z-10 w-fit">
                   Engineering Challenge
                   <motion.svg
-                    className="absolute -bottom-1 left-0 w-[105%] -ml-[2.5%] h-3 md:h-4 pointer-events-none overflow-visible -z-10"
+                    className="absolute -bottom-4 left-0 w-[105%] -ml-[2.5%] h-3 md:h-4 pointer-events-none overflow-visible -z-10"
                     viewBox="0 0 400 30"
                     fill="none"
                     preserveAspectRatio="none"
@@ -252,38 +263,79 @@ export default function Home() {
         <Suspense fallback={<div className="w-full py-24" />}>
           <section id="tech-radar" className="w-full py-16 md:py-24 relative bg-black/40">
             <div className="container px-4 md:px-6">
-              <h2 className="text-3xl font-bold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-400 relative inline-block pb-2 z-10 w-fit">
-                Global Tech Radar 📡
-                <motion.svg
-                  className="absolute -bottom-1 left-0 w-[105%] -ml-[2.5%] h-3 md:h-4 pointer-events-none overflow-visible -z-10"
-                  viewBox="0 0 400 30"
-                  fill="none"
-                  preserveAspectRatio="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
+              <motion.div
+                className="flex flex-col items-center justify-center text-center mb-12 space-y-6"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                {/* Badge */}
+                <motion.div
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
                   viewport={{ once: true }}
-                  transition={{ delay: 0.2, duration: 0.2 }}
+                  transition={{ delay: 0.1, duration: 0.5 }}
+                  className="relative"
                 >
-                  <motion.path
-                    d="M 0 20 Q 100 5 200 20 T 400 20"
-                    stroke="url(#gradient-radar-line)"
-                    strokeWidth="5"
-                    strokeLinecap="round"
-                    vectorEffect="non-scaling-stroke"
-                    initial={{ pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
-                  />
-                  <defs>
-                    <linearGradient id="gradient-radar-line" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#34d399" />
-                      <stop offset="100%" stopColor="#22d3ee" />
-                    </linearGradient>
-                  </defs>
-                </motion.svg>
-              </h2>
+                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-full blur-xl opacity-40" />
+                  <div className="relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-emerald-500/15 to-cyan-500/15 border border-emerald-500/25 backdrop-blur-sm">
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+                    >
+                      <Brain className="w-4 h-4 text-emerald-400" />
+                    </motion.div>
+                    <span className="text-sm font-semibold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                      Live Tech Intelligence
+                    </span>
+                  </div>
+                </motion.div>
+
+                {/* Heading */}
+                <motion.h2
+                  className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight"
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2, duration: 0.5 }}
+                >
+                  <span className="text-white">Global </span>
+                  <span className="relative inline-block">
+                    <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400">
+                      Tech Radar 📡
+                    </span>
+                    <motion.svg
+                      className="absolute -bottom-6 left-0 w-full overflow-visible z-0"
+                      viewBox="0 0 200 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.6, duration: 0.2 }}
+                    >
+                      <motion.path
+                        d="M 0 10 Q 50 -5 100 10 T 200 10"
+                        stroke="url(#gradient-radar-line)"
+                        strokeWidth="4"
+                        strokeLinecap="round"
+                        initial={{ pathLength: 0 }}
+                        whileInView={{ pathLength: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.7, duration: 0.8, ease: "easeOut" }}
+                      />
+                      <defs>
+                        <linearGradient id="gradient-radar-line" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor="#34d399" />
+                          <stop offset="50%" stopColor="#2dd4bf" />
+                          <stop offset="100%" stopColor="#22d3ee" />
+                        </linearGradient>
+                      </defs>
+                    </motion.svg>
+                  </span>
+                </motion.h2>
+              </motion.div>
               <ItNews />
             </div>
           </section>
@@ -366,5 +418,27 @@ export default function Home() {
       </AnimatePresence>
     </div>
     </SmoothScroll>
+    )}
+
+    {showSetupMessage && (
+      <div className="flex min-h-screen w-full flex-col bg-transparent items-center justify-center">
+        <div className="text-center space-y-4 p-8">
+          <h1 className="text-4xl font-bold text-primary">Portfolio Not Set Up</h1>
+          <p className="text-lg text-muted-foreground">
+            Please contact the administrator to set up the portfolio data.
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Admin can log in at <a href="/admin/login" className="text-primary hover:underline">/admin/login</a> to configure the portfolio.
+          </p>
+        </div>
+      </div>
+    )}
+
+    {showFallback && (
+       <div className="flex min-h-screen items-center justify-center">
+          <div className="w-8 h-8 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin" />
+       </div>
+    )}
+    </>
   );
 }

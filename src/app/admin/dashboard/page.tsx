@@ -18,57 +18,501 @@ import { Switch } from '@/components/ui/switch';
 import { Progress } from '@/components/ui/progress';
 import {
   User, Briefcase, GraduationCap, FolderOpen,
-  MessageSquare, Settings, Award, LogOut, Save,
+  MessageSquare, Settings, Award, Save,
   Plus, Trash2, Github, Linkedin, Twitter,
   Instagram, Globe, Mail, Phone, MapPin,
   CheckCircle, XCircle, Loader2, Code2,
-  Wrench, Star, Calendar, Link2, Upload,
-  FileText, X, Download, Home, Eye,
-  Sparkles, Zap, Target, Clock, Edit3,
-  TrendingUp, BarChart3
+  Wrench, Star, Upload, FileText,
+  X, Download, Eye, Sparkles, Zap,
+  Clock, TrendingUp, ChevronUp,
+  ChevronDown, RotateCcw, AlertTriangle,
+  Target, ImageIcon, ShieldCheck, Edit3
 } from 'lucide-react';
+
+type DashboardMessageType = 'success' | 'error' | 'warning' | 'info' | '';
+
+type DashboardMessage = {
+  type: DashboardMessageType;
+  text: string;
+};
+
+type RequestStats = {
+  total: number;
+  pending: number;
+  approved: number;
+  rejected: number;
+};
+
+type PortfolioData = {
+  _id?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  personalInfo: {
+    name: string;
+    title: string;
+    email: string;
+    phone: string;
+    location: string;
+    bio: string;
+    avatar: string;
+    resume: string;
+  };
+  socialLinks: {
+    github: string;
+    linkedin: string;
+    twitter: string;
+    instagram: string;
+    youtube: string;
+    facebook: string;
+  };
+  skills: Array<{
+    category: string;
+    items: string[];
+  }>;
+  experience: Array<{
+    institution: string;
+    degree: string;
+    duration: string;
+    location: string;
+    startDate: string;
+    endDate: string;
+    current: boolean;
+    highlights: string[];
+    iconType: string;
+    logo?: string;
+    company?: string;
+    position?: string;
+    description?: string[];
+  }>;
+  education: Array<{
+    institution: string;
+    degree: string;
+    duration: string;
+    location: string;
+    field: string;
+    startDate: string;
+    endDate: string;
+    current: boolean;
+    gpa: string;
+    achievements: string[];
+    iconType: string;
+    logo?: string;
+  }>;
+  projects: Array<{
+    title: string;
+    description: string;
+    technologies: string[];
+    image: string;
+    liveUrl: string;
+    githubUrl: string;
+    featured: boolean;
+    order: number;
+  }>;
+  testimonials: Array<{
+    name: string;
+    position: string;
+    company: string;
+    image: string;
+    content: string;
+    rating: number;
+  }>;
+  services: Array<{
+    title: string;
+    description: string;
+    icon: string;
+    features: string[];
+  }>;
+  achievements: Array<{
+    title: string;
+    description: string;
+    date: string;
+    icon: string;
+  }>;
+  settings: {
+    theme: 'auto' | 'light' | 'dark';
+    emailNotifications: boolean;
+    publicProfile: boolean;
+    analytics: boolean;
+    openToWork: boolean;
+  };
+};
+
+type ValidationResult = {
+  tab: string;
+  message: string;
+} | null;
+
+const LOCAL_DRAFT_KEY = 'portfolio-admin-dashboard-draft';
+
+const TAB_TITLES: Record<string, string> = {
+  overview: 'Dashboard Overview',
+  requests: 'Resume Requests',
+  personal: 'Personal Information',
+  skills: 'Technical Skills',
+  experience: 'Work Experience',
+  education: 'Education',
+  projects: 'Projects',
+  testimonials: 'Testimonials',
+  services: 'Services',
+  achievements: 'Achievements',
+  settings: 'Portfolio Settings',
+};
+
+const createDefaultPortfolio = (): PortfolioData => ({
+  personalInfo: {
+    name: '',
+    title: '',
+    email: '',
+    phone: '',
+    location: '',
+    bio: '',
+    avatar: '',
+    resume: '',
+  },
+  socialLinks: {
+    github: '',
+    linkedin: '',
+    twitter: '',
+    instagram: '',
+    youtube: '',
+    facebook: '',
+  },
+  skills: [],
+  experience: [],
+  education: [],
+  projects: [],
+  testimonials: [],
+  services: [],
+  achievements: [],
+  settings: {
+    theme: 'auto',
+    emailNotifications: true,
+    publicProfile: true,
+    analytics: true,
+    openToWork: false,
+  },
+});
+
+const clonePortfolio = (portfolio: PortfolioData): PortfolioData => JSON.parse(JSON.stringify(portfolio));
+
+const getDateInputValue = (value: string | Date | undefined | null) => {
+  if (!value) return '';
+  if (value instanceof Date) {
+    return value.toISOString().split('T')[0];
+  }
+
+  if (value === 'Present') {
+    return '';
+  }
+
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) {
+    return typeof value === 'string' ? value : '';
+  }
+
+  return parsed.toISOString().split('T')[0];
+};
+
+const formatTimeline = (
+  startDate?: string | Date | null,
+  endDate?: string | Date | null,
+  current?: boolean,
+  completedLabel?: boolean
+) => {
+  if (!startDate) return '';
+
+  const parsedStart = new Date(startDate);
+  if (Number.isNaN(parsedStart.getTime())) return '';
+
+  const startMonth = parsedStart.toLocaleString('default', { month: 'short' });
+  const startYear = parsedStart.getFullYear();
+
+  if (current || endDate === 'Present') {
+    return `${startMonth} ${startYear} - Present`;
+  }
+
+  if (!endDate) return '';
+
+  const parsedEnd = new Date(endDate);
+  if (Number.isNaN(parsedEnd.getTime())) return '';
+
+  const endMonth = parsedEnd.toLocaleString('default', { month: 'short' });
+  const endYear = parsedEnd.getFullYear();
+
+  if (completedLabel && startMonth === endMonth && startYear === endYear) {
+    return `Completed ${endYear}`;
+  }
+
+  return `${startMonth} ${startYear} - ${endMonth} ${endYear}`;
+};
+
+const normalizeProjectOrder = (projects: PortfolioData['projects']) =>
+  projects.map((project, index) => ({
+    ...project,
+    order: index,
+  }));
+
+const normalizePortfolio = (rawPortfolio?: Partial<PortfolioData> | null): PortfolioData => {
+  const defaults = createDefaultPortfolio();
+
+  return {
+    ...defaults,
+    ...rawPortfolio,
+    personalInfo: {
+      ...defaults.personalInfo,
+      ...(rawPortfolio?.personalInfo || {}),
+    },
+    socialLinks: {
+      ...defaults.socialLinks,
+      ...(rawPortfolio?.socialLinks || {}),
+    },
+    skills: Array.isArray(rawPortfolio?.skills)
+      ? rawPortfolio.skills.map((skill) => ({
+          category: skill?.category || '',
+          items: Array.isArray(skill?.items) ? skill.items.filter(Boolean) : [],
+        }))
+      : [],
+    experience: Array.isArray(rawPortfolio?.experience)
+      ? rawPortfolio.experience.map((item) => ({
+          institution: item?.institution || item?.company || '',
+          degree: item?.degree || item?.position || '',
+          duration: item?.duration || '',
+          location: item?.location || '',
+          startDate: getDateInputValue(item?.startDate),
+          endDate: item?.endDate === 'Present' ? 'Present' : getDateInputValue(item?.endDate),
+          current: Boolean(item?.current),
+          highlights: Array.isArray(item?.highlights)
+            ? item.highlights.filter(Boolean)
+            : Array.isArray(item?.description)
+              ? item.description.filter(Boolean)
+              : [],
+          iconType: item?.iconType || 'briefcase',
+          logo: item?.logo || '',
+          company: item?.company || '',
+          position: item?.position || '',
+          description: Array.isArray(item?.description) ? item.description.filter(Boolean) : [],
+        }))
+      : [],
+    education: Array.isArray(rawPortfolio?.education)
+      ? rawPortfolio.education.map((item) => ({
+          institution: item?.institution || '',
+          degree: item?.degree || '',
+          duration: item?.duration || '',
+          location: item?.location || '',
+          field: item?.field || '',
+          startDate: getDateInputValue(item?.startDate),
+          endDate: item?.endDate === 'Present' ? 'Present' : getDateInputValue(item?.endDate),
+          current: Boolean(item?.current),
+          gpa: item?.gpa || '',
+          achievements: Array.isArray(item?.achievements) ? item.achievements.filter(Boolean) : [],
+          iconType: item?.iconType || 'university',
+          logo: item?.logo || '',
+        }))
+      : [],
+    projects: Array.isArray(rawPortfolio?.projects)
+      ? normalizeProjectOrder(
+          rawPortfolio.projects.map((project) => ({
+            title: project?.title || '',
+            description: project?.description || '',
+            technologies: Array.isArray(project?.technologies) ? project.technologies.filter(Boolean) : [],
+            image: project?.image || '',
+            liveUrl: project?.liveUrl || '',
+            githubUrl: project?.githubUrl || '',
+            featured: Boolean(project?.featured),
+            order: typeof project?.order === 'number' ? project.order : 0,
+          }))
+        )
+      : [],
+    testimonials: Array.isArray(rawPortfolio?.testimonials)
+      ? rawPortfolio.testimonials.map((item) => ({
+          name: item?.name || '',
+          position: item?.position || '',
+          company: item?.company || '',
+          image: item?.image || '',
+          content: item?.content || '',
+          rating: typeof item?.rating === 'number' ? item.rating : 5,
+        }))
+      : [],
+    services: Array.isArray(rawPortfolio?.services)
+      ? rawPortfolio.services.map((item) => ({
+          title: item?.title || '',
+          description: item?.description || '',
+          icon: item?.icon || '',
+          features: Array.isArray(item?.features) ? item.features.filter(Boolean) : [],
+        }))
+      : [],
+    achievements: Array.isArray(rawPortfolio?.achievements)
+      ? rawPortfolio.achievements.map((item) => ({
+          title: item?.title || '',
+          description: item?.description || '',
+          date: getDateInputValue(item?.date),
+          icon: item?.icon || '',
+        }))
+      : [],
+    settings: {
+      ...defaults.settings,
+      ...(rawPortfolio?.settings || {}),
+    },
+  };
+};
+
+const getPortfolioSnapshot = (portfolio: PortfolioData) => JSON.stringify(normalizePortfolio(portfolio));
+
+const reorderItems = <T,>(items: T[], index: number, direction: 'up' | 'down') => {
+  const targetIndex = direction === 'up' ? index - 1 : index + 1;
+  if (targetIndex < 0 || targetIndex >= items.length) {
+    return items;
+  }
+
+  const reordered = [...items];
+  [reordered[index], reordered[targetIndex]] = [reordered[targetIndex], reordered[index]];
+  return reordered;
+};
+
+const formatSavedAt = (value: string | null) => {
+  if (!value) return 'Not saved yet';
+
+  return new Date(value).toLocaleString([], {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  });
+};
+
+const getRequestStats = (requests: Array<{ status: 'pending' | 'approved' | 'rejected' }>): RequestStats => ({
+  total: requests.length,
+  pending: requests.filter((request) => request.status === 'pending').length,
+  approved: requests.filter((request) => request.status === 'approved').length,
+  rejected: requests.filter((request) => request.status === 'rejected').length,
+});
 
 export default function AdminDashboard() {
   const router = useRouter();
-  const [portfolio, setPortfolio] = useState<any>(null);
+  const [portfolio, setPortfolio] = useState<PortfolioData | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState({ type: '', text: '' });
+  const [message, setMessage] = useState<DashboardMessage>({ type: '', text: '' });
   const [activeTab, setActiveTab] = useState('overview');
   const [uploadingResume, setUploadingResume] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [deletingResume, setDeletingResume] = useState(false);
   const [profileCompletion, setProfileCompletion] = useState(0);
+  const [requestStats, setRequestStats] = useState<RequestStats>({
+    total: 0,
+    pending: 0,
+    approved: 0,
+    rejected: 0,
+  });
+  const [lastSavedSnapshot, setLastSavedSnapshot] = useState('');
+  const [lastSavedAt, setLastSavedAt] = useState<string | null>(null);
+  const [isPersisted, setIsPersisted] = useState(false);
+  const [hasLocalDraft, setHasLocalDraft] = useState(false);
+  const [uploadingLogoKey, setUploadingLogoKey] = useState<string | null>(null);
+
+  const currentSnapshot = portfolio ? getPortfolioSnapshot(portfolio) : '';
+  const hasRevertTarget = Boolean(portfolio && lastSavedSnapshot && currentSnapshot !== lastSavedSnapshot);
+  const isDirty = Boolean(portfolio && (!isPersisted || currentSnapshot !== lastSavedSnapshot));
 
   useEffect(() => {
     initializePortfolio();
   }, []);
 
   useEffect(() => {
-    if (portfolio) {
-      calculateProfileCompletion();
-    }
+    setProfileCompletion(calculateProfileCompletion(portfolio));
   }, [portfolio]);
 
-  const calculateProfileCompletion = () => {
-    if (!portfolio) return;
+  useEffect(() => {
+    if (!portfolio || typeof window === 'undefined') {
+      return;
+    }
+
+    if (hasRevertTarget) {
+      window.localStorage.setItem(LOCAL_DRAFT_KEY, currentSnapshot);
+      setHasLocalDraft(true);
+      return;
+    }
+
+    window.localStorage.removeItem(LOCAL_DRAFT_KEY);
+    setHasLocalDraft(false);
+  }, [portfolio, currentSnapshot, hasRevertTarget]);
+
+  useEffect(() => {
+    if (!isDirty || typeof window === 'undefined') {
+      return;
+    }
+
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = '';
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [isDirty]);
+
+  const calculateProfileCompletion = (currentPortfolio: PortfolioData | null) => {
+    if (!currentPortfolio) return 0;
 
     let completed = 0;
-    let total = 10;
+    const total = 10;
 
-    if (portfolio.personalInfo?.name) completed++;
-    if (portfolio.personalInfo?.title) completed++;
-    if (portfolio.personalInfo?.bio) completed++;
-    if (portfolio.personalInfo?.email) completed++;
-    if (portfolio.personalInfo?.resume) completed++;
-    if (portfolio.skills?.length > 0) completed++;
-    if (portfolio.projects?.length > 0) completed++;
-    if (portfolio.experience?.length > 0) completed++;
-    if (portfolio.education?.length > 0) completed++;
-    if (portfolio.socialLinks?.github || portfolio.socialLinks?.linkedin) completed++;
+    if (currentPortfolio.personalInfo.name.trim()) completed++;
+    if (currentPortfolio.personalInfo.title.trim()) completed++;
+    if (currentPortfolio.personalInfo.bio.trim()) completed++;
+    if (currentPortfolio.personalInfo.email.trim()) completed++;
+    if (currentPortfolio.personalInfo.resume.trim()) completed++;
+    if (currentPortfolio.skills.length > 0) completed++;
+    if (currentPortfolio.projects.length > 0) completed++;
+    if (currentPortfolio.experience.length > 0) completed++;
+    if (currentPortfolio.education.length > 0) completed++;
+    if (currentPortfolio.socialLinks.github.trim() || currentPortfolio.socialLinks.linkedin.trim()) completed++;
 
-    const percentage = (completed / total) * 100;
-    setProfileCompletion(percentage);
+    return (completed / total) * 100;
+  };
+
+  const applyLoadedPortfolio = (
+    nextPortfolio: PortfolioData,
+    nextPersisted: boolean,
+    nextMessage: DashboardMessage,
+    nextSavedAt: string | null
+  ) => {
+    const normalizedPortfolio = normalizePortfolio(nextPortfolio);
+    const savedSnapshot = getPortfolioSnapshot(normalizedPortfolio);
+
+    if (typeof window !== 'undefined') {
+      const draft = window.localStorage.getItem(LOCAL_DRAFT_KEY);
+
+      if (draft) {
+        try {
+          const parsedDraft = normalizePortfolio(JSON.parse(draft));
+          const draftSnapshot = getPortfolioSnapshot(parsedDraft);
+
+          if (draftSnapshot !== savedSnapshot) {
+            setPortfolio(parsedDraft);
+            setLastSavedSnapshot(savedSnapshot);
+            setLastSavedAt(nextSavedAt);
+            setIsPersisted(nextPersisted);
+            setHasLocalDraft(true);
+            setMessage({
+              type: 'warning',
+              text: 'A local draft was restored. Save changes to publish it or discard to return to the last saved version.',
+            });
+            return;
+          }
+
+          window.localStorage.removeItem(LOCAL_DRAFT_KEY);
+        } catch (error) {
+          console.error('Failed to restore local draft:', error);
+          window.localStorage.removeItem(LOCAL_DRAFT_KEY);
+        }
+      }
+    }
+
+    setPortfolio(normalizedPortfolio);
+    setLastSavedSnapshot(savedSnapshot);
+    setLastSavedAt(nextSavedAt);
+    setIsPersisted(nextPersisted);
+    setHasLocalDraft(false);
+    setMessage(nextMessage);
   };
 
   const initializePortfolio = async () => {
@@ -80,60 +524,35 @@ export default function AdminDashboard() {
       });
 
       if (response.status === 404) {
-        // No portfolio exists, create a new one
-        const defaultPortfolio = getDefaultPortfolio();
-        setPortfolio(defaultPortfolio);
-        setMessage({ type: 'info', text: 'Welcome! Start building your portfolio.' });
+        applyLoadedPortfolio(
+          createDefaultPortfolio(),
+          false,
+          { type: 'info', text: 'No published portfolio was found. Start building from this template.' },
+          null
+        );
       } else if (response.ok) {
         const data = await response.json();
-        setPortfolio(data);
-        setMessage({ type: 'success', text: 'Portfolio loaded successfully.' });
+        applyLoadedPortfolio(
+          data,
+          true,
+          { type: 'success', text: 'Portfolio loaded successfully.' },
+          data.updatedAt || new Date().toISOString()
+        );
       } else {
         throw new Error('Failed to load portfolio');
       }
     } catch (error) {
       console.error('Portfolio fetch error:', error);
-      const defaultPortfolio = getDefaultPortfolio();
-      setPortfolio(defaultPortfolio);
-      setMessage({ type: 'warning', text: 'Starting with a fresh portfolio template.' });
+      applyLoadedPortfolio(
+        createDefaultPortfolio(),
+        false,
+        { type: 'warning', text: 'Unable to load the published portfolio. A fresh template was opened instead.' },
+        null
+      );
     } finally {
       setLoading(false);
     }
   };
-
-  const getDefaultPortfolio = () => ({
-    personalInfo: {
-      name: '',
-      title: '',
-      email: '',
-      phone: '',
-      location: '',
-      bio: '',
-      avatar: '',
-      resume: ''
-    },
-    socialLinks: {
-      github: '',
-      linkedin: '',
-      twitter: '',
-      instagram: '',
-      youtube: '',
-      facebook: ''
-    },
-    skills: [],
-    experience: [],
-    education: [],
-    projects: [],
-    testimonials: [],
-    services: [],
-    achievements: [],
-    settings: {
-      theme: 'auto',
-      emailNotifications: true,
-      publicProfile: true,
-      analytics: true
-    }
-  });
 
   const handleSave = async () => {
     setSaving(true);
@@ -388,10 +807,16 @@ export default function AdminDashboard() {
   };
 
   const removeSkill = (index: number) => {
+    if (!window.confirm('Are you sure you want to delete this skill category? This action cannot be undone.')) return;
     setPortfolio({
       ...portfolio,
       skills: (portfolio.skills || []).filter((_: any, i: number) => i !== index)
     });
+  };
+
+  const moveSkill = (index: number, direction: 'up' | 'down') => {
+    if (!portfolio || !portfolio.skills) return;
+    setPortfolio({ ...portfolio, skills: reorderItems(portfolio.skills, index, direction) });
   };
 
   const addProject = () => {
@@ -421,10 +846,16 @@ export default function AdminDashboard() {
   };
 
   const removeProject = (index: number) => {
+    if (!window.confirm('Are you sure you want to delete this project? This action cannot be undone.')) return;
     setPortfolio({
       ...portfolio,
       projects: (portfolio.projects || []).filter((_: any, i: number) => i !== index)
     });
+  };
+
+  const moveProject = (index: number, direction: 'up' | 'down') => {
+    if (!portfolio || !portfolio.projects) return;
+    setPortfolio({ ...portfolio, projects: reorderItems(portfolio.projects, index, direction) });
   };
 
   const addExperience = () => {
@@ -490,10 +921,16 @@ export default function AdminDashboard() {
   };
 
   const removeExperience = (index: number) => {
+    if (!window.confirm('Are you sure you want to delete this experience entry? This action cannot be undone.')) return;
     setPortfolio({
       ...portfolio,
       experience: (portfolio.experience || []).filter((_: any, i: number) => i !== index)
     });
+  };
+
+  const moveExperience = (index: number, direction: 'up' | 'down') => {
+    if (!portfolio || !portfolio.experience) return;
+    setPortfolio({ ...portfolio, experience: reorderItems(portfolio.experience, index, direction) });
   };
 
   const addEducation = () => {
@@ -571,10 +1008,16 @@ export default function AdminDashboard() {
   };
 
   const removeEducation = (index: number) => {
+    if (!window.confirm('Are you sure you want to delete this education entry? This action cannot be undone.')) return;
     setPortfolio({
       ...portfolio,
       education: (portfolio.education || []).filter((_: any, i: number) => i !== index)
     });
+  };
+
+  const moveEducation = (index: number, direction: 'up' | 'down') => {
+    if (!portfolio || !portfolio.education) return;
+    setPortfolio({ ...portfolio, education: reorderItems(portfolio.education, index, direction) });
   };
 
   if (loading) {
@@ -786,26 +1229,33 @@ export default function AdminDashboard() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      {[
-                        { action: 'Portfolio updated', time: '2 hours ago', icon: Edit3, color: 'text-green-400' },
-                        { action: 'New project added', time: '1 day ago', icon: Plus, color: 'text-blue-400' },
-                        { action: 'Resume uploaded', time: '3 days ago', icon: Upload, color: 'text-purple-400' },
-                        { action: 'Skills updated', time: '1 week ago', icon: Code2, color: 'text-orange-400' },
-                      ].map((activity, index) => (
+                      {portfolio?.updatedAt ? (
                         <motion.div
-                          key={index}
                           initial={{ opacity: 0, x: -20 }}
                           animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.1 }}
                           className="flex items-center justify-between p-3 bg-gray-700/30 rounded-lg"
                         >
                           <div className="flex items-center gap-3">
-                            <activity.icon className={`h-4 w-4 ${activity.color}`} />
-                            <span className="text-sm text-gray-300">{activity.action}</span>
+                            <Edit3 className="h-4 w-4 text-green-400" />
+                            <span className="text-sm text-gray-300">Portfolio updated</span>
                           </div>
-                          <span className="text-xs text-gray-500">{activity.time}</span>
+                          <span className="text-xs text-gray-500">
+                            {new Date(portfolio.updatedAt).toLocaleString('en-US', {
+                              month: 'short',
+                              day: 'numeric',
+                              year: 'numeric',
+                              hour: 'numeric',
+                              minute: '2-digit',
+                              hour12: true
+                            })}
+                          </span>
                         </motion.div>
-                      ))}
+                      ) : (
+                        <div className="text-center p-8 text-gray-500">
+                          <Clock className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                          <p className="text-sm">No recent activity</p>
+                        </div>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
@@ -915,7 +1365,7 @@ export default function AdminDashboard() {
                             <Button
                               size="sm"
                               variant="outline"
-                              onClick={() => window.open(`/api/resume/download`, '_blank')}
+                              onClick={() => window.open('/api/resume/download', '_blank')}
                             >
                               <Download className="h-4 w-4 mr-1" />
                               Preview
@@ -1069,42 +1519,56 @@ export default function AdminDashboard() {
                   </Button>
 
                   <div className="space-y-4">
-                    {portfolio.skills?.map((skill: any, index: number) => (
-                      <Card key={index} className="p-4">
-                        <div className="space-y-3">
-                          <div className="flex items-center justify-between">
-                            <Input
-                              placeholder="Category (e.g., Frontend, Backend, Tools)"
-                              value={skill.category}
-                              onChange={(e) => updateSkill(index, 'category', e.target.value)}
-                              className="max-w-xs font-semibold"
-                            />
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              onClick={() => removeSkill(index)}
-                              className="text-red-500 hover:text-red-700"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                          <div>
-                            <Input
-                              placeholder="Skills (comma-separated, e.g., React, Next.js, TypeScript)"
-                              value={skill.items?.join(', ') || ''}
-                              onChange={(e) => updateSkill(index, 'items', e.target.value)}
-                            />
-                            <div className="flex flex-wrap gap-2 mt-2">
-                              {skill.items?.map((item: string, i: number) => (
-                                <Badge key={i} variant="secondary">
-                                  {item}
-                                </Badge>
-                              ))}
+                    <AnimatePresence>
+                      {portfolio.skills?.map((skill: any, index: number) => (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, scale: 0.95 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <Card className="p-4 bg-white/5 backdrop-blur-xl border-white/10 group hover:border-white/20 transition-all">
+                            <div className="space-y-3">
+                              <div className="flex items-center justify-between">
+                                <Input
+                                  placeholder="Category (e.g., Frontend, Backend, Tools)"
+                                  value={skill.category}
+                                  onChange={(e) => updateSkill(index, 'category', e.target.value)}
+                                  className="max-w-xs font-semibold bg-black/20 border-white/10"
+                                />
+                                <div className="flex items-center gap-1 opacity-50 group-hover:opacity-100 transition-opacity">
+                                  <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => moveSkill(index, 'up')} disabled={index === 0}>
+                                    <ChevronUp className="h-4 w-4" />
+                                  </Button>
+                                  <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => moveSkill(index, 'down')} disabled={index === (portfolio.skills?.length || 0) - 1}>
+                                    <ChevronDown className="h-4 w-4" />
+                                  </Button>
+                                  <Button size="sm" variant="ghost" onClick={() => removeSkill(index)} className="text-red-500 hover:text-red-700 hover:bg-red-500/10 h-8 w-8 p-0">
+                                    <Trash2 className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              </div>
+                              <div>
+                                <Input
+                                  placeholder="Skills (comma-separated, e.g., React, Next.js, TypeScript)"
+                                  value={skill.items?.join(', ') || ''}
+                                  onChange={(e) => updateSkill(index, 'items', e.target.value)}
+                                  className="bg-black/20 border-white/10"
+                                />
+                                <div className="flex flex-wrap gap-2 mt-2">
+                                  {skill.items?.map((item: string, i: number) => (
+                                    <Badge key={i} variant="secondary" className="bg-white/10 text-white border-none shrink-0">
+                                      {item}
+                                    </Badge>
+                                  ))}
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
-                      </Card>
-                    ))}
+                          </Card>
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
                   </div>
                 </CardContent>
               </Card>
@@ -1129,117 +1593,137 @@ export default function AdminDashboard() {
                   </Button>
 
                   <div className="space-y-4">
-                    {portfolio.experience?.map((exp: any, index: number) => (
-                      <Card key={index} className="p-4">
-                        <div className="space-y-4">
-                          <div className="flex justify-between items-start">
-                            <h3 className="text-lg font-semibold">Experience {index + 1}</h3>
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              onClick={() => removeExperience(index)}
-                              className="text-red-500 hover:text-red-700"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
+                    <AnimatePresence>
+                      {portfolio.experience?.map((exp: any, index: number) => (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, scale: 0.95 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <Card className="p-6 bg-white/5 backdrop-blur-xl border-white/10 group hover:border-white/20 transition-all">
+                            <div className="space-y-4">
+                              <div className="flex justify-between items-start">
+                                <h3 className="text-lg font-semibold text-emerald-400">Experience {index + 1}</h3>
+                                <div className="flex items-center gap-1 opacity-50 group-hover:opacity-100 transition-opacity">
+                                  <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => moveExperience(index, 'up')} disabled={index === 0}>
+                                    <ChevronUp className="h-4 w-4" />
+                                  </Button>
+                                  <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => moveExperience(index, 'down')} disabled={index === (portfolio.experience?.length || 0) - 1}>
+                                    <ChevronDown className="h-4 w-4" />
+                                  </Button>
+                                  <Button size="sm" variant="ghost" onClick={() => removeExperience(index)} className="text-red-500 hover:text-red-700 hover:bg-red-500/10 h-8 w-8 p-0">
+                                    <Trash2 className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              </div>
 
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <Label>Company/Institution</Label>
-                              <Input
-                                placeholder="Company Name"
-                                value={exp.institution || exp.company || ''}
-                                onChange={(e) => updateExperience(index, 'institution', e.target.value)}
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>Position/Role</Label>
-                              <Input
-                                placeholder="Job Title"
-                                value={exp.degree || exp.position || ''}
-                                onChange={(e) => updateExperience(index, 'degree', e.target.value)}
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>Logo</Label>
-                              <Input
-                                type="file"
-                                accept="image/*"
-                                onChange={async (e) => {
-                                  const file = e.target.files?.[0];
-                                  if (file) {
-                                    const formData = new FormData();
-                                    formData.append('logo', file);
-                                    const res = await fetch('/api/upload/logo', { method: 'POST', body: formData });
-                                    const data = await res.json();
-                                    if (res.ok) updateExperience(index, 'logo', data.url);
-                                  }
-                                }}
-                              />
-                              {exp.logo && <img src={exp.logo} alt="Logo" className="h-12 w-12 rounded mt-2" />}
-                            </div>
-                            <div className="space-y-2">
-                              <Label>Location</Label>
-                              <Input
-                                placeholder="City, Country"
-                                value={exp.location || ''}
-                                onChange={(e) => updateExperience(index, 'location', e.target.value)}
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>
-                                Start Date <span className="text-red-500">*</span>
-                              </Label>
-                              <Input
-                                type="date"
-                                value={exp.startDate instanceof Date ? exp.startDate.toISOString().split('T')[0] : (exp.startDate || '')}
-                                onChange={(e) => updateExperience(index, 'startDate', e.target.value)}
-                                required
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>
-                                End Date <span className="text-red-500">{!exp.current && '*'}</span>
-                                {exp.current && <span className="text-xs text-muted-foreground ml-2">(Currently working)</span>}
-                              </Label>
-                              <Input
-                                type="date"
-                                value={exp.endDate === 'Present' ? '' : (exp.endDate || '')}
-                                onChange={(e) => updateExperience(index, 'endDate', e.target.value)}
-                                disabled={exp.current}
-                                required={!exp.current}
-                              />
-                            </div>
-                            <div className="flex items-center space-x-2">
-                              <Switch
-                                id={`current-${index}`}
-                                checked={exp.current}
-                                onCheckedChange={(checked) => updateExperience(index, 'current', checked)}
-                              />
-                              <Label htmlFor={`current-${index}`}>Currently working here</Label>
-                            </div>
-                          </div>
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                  <Label className="text-gray-300">Company/Institution</Label>
+                                  <Input
+                                    placeholder="Company Name"
+                                    value={exp.institution || exp.company || ''}
+                                    onChange={(e) => updateExperience(index, 'institution', e.target.value)}
+                                    className="bg-black/20 border-white/10"
+                                  />
+                                </div>
+                                <div className="space-y-2">
+                                  <Label className="text-gray-300">Position/Role</Label>
+                                  <Input
+                                    placeholder="Job Title"
+                                    value={exp.degree || exp.position || ''}
+                                    onChange={(e) => updateExperience(index, 'degree', e.target.value)}
+                                    className="bg-black/20 border-white/10"
+                                  />
+                                </div>
+                                <div className="space-y-2">
+                                  <Label className="text-gray-300">Logo</Label>
+                                  <Input
+                                    type="file"
+                                    accept="image/*"
+                                    className="bg-black/20 border-white/10"
+                                    onChange={async (e) => {
+                                      const file = e.target.files?.[0];
+                                      if (file) {
+                                        const formData = new FormData();
+                                        formData.append('logo', file);
+                                        const res = await fetch('/api/upload/logo', { method: 'POST', body: formData });
+                                        const data = await res.json();
+                                        if (res.ok) updateExperience(index, 'logo', data.url);
+                                      }
+                                    }}
+                                  />
+                                  {exp.logo && <img src={exp.logo} alt="Logo" className="h-12 w-12 rounded mt-2 ring-2 ring-white/10" />}
+                                </div>
+                                <div className="space-y-2">
+                                  <Label className="text-gray-300">Location</Label>
+                                  <Input
+                                    placeholder="City, Country"
+                                    value={exp.location || ''}
+                                    onChange={(e) => updateExperience(index, 'location', e.target.value)}
+                                    className="bg-black/20 border-white/10"
+                                  />
+                                </div>
+                                <div className="space-y-2">
+                                  <Label className="text-gray-300">
+                                    Start Date <span className="text-emerald-500">*</span>
+                                  </Label>
+                                  <Input
+                                    type="date"
+                                    value={exp.startDate instanceof Date ? exp.startDate.toISOString().split('T')[0] : (exp.startDate || '')}
+                                    onChange={(e) => updateExperience(index, 'startDate', e.target.value)}
+                                    required
+                                    className="bg-black/20 border-white/10"
+                                  />
+                                </div>
+                                <div className="space-y-2">
+                                  <Label className="text-gray-300">
+                                    End Date <span className="text-emerald-500">{!exp.current && '*'}</span>
+                                    {exp.current && <span className="text-xs text-emerald-400 ml-2">(Currently working)</span>}
+                                  </Label>
+                                  <Input
+                                    type="date"
+                                    value={exp.endDate === 'Present' ? '' : (exp.endDate || '')}
+                                    onChange={(e) => updateExperience(index, 'endDate', e.target.value)}
+                                    disabled={exp.current}
+                                    required={!exp.current}
+                                    className="bg-black/20 border-white/10 disabled:opacity-50"
+                                  />
+                                </div>
+                                <div className="flex items-center space-x-2 pt-2">
+                                  <Switch
+                                    id={`current-${index}`}
+                                    checked={exp.current}
+                                    onCheckedChange={(checked) => updateExperience(index, 'current', checked)}
+                                  />
+                                  <Label htmlFor={`current-${index}`} className="text-gray-300">Currently working here</Label>
+                                </div>
+                              </div>
 
-                          {exp.duration && (
-                            <div className="mb-4 p-3 bg-primary/5 rounded-lg">
-                              <Label className="text-xs text-muted-foreground">Duration</Label>
-                              <p className="text-sm font-medium">{exp.duration}</p>
-                            </div>
-                          )}
+                              {exp.duration && (
+                                <div className="mb-4 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
+                                  <Label className="text-xs text-emerald-400/80">Duration</Label>
+                                  <p className="text-sm font-medium text-emerald-100">{exp.duration}</p>
+                                </div>
+                              )}
 
-                          <div className="space-y-2">
-                            <Label>Highlights/Achievements</Label>
-                            <Textarea
-                              placeholder="Describe your responsibilities and achievements (one per line)"
-                              rows={4}
-                              value={exp.highlights?.join('\n') || exp.description?.join('\n') || ''}
-                              onChange={(e) => updateExperience(index, 'highlights', e.target.value)}
-                            />
-                          </div>
-                        </div>
-                      </Card>
-                    ))}
+                              <div className="space-y-2">
+                                <Label className="text-gray-300">Highlights/Achievements</Label>
+                                <Textarea
+                                  placeholder="Describe your responsibilities and achievements (one per line)"
+                                  rows={4}
+                                  value={exp.highlights?.join('\n') || exp.description?.join('\n') || ''}
+                                  onChange={(e) => updateExperience(index, 'highlights', e.target.value)}
+                                  className="bg-black/20 border-white/10 focus-visible:ring-emerald-500/50"
+                                />
+                              </div>
+                            </div>
+                          </Card>
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
                   </div>
                 </CardContent>
               </Card>
@@ -1264,137 +1748,159 @@ export default function AdminDashboard() {
                   </Button>
 
                   <div className="space-y-4">
-                    {portfolio.education?.map((edu: any, index: number) => (
-                      <Card key={index} className="p-4">
-                        <div className="space-y-4">
-                          <div className="flex justify-between items-start">
-                            <h3 className="text-lg font-semibold">Education {index + 1}</h3>
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              onClick={() => removeEducation(index)}
-                              className="text-red-500 hover:text-red-700"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
+                    <AnimatePresence>
+                      {portfolio.education?.map((edu: any, index: number) => (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, scale: 0.95 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <Card className="p-6 bg-white/5 backdrop-blur-xl border-white/10 group hover:border-white/20 transition-all">
+                            <div className="space-y-4">
+                              <div className="flex justify-between items-start">
+                                <h3 className="text-lg font-semibold text-blue-400">Education {index + 1}</h3>
+                                <div className="flex items-center gap-1 opacity-50 group-hover:opacity-100 transition-opacity">
+                                  <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => moveEducation(index, 'up')} disabled={index === 0}>
+                                    <ChevronUp className="h-4 w-4" />
+                                  </Button>
+                                  <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => moveEducation(index, 'down')} disabled={index === (portfolio.education?.length || 0) - 1}>
+                                    <ChevronDown className="h-4 w-4" />
+                                  </Button>
+                                  <Button size="sm" variant="ghost" onClick={() => removeEducation(index)} className="text-red-500 hover:text-red-700 hover:bg-red-500/10 h-8 w-8 p-0">
+                                    <Trash2 className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              </div>
 
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <Label>Institution</Label>
-                              <Input
-                                placeholder="University Name"
-                                value={edu.institution || ''}
-                                onChange={(e) => updateEducation(index, 'institution', e.target.value)}
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>Degree</Label>
-                              <Input
-                                placeholder="Bachelor of Science"
-                                value={edu.degree || ''}
-                                onChange={(e) => updateEducation(index, 'degree', e.target.value)}
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>Logo</Label>
-                              <Input
-                                type="file"
-                                accept="image/*"
-                                onChange={async (e) => {
-                                  const file = e.target.files?.[0];
-                                  if (file) {
-                                    const formData = new FormData();
-                                    formData.append('logo', file);
-                                    const res = await fetch('/api/upload/logo', { method: 'POST', body: formData });
-                                    const data = await res.json();
-                                    if (res.ok) updateEducation(index, 'logo', data.url);
-                                  }
-                                }}
-                              />
-                              {edu.logo && <img src={edu.logo} alt="Logo" className="h-12 w-12 rounded mt-2" />}
-                            </div>
-                            <div className="space-y-2">
-                              <Label>Location</Label>
-                              <Input
-                                placeholder="City, State/Country"
-                                value={edu.location || ''}
-                                onChange={(e) => updateEducation(index, 'location', e.target.value)}
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>Field of Study (Optional)</Label>
-                              <Input
-                                placeholder="Computer Science"
-                                value={edu.field || ''}
-                                onChange={(e) => updateEducation(index, 'field', e.target.value)}
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>
-                                Start Date <span className="text-red-500">*</span>
-                              </Label>
-                              <Input
-                                type="date"
-                                value={edu.startDate instanceof Date ? edu.startDate.toISOString().split('T')[0] : (edu.startDate || '')}
-                                onChange={(e) => updateEducation(index, 'startDate', e.target.value)}
-                                required
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>
-                                End Date <span className="text-red-500">*</span>
-                                {edu.current && <span className="text-xs text-muted-foreground ml-2">(Currently studying)</span>}
-                              </Label>
-                              <Input
-                                type="date"
-                                value={edu.endDate === 'Present' ? '' : (edu.endDate instanceof Date ? edu.endDate.toISOString().split('T')[0] : (edu.endDate || ''))}
-                                onChange={(e) => updateEducation(index, 'endDate', e.target.value)}
-                                disabled={edu.current}
-                                required={!edu.current}
-                              />
-                            </div>
-                          </div>
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                  <Label className="text-gray-300">Institution</Label>
+                                  <Input
+                                    placeholder="University Name"
+                                    value={edu.institution || ''}
+                                    onChange={(e) => updateEducation(index, 'institution', e.target.value)}
+                                    className="bg-black/20 border-white/10"
+                                  />
+                                </div>
+                                <div className="space-y-2">
+                                  <Label className="text-gray-300">Degree</Label>
+                                  <Input
+                                    placeholder="Bachelor of Science"
+                                    value={edu.degree || ''}
+                                    onChange={(e) => updateEducation(index, 'degree', e.target.value)}
+                                    className="bg-black/20 border-white/10"
+                                  />
+                                </div>
+                                <div className="space-y-2">
+                                  <Label className="text-gray-300">Logo</Label>
+                                  <Input
+                                    type="file"
+                                    accept="image/*"
+                                    className="bg-black/20 border-white/10"
+                                    onChange={async (e) => {
+                                      const file = e.target.files?.[0];
+                                      if (file) {
+                                        const formData = new FormData();
+                                        formData.append('logo', file);
+                                        const res = await fetch('/api/upload/logo', { method: 'POST', body: formData });
+                                        const data = await res.json();
+                                        if (res.ok) updateEducation(index, 'logo', data.url);
+                                      }
+                                    }}
+                                  />
+                                  {edu.logo && <img src={edu.logo} alt="Logo" className="h-12 w-12 rounded mt-2 ring-2 ring-white/10" />}
+                                </div>
+                                <div className="space-y-2">
+                                  <Label className="text-gray-300">Location</Label>
+                                  <Input
+                                    placeholder="City, State/Country"
+                                    value={edu.location || ''}
+                                    onChange={(e) => updateEducation(index, 'location', e.target.value)}
+                                    className="bg-black/20 border-white/10"
+                                  />
+                                </div>
+                                <div className="space-y-2">
+                                  <Label className="text-gray-300">Field of Study (Optional)</Label>
+                                  <Input
+                                    placeholder="Computer Science"
+                                    value={edu.field || ''}
+                                    onChange={(e) => updateEducation(index, 'field', e.target.value)}
+                                    className="bg-black/20 border-white/10"
+                                  />
+                                </div>
+                                <div className="space-y-2">
+                                  <Label className="text-gray-300">
+                                    Start Date <span className="text-blue-500">*</span>
+                                  </Label>
+                                  <Input
+                                    type="date"
+                                    value={edu.startDate instanceof Date ? edu.startDate.toISOString().split('T')[0] : (edu.startDate || '')}
+                                    onChange={(e) => updateEducation(index, 'startDate', e.target.value)}
+                                    required
+                                    className="bg-black/20 border-white/10"
+                                  />
+                                </div>
+                                <div className="space-y-2">
+                                  <Label className="text-gray-300">
+                                    End Date <span className="text-blue-500">*</span>
+                                    {edu.current && <span className="text-xs text-blue-400 ml-2">(Currently studying)</span>}
+                                  </Label>
+                                  <Input
+                                    type="date"
+                                    value={edu.endDate === 'Present' ? '' : (edu.endDate instanceof Date ? edu.endDate.toISOString().split('T')[0] : (edu.endDate || ''))}
+                                    onChange={(e) => updateEducation(index, 'endDate', e.target.value)}
+                                    disabled={edu.current}
+                                    required={!edu.current}
+                                    className="bg-black/20 border-white/10 disabled:opacity-50"
+                                  />
+                                </div>
+                              </div>
 
-                          <div className="flex items-center space-x-2">
-                            <Switch
-                              id={`edu-current-${index}`}
-                              checked={edu.current}
-                              onCheckedChange={(checked) => updateEducation(index, 'current', checked)}
-                            />
-                            <Label htmlFor={`edu-current-${index}`}>Currently studying</Label>
-                          </div>
+                              <div className="flex items-center space-x-2 pt-2">
+                                <Switch
+                                  id={`edu-current-${index}`}
+                                  checked={edu.current}
+                                  onCheckedChange={(checked) => updateEducation(index, 'current', checked)}
+                                />
+                                <Label htmlFor={`edu-current-${index}`} className="text-gray-300">Currently studying</Label>
+                              </div>
 
-                          {edu.duration && (
-                            <div className="p-3 bg-primary/5 rounded-lg">
-                              <Label className="text-xs text-muted-foreground">Duration</Label>
-                              <p className="text-sm font-medium">{edu.duration}</p>
+                              {edu.duration && (
+                                <div className="mb-4 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                                  <Label className="text-xs text-blue-400/80">Duration</Label>
+                                  <p className="text-sm font-medium text-blue-100">{edu.duration}</p>
+                                </div>
+                              )}
+
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                  <Label className="text-gray-300">GPA (Optional)</Label>
+                                  <Input
+                                    placeholder="3.8/4.0"
+                                    value={edu.gpa || ''}
+                                    onChange={(e) => updateEducation(index, 'gpa', e.target.value)}
+                                    className="bg-black/20 border-white/10"
+                                  />
+                                </div>
+                              </div>
+
+                              <div className="space-y-2">
+                                <Label className="text-gray-300">Achievements (Optional)</Label>
+                                <Textarea
+                                  placeholder="List achievements, honors, relevant coursework (one per line)"
+                                  rows={3}
+                                  value={edu.achievements?.join('\n') || ''}
+                                  onChange={(e) => updateEducation(index, 'achievements', e.target.value)}
+                                  className="bg-black/20 border-white/10 focus-visible:ring-blue-500/50"
+                                />
+                              </div>
                             </div>
-                          )}
-
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <Label>GPA (Optional)</Label>
-                              <Input
-                                placeholder="3.8/4.0"
-                                value={edu.gpa || ''}
-                                onChange={(e) => updateEducation(index, 'gpa', e.target.value)}
-                              />
-                            </div>
-                          </div>
-
-                          <div className="space-y-2">
-                            <Label>Achievements (Optional)</Label>
-                            <Textarea
-                              placeholder="List achievements, honors, relevant coursework (one per line)"
-                              rows={3}
-                              value={edu.achievements?.join('\n') || ''}
-                              onChange={(e) => updateEducation(index, 'achievements', e.target.value)}
-                            />
-                          </div>
-                        </div>
-                      </Card>
-                    ))}
+                          </Card>
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
                   </div>
                 </CardContent>
               </Card>
@@ -1418,108 +1924,126 @@ export default function AdminDashboard() {
                   </Button>
 
                   <div className="space-y-4">
-                    {portfolio.projects?.map((project: any, index: number) => (
-                      <Card key={index} className="p-4">
-                        <div className="space-y-4">
-                          <div className="flex justify-between items-start">
-                            <h3 className="text-lg font-semibold flex items-center gap-2">
-                              Project {index + 1}
-                              {project.featured && (
-                                <Badge variant="default" className="ml-2">
-                                  <Star className="h-3 w-3 mr-1" /> Featured
-                                </Badge>
-                              )}
-                            </h3>
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              onClick={() => removeProject(index)}
-                              className="text-red-500 hover:text-red-700"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
+                    <AnimatePresence>
+                      {portfolio.projects?.map((project: any, index: number) => (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, scale: 0.95 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <Card className="p-6 bg-white/5 backdrop-blur-xl border-white/10 group hover:border-white/20 transition-all">
+                            <div className="space-y-4">
+                              <div className="flex justify-between items-start">
+                                <h3 className="text-lg font-semibold flex items-center gap-2 text-purple-400">
+                                  Project {index + 1}
+                                  {project.featured && (
+                                    <Badge variant="default" className="ml-2 bg-gradient-to-r from-purple-500 to-pink-500 border-none">
+                                      <Star className="h-3 w-3 mr-1" /> Featured
+                                    </Badge>
+                                  )}
+                                </h3>
+                                <div className="flex items-center gap-1 opacity-50 group-hover:opacity-100 transition-opacity">
+                                  <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => moveProject(index, 'up')} disabled={index === 0}>
+                                    <ChevronUp className="h-4 w-4" />
+                                  </Button>
+                                  <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => moveProject(index, 'down')} disabled={index === (portfolio.projects?.length || 0) - 1}>
+                                    <ChevronDown className="h-4 w-4" />
+                                  </Button>
+                                  <Button size="sm" variant="ghost" onClick={() => removeProject(index)} className="text-red-500 hover:text-red-700 hover:bg-red-500/10 h-8 w-8 p-0">
+                                    <Trash2 className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              </div>
 
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <Label>Project Title</Label>
-                              <Input
-                                placeholder="My Awesome Project"
-                                value={project.title}
-                                onChange={(e) => updateProject(index, 'title', e.target.value)}
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>Image URL</Label>
-                              <Input
-                                placeholder="https://example.com/project-image.jpg"
-                                value={project.image}
-                                onChange={(e) => updateProject(index, 'image', e.target.value)}
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>Live URL</Label>
-                              <div className="relative">
-                                <Globe className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                <Input
-                                  className="pl-10"
-                                  placeholder="https://project-demo.com"
-                                  value={project.liveUrl}
-                                  onChange={(e) => updateProject(index, 'liveUrl', e.target.value)}
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                  <Label className="text-gray-300">Project Title</Label>
+                                  <Input
+                                    placeholder="My Awesome Project"
+                                    value={project.title}
+                                    onChange={(e) => updateProject(index, 'title', e.target.value)}
+                                    className="bg-black/20 border-white/10"
+                                  />
+                                </div>
+                                <div className="space-y-2">
+                                  <Label className="text-gray-300">Image URL</Label>
+                                  <Input
+                                    placeholder="https://example.com/project-image.jpg"
+                                    value={project.image}
+                                    onChange={(e) => updateProject(index, 'image', e.target.value)}
+                                    className="bg-black/20 border-white/10"
+                                  />
+                                </div>
+                                <div className="space-y-2">
+                                  <Label className="text-gray-300">Live URL</Label>
+                                  <div className="relative">
+                                    <Globe className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
+                                    <Input
+                                      className="pl-10 bg-black/20 border-white/10"
+                                      placeholder="https://project-demo.com"
+                                      value={project.liveUrl}
+                                      onChange={(e) => updateProject(index, 'liveUrl', e.target.value)}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="space-y-2">
+                                  <Label className="text-gray-300">GitHub URL</Label>
+                                  <div className="relative">
+                                    <Github className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
+                                    <Input
+                                      className="pl-10 bg-black/20 border-white/10"
+                                      placeholder="https://github.com/username/repo"
+                                      value={project.githubUrl}
+                                      onChange={(e) => updateProject(index, 'githubUrl', e.target.value)}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="space-y-2">
+                                <Label className="text-gray-300">Description</Label>
+                                <Textarea
+                                  placeholder="Describe your project, its purpose, and impact..."
+                                  rows={3}
+                                  value={project.description}
+                                  onChange={(e) => updateProject(index, 'description', e.target.value)}
+                                  className="bg-black/20 border-white/10 focus-visible:ring-purple-500/50"
                                 />
                               </div>
-                            </div>
-                            <div className="space-y-2">
-                              <Label>GitHub URL</Label>
-                              <div className="relative">
-                                <Github className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+
+                              <div className="space-y-2">
+                                <Label className="text-gray-300">Technologies Used</Label>
                                 <Input
-                                  className="pl-10"
-                                  placeholder="https://github.com/username/repo"
-                                  value={project.githubUrl}
-                                  onChange={(e) => updateProject(index, 'githubUrl', e.target.value)}
+                                  placeholder="React, Node.js, MongoDB (comma-separated)"
+                                  value={project.technologies?.join(', ') || ''}
+                                  onChange={(e) => updateProject(index, 'technologies', e.target.value)}
+                                  className="bg-black/20 border-white/10"
                                 />
+                                <div className="flex flex-wrap gap-2 mt-2">
+                                  {project.technologies?.map((tech: string, i: number) => (
+                                    <Badge key={i} variant="outline" className="border-white/20 bg-black/40 text-gray-300 backdrop-blur-sm">
+                                      {tech}
+                                    </Badge>
+                                  ))}
+                                </div>
+                              </div>
+
+                              <div className="flex items-center space-x-2 pt-2 border-t border-white/5">
+                                <Switch
+                                  id={`featured-${index}`}
+                                  checked={project.featured}
+                                  onCheckedChange={(checked) => updateProject(index, 'featured', checked)}
+                                  className="data-[state=checked]:bg-purple-500"
+                                />
+                                <Label htmlFor={`featured-${index}`} className="text-gray-300">Feature this project prominently</Label>
                               </div>
                             </div>
-                          </div>
-
-                          <div className="space-y-2">
-                            <Label>Description</Label>
-                            <Textarea
-                              placeholder="Describe your project, its purpose, and impact..."
-                              rows={3}
-                              value={project.description}
-                              onChange={(e) => updateProject(index, 'description', e.target.value)}
-                            />
-                          </div>
-
-                          <div className="space-y-2">
-                            <Label>Technologies Used</Label>
-                            <Input
-                              placeholder="React, Node.js, MongoDB (comma-separated)"
-                              value={project.technologies?.join(', ') || ''}
-                              onChange={(e) => updateProject(index, 'technologies', e.target.value)}
-                            />
-                            <div className="flex flex-wrap gap-2 mt-2">
-                              {project.technologies?.map((tech: string, i: number) => (
-                                <Badge key={i} variant="outline">
-                                  {tech}
-                                </Badge>
-                              ))}
-                            </div>
-                          </div>
-
-                          <div className="flex items-center space-x-2">
-                            <Switch
-                              id={`featured-${index}`}
-                              checked={project.featured}
-                              onCheckedChange={(checked) => updateProject(index, 'featured', checked)}
-                            />
-                            <Label htmlFor={`featured-${index}`}>Feature this project</Label>
-                          </div>
-                        </div>
-                      </Card>
-                    ))}
+                          </Card>
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
                   </div>
                 </CardContent>
               </Card>
@@ -1563,6 +2087,23 @@ export default function AdminDashboard() {
                   <CardDescription>Configure your portfolio preferences</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
+                  <div className="flex items-center justify-between p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                    <div>
+                      <Label htmlFor="open-to-work" className="text-base font-semibold text-emerald-400">Open for Work</Label>
+                      <p className="text-sm text-muted-foreground mt-0.5">Show "Open to Opportunities" card in your timeline</p>
+                    </div>
+                    <Switch
+                      id="open-to-work"
+                      checked={portfolio.settings?.openToWork ?? false}
+                      onCheckedChange={(checked) => setPortfolio({
+                        ...portfolio,
+                        settings: { ...portfolio.settings, openToWork: checked }
+                      })}
+                    />
+                  </div>
+
+                  <Separator />
+
                   <div className="flex items-center justify-between">
                     <div>
                       <Label htmlFor="public-profile">Public Profile</Label>

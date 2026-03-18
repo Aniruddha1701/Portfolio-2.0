@@ -105,6 +105,7 @@ export interface IPortfolio extends Document {
     emailNotifications: boolean;
     publicProfile: boolean;
     analytics: boolean;
+    openToWork: boolean;
   };
   
   updatedAt: Date;
@@ -205,7 +206,8 @@ const PortfolioSchema = new Schema<IPortfolio>({
     theme: { type: String, enum: ['light', 'dark', 'auto'], default: 'auto' },
     emailNotifications: { type: Boolean, default: true },
     publicProfile: { type: Boolean, default: true },
-    analytics: { type: Boolean, default: true }
+    analytics: { type: Boolean, default: true },
+    openToWork: { type: Boolean, default: false }
   }
 }, {
   timestamps: true

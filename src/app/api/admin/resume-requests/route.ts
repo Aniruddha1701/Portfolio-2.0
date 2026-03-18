@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import dbConnect from '@/lib/db/mongodb';
+import dbConnect from '@/lib/db/mongoose';
 import ResumeRequest from '@/models/ResumeRequest';
 import ResumeFile from '@/models/ResumeFile';
 import { verifyAuth } from '@/middleware/auth';
@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
     await dbConnect();
     
     // Fetch all requests, sort by newest first
-    const requests = await ResumeRequest.find({}).sort({ createdAt: -1 });
+    const requests = await ResumeRequest.find({}).sort({ createdAt: -1 }).lean();
     
     return NextResponse.json(requests);
   } catch (error: any) {

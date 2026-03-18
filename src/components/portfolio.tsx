@@ -43,7 +43,7 @@ const getProjectColors = (title: string, technologies: string[]) => {
   return { primary: '#8B5CF6', secondary: '#EC4899', accent: '#06B6D4' };
 };
 
-const ProjectLogo = ({ title, colors }: { title: string, colors: { primary: string, secondary: string } }) => {
+const ProjectLogo = ({ title, colors, index }: { title: string, colors: { primary: string, secondary: string }, index: number }) => {
   // Generate logo based on project title
   if (title.includes("CarePlus")) {
     return (
@@ -60,12 +60,12 @@ const ProjectLogo = ({ title, colors }: { title: string, colors: { primary: stri
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24">
             <defs>
-              <linearGradient id="careplus-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <linearGradient id={`careplus-gradient-${index}`} x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" style={{ stopColor: colors.primary, stopOpacity: 1 }} />
                 <stop offset="100%" style={{ stopColor: colors.secondary, stopOpacity: 1 }} />
               </linearGradient>
             </defs>
-            <path fill="url(#careplus-gradient)" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
+            <path fill={`url(#careplus-gradient-${index})`} d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
           </svg>
         </div>
       </motion.div>
@@ -85,12 +85,12 @@ const ProjectLogo = ({ title, colors }: { title: string, colors: { primary: stri
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24">
             <defs>
-              <linearGradient id="gourmet-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <linearGradient id={`gourmet-gradient-${index}`} x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" style={{ stopColor: colors.primary, stopOpacity: 1 }} />
                 <stop offset="100%" style={{ stopColor: colors.secondary, stopOpacity: 1 }} />
               </linearGradient>
             </defs>
-            <path fill="url(#gourmet-gradient)" d="M12,1C8.2,1,5.2,2.8,3.6,5.6C2,8.4,2.2,11.8,4.2,14.4l-1.5,4.7l4.7-1.5c2.6,2,6,2.2,8.8,0.6c2.8-1.6,4.6-4.6,4.6-8.4c0-4.9-3.9-8.9-8.8-8.9L12,1z M13,11h-2V6h2V11z M13,14h-2v-2h2V14z" />
+            <path fill={`url(#gourmet-gradient-${index})`} d="M12,1C8.2,1,5.2,2.8,3.6,5.6C2,8.4,2.2,11.8,4.2,14.4l-1.5,4.7l4.7-1.5c2.6,2,6,2.2,8.8,0.6c2.8-1.6,4.6-4.6,4.6-8.4c0-4.9-3.9-8.9-8.8-8.9L12,1z M13,11h-2V6h2V11z M13,14h-2v-2h2V14z" />
           </svg>
         </div>
       </motion.div>
@@ -114,12 +114,12 @@ const ProjectLogo = ({ title, colors }: { title: string, colors: { primary: stri
             transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
           >
             <defs>
-              <linearGradient id="imaginai-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <linearGradient id={`imaginai-gradient-${index}`} x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" style={{ stopColor: colors.primary, stopOpacity: 1 }} />
                 <stop offset="100%" style={{ stopColor: colors.secondary, stopOpacity: 1 }} />
               </linearGradient>
             </defs>
-            <path fill="url(#imaginai-gradient)" d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z" />
+            <path fill={`url(#imaginai-gradient-${index})`} d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z" />
           </motion.svg>
         </div>
       </motion.div>
@@ -143,12 +143,12 @@ const ProjectLogo = ({ title, colors }: { title: string, colors: { primary: stri
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           >
             <defs>
-              <linearGradient id={`default-gradient-${title}`} x1="0%" y1="0%" x2="100%" y2="100%">
+              <linearGradient id={`default-gradient-${index}`} x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" style={{ stopColor: colors.primary, stopOpacity: 1 }} />
                 <stop offset="100%" style={{ stopColor: colors.secondary, stopOpacity: 1 }} />
               </linearGradient>
             </defs>
-            <path fill={`url(#default-gradient-${title})`} d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+            <path fill={`url(#default-gradient-${index})`} d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
           </motion.svg>
         </div>
       </motion.div>
@@ -438,12 +438,12 @@ const PortfolioComponent = ({ projects = [] }: PortfolioProps) => {
         >
           <span className="text-white">My </span>
           <span className="relative inline-block">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-purple-400 to-cyan-400">
+            <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-purple-400 to-cyan-400">
               Work
             </span>
             {/* Curvy underline SVG */}
             <motion.svg
-              className="absolute -bottom-4 left-0 w-full overflow-visible"
+              className="absolute -bottom-6 left-0 w-full overflow-visible z-0"
               viewBox="0 0 200 20"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -497,7 +497,7 @@ const PortfolioComponent = ({ projects = [] }: PortfolioProps) => {
       >
         <motion.button
           onClick={() => setFilter("all")}
-          className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${filter === "all"
+          className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background ${filter === "all"
               ? "bg-gradient-to-r from-violet-500 to-cyan-500 text-white shadow-lg shadow-violet-500/25"
               : "bg-white/[0.05] border border-white/[0.1] text-gray-400 hover:bg-white/[0.08] hover:text-white"
             }`}
@@ -510,7 +510,7 @@ const PortfolioComponent = ({ projects = [] }: PortfolioProps) => {
           <motion.button
             key={tag}
             onClick={() => setFilter(tag.toLowerCase())}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${filter === tag.toLowerCase()
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background ${filter === tag.toLowerCase()
                 ? "bg-gradient-to-r from-violet-500/80 to-cyan-500/80 text-white shadow-md"
                 : "bg-white/[0.04] border border-white/[0.08] text-gray-400 hover:bg-white/[0.06] hover:border-white/[0.12] hover:text-gray-300"
               }`}

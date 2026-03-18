@@ -44,24 +44,27 @@ export default function HeroEnhanced({ name, city, title, bio, hasResume = false
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Multi-layered background */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-violet-950/30 via-background to-background" />
-      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" aria-hidden="true" />
 
       {/* Animated gradient mesh orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <motion.div
           className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-violet-600/15 blur-[120px]"
           animate={{ x: [0, 60, 0], y: [0, -40, 0], scale: [1, 1.2, 1] }}
           transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          aria-hidden="true"
         />
         <motion.div
           className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full bg-cyan-500/10 blur-[100px]"
           animate={{ x: [0, -50, 0], y: [0, 30, 0], scale: [1.1, 0.9, 1.1] }}
           transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          aria-hidden="true"
         />
         <motion.div
           className="absolute top-1/2 right-1/3 w-[300px] h-[300px] rounded-full bg-pink-500/8 blur-[80px]"
           animate={{ x: [0, 40, 0], y: [0, 50, 0] }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 4 }}
+          aria-hidden="true"
         />
       </div>
 
@@ -103,13 +106,12 @@ export default function HeroEnhanced({ name, city, title, bio, hasResume = false
               {name.split('').map((letter, index) => (
                 <motion.span
                   key={index}
-                  className="inline-block text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-gray-500 hover:to-violet-400"
+                  className="inline-block text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-gray-500 hover:to-violet-400 hover-glow-letter"
                   whileHover={{ 
                     y: -15, 
                     rotateX: 20, 
                     rotateY: letter !== ' ' ? (index % 2 === 0 ? 15 : -15) : 0, 
                     scale: 1.1,
-                    textShadow: "0px 10px 20px rgba(139, 92, 246, 0.5), 0px -5px 15px rgba(255, 255, 255, 0.3)" 
                   }}
                   transition={{ type: "spring", stiffness: 400, damping: 10 }}
                   style={{
@@ -173,7 +175,7 @@ export default function HeroEnhanced({ name, city, title, bio, hasResume = false
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="max-w-2xl mx-auto text-lg text-gray-400 leading-relaxed font-light"
+            className="max-w-2xl mx-auto text-lg text-gray-300 leading-relaxed font-light"
           >
             {bio}
           </motion.p>
@@ -187,12 +189,20 @@ export default function HeroEnhanced({ name, city, title, bio, hasResume = false
           >
             <Button
               size="lg"
-              className="group relative overflow-hidden bg-white hover:bg-gray-100 text-black min-w-[160px] h-14 rounded-full transition-all duration-300 shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] hover:shadow-[0_0_60px_-15px_rgba(255,255,255,0.5)] hover:scale-[1.02] font-semibold text-base"
+              className="group relative overflow-hidden bg-white text-black min-w-[170px] h-14 rounded-full transition-all duration-500 hover:scale-[1.05] hover:bg-gray-50 hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.8)] font-semibold text-base"
               onClick={() => document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' })}
             >
+              {/* Sweeping shine effect */}
+              <div className="absolute inset-0 -translate-x-[150%] skew-x-[30deg] bg-gradient-to-r from-transparent via-gray-200/60 to-transparent group-hover:duration-1000 group-hover:translate-x-[150%] transition-transform ease-out" />
+              
               <span className="relative z-10 flex items-center gap-2">
                 View Work
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <motion.div 
+                  className="relative flex items-center justify-center w-5 h-5 overflow-hidden"
+                >
+                  <ArrowRight className="absolute w-4 h-4 transition-all duration-300 group-hover:translate-x-5 group-hover:opacity-0" />
+                  <ArrowRight className="absolute w-4 h-4 -translate-x-5 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100 text-violet-600" />
+                </motion.div>
               </span>
             </Button>
 
@@ -201,13 +211,23 @@ export default function HeroEnhanced({ name, city, title, bio, hasResume = false
                 <Button
                   size="lg"
                   variant="outline"
-                  className="group relative min-w-[160px] h-14 rounded-full bg-[#110e1b] border-2 border-violet-500/50 hover:bg-[#1a1528] hover:border-violet-400 hover:shadow-[0_0_20px_-5px_var(--tw-shadow-color)] shadow-violet-500/30 transition-all duration-300 font-medium text-base hover:scale-[1.02] overflow-hidden"
+                  className="group relative min-w-[170px] h-14 rounded-full bg-[#0a0a10] border-2 border-violet-500/30 hover:bg-[#110e1b] hover:border-violet-400 text-base font-medium transition-all duration-500 hover:scale-[1.05] overflow-hidden hover:shadow-[0_0_30px_-5px_rgba(139,92,246,0.5)]"
                 >
-                  {/* Subtle internal glow */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-violet-500/0 via-violet-500/10 to-violet-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  {/* Expanding radiant glow */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <div className="absolute inset-0 bg-gradient-to-r from-violet-600/20 via-fuchsia-600/20 to-violet-600/20" />
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-full bg-violet-400/30 blur-2xl rounded-full" />
+                  </div>
+                  
                   <span className="relative z-10 flex items-center">
-                    <Download className="w-4 h-4 mr-2 text-violet-300 group-hover:text-white transition-colors group-hover:-translate-y-0.5" />
-                    <span className="text-gray-100 group-hover:text-white transition-colors">Request Resume</span>
+                    <motion.div
+                       className="mr-2"
+                       animate={{ y: [0, -3, 0] }}
+                       transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    >
+                      <Download className="w-4 h-4 text-violet-400 group-hover:text-white transition-colors" />
+                    </motion.div>
+                    <span className="text-gray-200 group-hover:text-white transition-colors font-semibold">Request Resume</span>
                   </span>
                 </Button>
               </ResumeRequestModal>
@@ -216,11 +236,18 @@ export default function HeroEnhanced({ name, city, title, bio, hasResume = false
             <Button
               size="lg"
               variant="outline"
-              className="group relative min-w-[160px] h-14 rounded-full bg-white/[0.03] border-white/10 hover:bg-white/[0.08] hover:border-white/20 transition-all duration-300 font-medium text-base hover:scale-[1.02]"
+              className="group relative overflow-hidden min-w-[170px] h-14 rounded-full bg-white/[0.03] border-white/10 hover:bg-white/[0.08] hover:border-cyan-500/50 transition-all duration-500 font-medium text-base hover:scale-[1.05] hover:shadow-[0_0_30px_-5px_rgba(6,182,212,0.3)]"
               onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
             >
-              <Send className="w-4 h-4 mr-2 text-gray-400 group-hover:text-white transition-colors" />
-              Contact
+              <span className="relative z-10 flex items-center">
+                <motion.div 
+                  className="relative w-5 h-5 mr-2 overflow-hidden flex items-center justify-center"
+                >
+                   <Send className="absolute w-4 h-4 text-gray-400 transition-all duration-300 group-hover:translate-x-5 group-hover:-translate-y-5 group-hover:opacity-0" />
+                   <Send className="absolute w-4 h-4 text-cyan-400 -translate-x-5 translate-y-5 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:opacity-100" />
+                </motion.div>
+                <span className="text-gray-300 group-hover:text-white transition-colors font-semibold">Contact</span>
+              </span>
             </Button>
           </motion.div>
         </div>
@@ -232,6 +259,7 @@ export default function HeroEnhanced({ name, city, title, bio, hasResume = false
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1 }}
+        aria-label="Scroll down"
       >
         <div className="flex flex-col items-center gap-2">
           <span className="text-[10px] font-medium text-gray-600 uppercase tracking-[0.2em]">Scroll</span>

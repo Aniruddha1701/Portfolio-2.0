@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     await dbConnect();
     
     // For public access, get the first portfolio (you can modify this logic)
-    const portfolio = await Portfolio.findOne({});
+    const portfolio = await Portfolio.findOne({}).lean();
     
     if (!portfolio) {
       return NextResponse.json(

@@ -1,9 +1,9 @@
-import { connectDB } from '@/lib/db/mongodb';
+import dbConnect from '@/lib/db/mongoose';
 import Portfolio from '@/models/Portfolio';
 
 export async function getPortfolioData() {
   try {
-    await connectDB();
+    await dbConnect();
     const portfolio = await Portfolio.findOne().lean();
     
     if (!portfolio) {

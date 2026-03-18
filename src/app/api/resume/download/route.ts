@@ -1,39 +1,44 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectDB } from '@/lib/db/mongodb';
+import dbConnect from '@/lib/db/mongoose';
 import Portfolio from '@/models/Portfolio';
 import ResumeRequest from '@/models/ResumeRequest';
 import ResumeFile from '@/models/ResumeFile';
+import { verifyAuth } from '@/middleware/auth';
 import { readFile } from 'fs/promises';
 import path from 'path';
 
 export async function GET(request: NextRequest) {
   try {
     // Connect to database
-    await connectDB();
+    await dbConnect();
 
     const { searchParams } = new URL(request.url);
     const token = searchParams.get('token');
 
+    // Check if it's an admin requesting
+    const user = await verifyAuth(request);
+
     // 1. Token Validation
-    if (!token) {
-        // If an admin requests it natively from dashboard, we might want to let them bypass, 
-        // but for now strictly enforce the token.
-        return NextResponse.json({ error: 'Access Denied. Missing authorization token.' }, { status: 403 });
-    }
+    if (!user) {
+      if (!token) {
+          // Strictly enforce the token if not an admin.
+          return NextResponse.json({ error: 'Access Denied. Missing authorization token.' }, { status: 403 });
+      }
 
-    const resumeRequest = await ResumeRequest.findOne({ token });
+      const resumeRequest = await ResumeRequest.findOne({ token });
 
-    if (!resumeRequest) {
-        return NextResponse.json({ error: 'Access Denied. Invalid token.' }, { status: 403 });
-    }
+      if (!resumeRequest) {
+          return NextResponse.json({ error: 'Access Denied. Invalid token.' }, { status: 403 });
+      }
 
-    if (resumeRequest.status !== 'approved') {
-         return NextResponse.json({ error: 'Access Denied. This request has not been approved.' }, { status: 403 });
-    }
+      if (resumeRequest.status !== 'approved') {
+           return NextResponse.json({ error: 'Access Denied. This request has not been approved.' }, { status: 403 });
+      }
 
-    // Check expiration
-    if (new Date() > new Date(resumeRequest.expiresAt)) {
-         return NextResponse.json({ error: 'Access Denied. This token has expired.' }, { status: 410 });
+      // Check expiration
+      if (new Date() > new Date(resumeRequest.expiresAt)) {
+           return NextResponse.json({ error: 'Access Denied. This token has expired.' }, { status: 410 });
+      }
     }
 
     // 2. Fetch Resume from Database

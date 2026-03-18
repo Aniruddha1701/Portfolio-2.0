@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectDB } from '@/lib/db/mongodb';
+import dbConnect from '@/lib/db/mongoose';
 import Portfolio from '@/models/Portfolio';
 import jwt from 'jsonwebtoken';
 import { writeFile, mkdir, unlink } from 'fs/promises';
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
     await writeFile(filePath, buffer);
 
     // Update portfolio with resume path
-    await connectDB();
+    await dbConnect();
     const portfolio = await Portfolio.findOne();
     
     if (portfolio) {
@@ -130,7 +130,7 @@ export async function DELETE(request: NextRequest) {
 
     // Connect to database
     try {
-      await connectDB();
+      await dbConnect();
     } catch (dbError) {
       console.error('Database connection error:', dbError);
       return NextResponse.json({ error: 'Database connection failed' }, { status: 500 });
