@@ -5,6 +5,7 @@ import './globals.css';
 import { getPortfolioMetadata } from '@/lib/get-portfolio';
 import { CustomCursor } from '@/components/effects/custom-cursor';
 import { ScrollProgress } from '@/components/effects/scroll-progress';
+import { AuthProvider } from '@/lib/auth/auth-context';
 
 // Dynamic metadata generation
 export async function generateMetadata(): Promise<Metadata> {
@@ -59,10 +60,12 @@ export default function RootLayout({
           </div>
           <CustomCursor />
           <ScrollProgress />
-          <div className="relative z-10">
-            {children}
-          </div>
-          <Toaster />
+          <AuthProvider>
+            <div className="relative z-10">
+              {children}
+            </div>
+            <Toaster />
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>
