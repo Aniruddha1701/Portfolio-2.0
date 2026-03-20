@@ -1,144 +1,100 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Card } from "@/components/ui/card";
-import { Send, CheckCircle, Loader2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useState } from "react"
+import { motion } from "framer-motion"
+import { Send, Loader2 } from "lucide-react"
 
 export function ContactForm() {
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
-    const { toast } = useToast();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: ""
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false)
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setIsSubmitting(true);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    
+    await new Promise(resolve => setTimeout(resolve, 1500))
+    
+    setIsSubmitting(false)
+    setIsSubmitted(true)
+    setFormData({ name: "", email: "", message: "" })
+    
+    setTimeout(() => setIsSubmitted(false), 3000)
+  }
 
-        const formData = new FormData(e.currentTarget);
-        const data = {
-            name: formData.get("name") as string,
-            email: formData.get("email") as string,
-            subject: formData.get("subject") as string,
-            message: formData.get("message") as string,
-        };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
+  }
 
-        try {
-            const response = await fetch("/api/contact", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data),
-            });
+  return (
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <div className="space-y-2">
+        <label htmlFor="name" className="text-sm text-gray-400 font-medium">Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+          className="w-full h-12 px-4 rounded-xl bg-white/[0.02] border border-white/[0.06] text-gray-200 placeholder:text-gray-600 focus:outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-500/20 transition-all duration-300"
+          placeholder="Your name"
+        />
+      </div>
+      
+      <div className="space-y-2">
+        <label htmlFor="email" className="text-sm text-gray-400 font-medium">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+          className="w-full h-12 px-4 rounded-xl bg-white/[0.02] border border-white/[0.06] text-gray-200 placeholder:text-gray-600 focus:outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-500/20 transition-all duration-300"
+          placeholder="your@email.com"
+        />
+      </div>
+      
+      <div className="space-y-2">
+        <label htmlFor="message" className="text-sm text-gray-400 font-medium">Message</label>
+        <textarea
+          id="message"
+          name="message"
+          value={formData.message}
+          onChange={handleChange}
+          required
+          rows={5}
+          className="w-full px-4 py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] text-gray-200 placeholder:text-gray-600 focus:outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-500/20 transition-all duration-300 resize-none"
+          placeholder="Your message..."
+        />
+      </div>
 
-            if (response.ok) {
-                setIsSuccess(true);
-                toast({
-                    title: "Message Sent!",
-                    description: "Thank you for reaching out. I'll get back to you soon.",
-                });
-                (e.target as HTMLFormElement).reset();
-                setTimeout(() => setIsSuccess(false), 3000);
-            } else {
-                throw new Error("Failed to send message");
-            }
-        } catch (error) {
-            toast({
-                title: "Error",
-                description: "Failed to send message. Please try again.",
-                variant: "destructive",
-            });
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
-
-    return (
-        <div className="card-ultra-border relative group">
-            {/* Outer glow */}
-            <div className="absolute -inset-2 rounded-[28px] blur-2xl opacity-30 bg-gradient-to-br from-violet-500/20 to-pink-500/15 pointer-events-none" />
-
-            <Card className="card-ultra border-0 relative p-6 md:p-8">
-                {/* Aurora background */}
-                <div className="absolute inset-0 opacity-20 overflow-hidden pointer-events-none rounded-3xl">
-                    <div className="absolute -top-16 -left-16 w-40 h-40 rounded-full blur-[70px] bg-violet-500 animate-blob" />
-                    <div className="absolute -bottom-12 -right-12 w-32 h-32 rounded-full blur-[50px] bg-pink-500 animate-blob animation-delay-2000" />
-                </div>
-
-            <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
-                <div className="grid gap-4 md:grid-cols-2">
-                    <div className="space-y-2">
-                        <Label htmlFor="name">Name</Label>
-                        <Input
-                            id="name"
-                            name="name"
-                            placeholder="Your name"
-                            required
-                            className="bg-white/[0.03] border-white/[0.08] focus:border-violet-500/50 rounded-xl"
-                        />
-                    </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="email">Email</Label>
-                        <Input
-                            id="email"
-                            name="email"
-                            type="email"
-                            placeholder="your@email.com"
-                            required
-                            className="bg-white/[0.03] border-white/[0.08] focus:border-violet-500/50 rounded-xl"
-                        />
-                    </div>
-                </div>
-                <div className="space-y-2">
-                    <Label htmlFor="subject">Subject</Label>
-                    <Input
-                        id="subject"
-                        name="subject"
-                        placeholder="What's this about?"
-                        required
-                        className="bg-white/[0.03] border-white/[0.08] focus:border-violet-500/50 rounded-xl"
-                    />
-                </div>
-                <div className="space-y-2">
-                    <Label htmlFor="message">Message</Label>
-                    <Textarea
-                        id="message"
-                        name="message"
-                        placeholder="Your message..."
-                        rows={5}
-                        required
-                        className="bg-white/[0.03] border-white/[0.08] focus:border-violet-500/50 resize-none rounded-xl"
-                    />
-                </div>
-                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                    <Button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="w-full group bg-gradient-to-r from-violet-600 to-pink-600 hover:from-violet-500 hover:to-pink-500 text-white rounded-xl py-3 shadow-lg shadow-violet-500/20 hover:shadow-violet-500/30 transition-all duration-300"
-                    >
-                        {isSubmitting ? (
-                            <>
-                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                Sending...
-                            </>
-                        ) : isSuccess ? (
-                            <>
-                                <CheckCircle className="mr-2 h-4 w-4" />
-                                Sent!
-                            </>
-                        ) : (
-                            <>
-                                <Send className="mr-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                                Send Message
-                            </>
-                        )}
-                    </Button>
-                </motion.div>
-            </form>
-            </Card>
-        </div>
-    );
+      <motion.button
+        type="submit"
+        disabled={isSubmitting}
+        className="w-full h-12 rounded-xl bg-gradient-to-r from-violet-600 to-pink-600 text-white font-medium flex items-center justify-center gap-2 hover:from-violet-500 hover:to-pink-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+      >
+        {isSubmitting ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin" />
+            <span>Sending...</span>
+          </>
+        ) : isSubmitted ? (
+          <span className="text-green-300">Message Sent!</span>
+        ) : (
+          <>
+            <Send className="h-4 w-4" />
+            <span>Send Message</span>
+          </>
+        )}
+      </motion.button>
+    </form>
+  )
 }

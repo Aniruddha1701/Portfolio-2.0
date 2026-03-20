@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
         role: admin.role 
       },
       getJWTSecret(),
-      { expiresIn: '7d' }
+      { expiresIn: '15m' }
     );
     
     // Return success response with token

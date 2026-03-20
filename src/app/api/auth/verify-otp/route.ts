@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/db/mongoose';
 import OTP from '@/models/OTP';
+import Admin from '@/models/Admin';
 import jwt from 'jsonwebtoken';
 import { getJWTSecret } from '@/lib/auth/jwt-secret';
 import { getAuthCookieConfig } from '@/lib/auth/cookie-config';
@@ -17,11 +18,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const normalizedEmail = email.toLowerCase().trim();
+
     await dbConnect();
 
     // Find the OTP record
     const otpRecord = await OTP.findOne({
-      email,
+      email: normalizedEmail,
       otp,
       verified: false,
       expiresAt: { $gt: new Date() }
@@ -30,7 +33,7 @@ export async function POST(request: NextRequest) {
     if (!otpRecord) {
       // Increment attempts for any unverified OTP for this email
       await OTP.updateMany(
-        { email, verified: false },
+        { email: normalizedEmail, verified: false },
         { $inc: { attempts: 1 } }
       );
 
@@ -52,15 +55,22 @@ export async function POST(request: NextRequest) {
     otpRecord.verified = true;
     await otpRecord.save();
 
+    // Find admin by email
+    const admin = await Admin.findOne({ email: normalizedEmail });
+
+    // Get admin's actual role from database, default to 'admin' if not found
+    const userRole = admin?.role || 'admin';
+
     // Generate JWT token
     const token = jwt.sign(
       { 
-        email,
-        role: 'admin',
-        verifiedAt: new Date().toISOString()
+        userId: admin?._id?.toString() || normalizedEmail,
+        email: normalizedEmail,
+        role: userRole,
+        type: 'access'
       },
       getJWTSecret(),
-      { expiresIn: '7d' }
+      { expiresIn: '15m' }
     );
 
     // Create response with cookies
@@ -73,12 +83,10 @@ export async function POST(request: NextRequest) {
     // Use centralized cookie configuration for consistency
     const cookieOptions = getAuthCookieConfig();
     
-    response.cookies.set('auth-token', token, cookieOptions);
-    response.cookies.set('admin-token', token, cookieOptions);
-    response.cookies.set('admin-session', token, cookieOptions);
+    response.cookies.set('access-token', token, cookieOptions);
 
     // Clean up verified OTPs for this email
-    await OTP.deleteMany({ email, verified: true });
+    await OTP.deleteMany({ email: normalizedEmail, verified: true });
 
     return response;
 

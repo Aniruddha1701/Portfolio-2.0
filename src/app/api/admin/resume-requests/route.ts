@@ -2,15 +2,15 @@ import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/db/mongoose';
 import ResumeRequest from '@/models/ResumeRequest';
 import ResumeFile from '@/models/ResumeFile';
-import { verifyAuth } from '@/middleware/auth';
+import { requireAdmin } from '@/middleware/auth';
 import { sendApprovalEmailToVisitor, sendRejectionEmailToVisitor } from '@/lib/mail';
 
 // GET - Fetch all resume requests (Admin only)
 export async function GET(request: NextRequest) {
   try {
-    const user = await verifyAuth(request);
+    const user = await requireAdmin(request);
     if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized - Admin access required' }, { status: 401 });
     }
 
     await dbConnect();
@@ -28,9 +28,9 @@ export async function GET(request: NextRequest) {
 // PUT - Update resume request status (approve/reject) (Admin only)
 export async function PUT(request: NextRequest) {
   try {
-    const user = await verifyAuth(request);
+    const user = await requireAdmin(request);
     if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized - Admin access required' }, { status: 401 });
     }
 
     await dbConnect();

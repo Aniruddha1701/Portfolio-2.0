@@ -21,8 +21,9 @@ export async function middleware(request: NextRequest) {
     const adminToken = request.cookies.get('admin-token');
     const authToken = request.cookies.get('auth-token');
     const adminSession = request.cookies.get('admin-session');
+    const accessToken = request.cookies.get('access-token');
 
-    if (!adminToken && !authToken && !adminSession) {
+    if (!adminToken && !authToken && !adminSession && !accessToken) {
       return NextResponse.redirect(new URL('/admin/login', request.url));
     }
   }

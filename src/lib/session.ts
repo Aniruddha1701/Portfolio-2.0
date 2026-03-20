@@ -12,13 +12,13 @@ export interface SessionData {
 }
 
 export async function createSession(data: SessionData): Promise<void> {
-  const token = jwt.sign(data, JWT_SECRET, { expiresIn: '7d' });
+  const token = jwt.sign(data, JWT_SECRET, { expiresIn: '15m' });
   
   cookies().set(SESSION_NAME, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
-    maxAge: 60 * 60 * 24 * 7, // 7 days
+    maxAge: 60 * 15, // 15 minutes
     path: '/'
   });
 }
