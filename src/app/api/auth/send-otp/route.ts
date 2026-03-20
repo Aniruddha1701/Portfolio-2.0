@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/db/mongoose';
 import OTP from '@/models/OTP';
+import Admin from '@/models/Admin';
 import { generateOTP, sendOTPEmail } from '@/lib/email';
 
 export async function POST(request: NextRequest) {
@@ -17,10 +18,6 @@ export async function POST(request: NextRequest) {
     
     const { email, password } = body;
 
-    // Validate admin credentials (hardcoded for reliability)
-    const adminEmail = 'aniruddhap66@gmail.com';
-    const adminPassword = 'Tamdev54@#';
-
     if (!email || !password) {
       return NextResponse.json(
         { error: 'Email and password are required' },
@@ -28,19 +25,31 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if credentials match
-    if (email !== adminEmail || password !== adminPassword) {
+    await dbConnect();
+
+    // Find admin by email and verify password using bcrypt
+    const admin = await Admin.findOne({ email: email.toLowerCase().trim(), isActive: true });
+    
+    if (!admin) {
       return NextResponse.json(
         { error: 'Invalid credentials' },
         { status: 401 }
       );
     }
 
-    await dbConnect();
+    // Use bcrypt to compare passwords (Admin password is hashed in the database)
+    const isPasswordValid = await admin.comparePassword(password);
+    
+    if (!isPasswordValid) {
+      return NextResponse.json(
+        { error: 'Invalid credentials' },
+        { status: 401 }
+      );
+    }
 
     // Check if there's a recent OTP (within last 1 minute)
     const recentOTP = await OTP.findOne({
-      email,
+      email: email.toLowerCase().trim(),
       createdAt: { $gte: new Date(Date.now() - 60000) }, // 1 minute
       verified: false
     });
@@ -53,14 +62,14 @@ export async function POST(request: NextRequest) {
     }
 
     // Delete any existing unverified OTPs for this email
-    await OTP.deleteMany({ email, verified: false });
+    await OTP.deleteMany({ email: email.toLowerCase().trim(), verified: false });
 
     // Generate new OTP
     const otpCode = generateOTP();
 
     // Save OTP to database
     const newOTP = await OTP.create({
-      email,
+      email: email.toLowerCase().trim(),
       otp: otpCode,
     });
 

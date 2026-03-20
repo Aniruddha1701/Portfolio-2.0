@@ -3,6 +3,7 @@ import dbConnect from '@/lib/db/mongoose';
 import OTP from '@/models/OTP';
 import jwt from 'jsonwebtoken';
 import { getJWTSecret } from '@/lib/auth/jwt-secret';
+import { getAuthCookieConfig } from '@/lib/auth/cookie-config';
 
 
 export async function POST(request: NextRequest) {
@@ -69,13 +70,8 @@ export async function POST(request: NextRequest) {
       redirect: '/admin/dashboard'
     });
     
-    const cookieOptions = {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax' as const,
-      maxAge: 60 * 60 * 24 * 7, // 7 days
-      path: '/'
-    };
+    // Use centralized cookie configuration for consistency
+    const cookieOptions = getAuthCookieConfig();
     
     response.cookies.set('auth-token', token, cookieOptions);
     response.cookies.set('admin-token', token, cookieOptions);

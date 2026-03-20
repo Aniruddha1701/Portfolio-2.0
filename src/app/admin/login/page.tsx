@@ -23,7 +23,7 @@ export default function AdminLogin() {
     setError('');
 
     try {
-      const response = await fetch('/api/auth/send-otp-gmail', {
+      const response = await fetch('/api/auth/send-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -86,7 +86,7 @@ export default function AdminLogin() {
     setError('');
 
     try {
-      const response = await fetch('/api/auth/verify-otp-simple', {
+      const response = await fetch('/api/auth/verify-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp: otpCode }),
@@ -113,7 +113,7 @@ export default function AdminLogin() {
     setSuccessMessage('');
 
     try {
-      const response = await fetch('/api/auth/send-otp-gmail', {
+      const response = await fetch('/api/auth/send-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),

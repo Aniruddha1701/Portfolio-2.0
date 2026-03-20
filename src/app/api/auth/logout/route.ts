@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getClearCookieConfig } from '@/lib/auth/cookie-config';
 
 export async function POST(request: NextRequest) {
   const response = NextResponse.json(
@@ -6,14 +7,8 @@ export async function POST(request: NextRequest) {
     { status: 200 }
   );
   
-  // Clear all auth cookies
-  const clearCookieOptions = {
-    httpOnly: true,
-    expires: new Date(0),
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax' as const,
-    path: '/'
-  };
+  // Use centralized cookie clear configuration
+  const clearCookieOptions = getClearCookieConfig();
   
   response.cookies.set('auth-token', '', clearCookieOptions);
   response.cookies.set('admin-token', '', clearCookieOptions);
