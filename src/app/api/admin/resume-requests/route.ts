@@ -5,6 +5,8 @@ import ResumeFile from '@/models/ResumeFile';
 import { requireAdmin } from '@/middleware/auth';
 import { sendApprovalEmailToVisitor, sendRejectionEmailToVisitor } from '@/lib/mail';
 
+export const dynamic = 'force-dynamic';
+
 // GET - Fetch all resume requests (Admin only)
 export async function GET(request: NextRequest) {
   try {

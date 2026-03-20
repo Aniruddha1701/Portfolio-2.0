@@ -7,6 +7,8 @@ import { verifyAuth } from '@/middleware/auth';
 import { readFile } from 'fs/promises';
 import path from 'path';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
     // Connect to database

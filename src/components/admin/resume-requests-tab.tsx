@@ -26,7 +26,7 @@ export function ResumeRequestsTab() {
 
   const fetchRequests = async () => {
     try {
-      const res = await fetch("/api/admin/resume-requests");
+      const res = await fetch(`/api/admin/resume-requests?t=${new Date().getTime()}`);
       if (res.ok) {
         const data = await res.json();
         setRequests(data);

@@ -57,8 +57,9 @@ export async function POST(request: Request) {
       if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
         console.warn('EMAIL_USER and EMAIL_PASS not configured in .env. Email was not sent, but request was saved to DB.');
       } else {
-        return NextResponse.json({ error: 'Database saved but failed to send email. Check SMTP settings.' }, { status: 500 });
+        console.error('SMTP Error: Database saved but failed to send email. Check SMTP settings.');
       }
+      // Return success anyway so UI doesn't crash, since it was saved to the DB
     }
 
     return NextResponse.json({ success: true, message: 'Request submitted successfully' });
