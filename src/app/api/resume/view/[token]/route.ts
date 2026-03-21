@@ -46,10 +46,10 @@ export async function GET(
       const viewedAt = new Date(resumeRequest.viewedAt);
       const timeDiffInSeconds = (now.getTime() - viewedAt.getTime()) / 1000;
       
-      const isSameIp = resumeRequest.lastViewedIp === ip;
-      
-      // If it's the same IP and within 60 seconds, allow the "re-view" (handles refreshes, double-effects)
-      if (isSameIp && timeDiffInSeconds < 60) {
+      // Allow re-view within 5 minutes (300 seconds) regardless of IP 
+      // This handles cases where email scanners pre-fetch the link from a different IP, 
+      // or React Strict Mode double-fetches the API in development.
+      if (timeDiffInSeconds < 300) {
         // Record it but don't block
         resumeRequest.viewCount += 1;
         await resumeRequest.save();
