@@ -19,7 +19,11 @@ const AuditLogSchema = new Schema<IAuditLog>({
   },
   action: {
     type: String,
-    enum: ['login', 'logout', 'register', 'password_change', 'refresh_token', 'failed_login', 'account_locked'],
+    enum: [
+      'login', 'logout', 'register', 'password_change', 'refresh_token', 'failed_login', 'account_locked',
+      'otp_request', 'portfolio_update', 'project_create', 'project_update', 'project_delete', 
+      'resume_upload', 'resume_request_approve', 'resume_request_reject', 'settings_update'
+    ],
     required: true,
     index: true
   },

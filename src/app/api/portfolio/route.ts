@@ -1,11 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import dbConnect from '@/lib/db/mongoose';
 import Portfolio from '@/models/Portfolio';
-import { authenticateWithRefresh, requireAdmin } from '@/middleware/auth';
+import { requireAdmin } from '@/middleware/auth';
+import { successResponse, errorResponse, serverError, forbiddenResponse, notFoundResponse } from '@/lib/api-response';
+import { logAudit } from '@/lib/audit';
 
 export const dynamic = 'force-dynamic';
 
-// GET - Fetch portfolio data (Public - anyone can view)
+// GET - Fetch portfolio data (Public)
 export async function GET(request: NextRequest) {
   try {
     await dbConnect();
@@ -13,71 +15,61 @@ export async function GET(request: NextRequest) {
     const portfolio = await Portfolio.findOne({}).lean();
     
     if (!portfolio) {
-      return NextResponse.json(
-        { error: 'Portfolio not found' },
-        { status: 404 }
-      );
+      return notFoundResponse('Portfolio not found');
     }
     
-    return NextResponse.json(portfolio, { status: 200 });
+    return successResponse(portfolio);
     
   } catch (error: any) {
-    console.error('Portfolio fetch error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return serverError(error);
   }
 }
 
 // POST - Create portfolio (Admin only)
 export async function POST(request: NextRequest) {
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim() || 'unknown';
+
   try {
     const authUser = await requireAdmin(request);
-    
     if (!authUser) {
-      return NextResponse.json(
-        { error: 'Unauthorized - Admin access required' },
-        { status: 403 }
-      );
+      return forbiddenResponse('Admin access required');
     }
     
     await dbConnect();
     
     const data = await request.json();
-    
     const existingPortfolio = await Portfolio.findOne({});
     
     if (existingPortfolio) {
-      return NextResponse.json(
-        { error: 'Portfolio already exists. Use PUT to update.' },
-        { status: 400 }
-      );
+      return errorResponse('Portfolio already exists. Use PUT to update.', 400);
     }
     
     const portfolio = await Portfolio.create(data);
     
-    return NextResponse.json(portfolio, { status: 201 });
+    await logAudit({
+      action: 'PORTFOLIO_UPDATE',
+      userId: authUser.userId,
+      email: authUser.email,
+      status: 'success',
+      details: 'Created new portfolio',
+      ip
+    });
+
+    return successResponse(portfolio, 'Portfolio created successfully', 201);
     
   } catch (error: any) {
-    console.error('Portfolio create error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return serverError(error);
   }
 }
 
 // PUT - Update portfolio (Admin only)
 export async function PUT(request: NextRequest) {
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim() || 'unknown';
+
   try {
     const authUser = await requireAdmin(request);
-    
     if (!authUser) {
-      return NextResponse.json(
-        { error: 'Unauthorized - Admin access required' },
-        { status: 403 }
-      );
+      return forbiddenResponse('Admin access required');
     }
     
     await dbConnect();
@@ -85,132 +77,110 @@ export async function PUT(request: NextRequest) {
     const data = await request.json();
     const { _id, ...updateData } = data;
     
+    // Normalize data (ensure structure is correct)
     if (updateData.education) {
-      updateData.education = updateData.education.map((edu: any) => {
-        return {
-          institution: edu.institution || '',
-          degree: edu.degree || '',
-          field: edu.field || '',
-          location: edu.location || '',
-          duration: edu.duration || '',
-          startDate: edu.startDate || null,
-          endDate: edu.endDate || null,
-          current: edu.current || false,
-          gpa: edu.gpa || '',
-          achievements: edu.achievements || [],
-          iconType: edu.iconType || 'university'
-        };
-      });
+      updateData.education = updateData.education.map((edu: any) => ({
+        institution: edu.institution || '',
+        degree: edu.degree || '',
+        field: edu.field || '',
+        location: edu.location || '',
+        duration: edu.duration || '',
+        startDate: edu.startDate || null,
+        endDate: edu.endDate || null,
+        current: edu.current || false,
+        gpa: edu.gpa || '',
+        achievements: edu.achievements || [],
+        iconType: edu.iconType || 'university'
+      }));
     }
     
     if (updateData.experience) {
-      updateData.experience = updateData.experience.map((exp: any) => {
-        return {
-          company: exp.company || '',
-          position: exp.position || '',
-          institution: exp.institution || exp.company || '',
-          degree: exp.degree || exp.position || '',
-          location: exp.location || '',
-          duration: exp.duration || '',
-          startDate: exp.startDate || null,
-          endDate: exp.endDate || null,
-          current: exp.current || false,
-          description: exp.description || [],
-          highlights: exp.highlights || exp.description || [],
-          iconType: exp.iconType || 'briefcase'
-        };
-      });
+      updateData.experience = updateData.experience.map((exp: any) => ({
+        company: exp.company || exp.institution || '',
+        position: exp.position || exp.degree || '',
+        institution: exp.institution || exp.company || '',
+        degree: exp.degree || exp.position || '',
+        location: exp.location || '',
+        duration: exp.duration || '',
+        startDate: exp.startDate || null,
+        endDate: exp.endDate || null,
+        current: exp.current || false,
+        description: exp.description || exp.highlights || [],
+        highlights: exp.highlights || exp.description || [],
+        iconType: exp.iconType || 'briefcase'
+      }));
     }
     
-    let portfolioId = _id;
-    if (!portfolioId) {
-      const existingPortfolio = await Portfolio.findOne({});
-      portfolioId = existingPortfolio?._id;
-    }
+    let portfolio;
+    const existingPortfolio = await Portfolio.findOne({});
     
-    if (portfolioId) {
-      const portfolio = await Portfolio.findByIdAndUpdate(
-        portfolioId,
+    if (existingPortfolio) {
+      portfolio = await Portfolio.findByIdAndUpdate(
+        existingPortfolio._id,
         updateData,
         { new: true, runValidators: true }
       );
-      
-      if (!portfolio) {
-        return NextResponse.json(
-          { error: 'Portfolio not found' },
-          { status: 404 }
-        );
-      }
-      
-      return NextResponse.json(portfolio, { 
-        status: 200,
-        headers: {
-          'Cache-Control': 'no-store'
-        }
-      });
     } else {
-      const portfolio = await Portfolio.create(updateData);
-      return NextResponse.json(portfolio, { 
-        status: 201,
-        headers: {
-          'Cache-Control': 'no-store'
-        }
-      });
+      portfolio = await Portfolio.create(updateData);
     }
+    
+    if (!portfolio) {
+      return notFoundResponse('Failed to update/create portfolio');
+    }
+
+    await logAudit({
+      action: 'PORTFOLIO_UPDATE',
+      userId: authUser.userId,
+      email: authUser.email,
+      status: 'success',
+      details: 'Updated portfolio data',
+      ip
+    });
+    
+    return successResponse(portfolio, 'Portfolio updated successfully');
     
   } catch (error: any) {
-    console.error('Portfolio update error:', error.message || error);
-    
     if (error.name === 'ValidationError') {
-      return NextResponse.json(
-        { error: `Validation error: ${error.message}` },
-        { status: 400 }
-      );
+      return errorResponse(`Validation error: ${error.message}`, 400);
     }
-    
-    return NextResponse.json(
-      { error: error.message || 'Internal server error' },
-      { status: 500 }
-    );
+    return serverError(error);
   }
 }
 
 // DELETE - Delete portfolio (Admin only)
 export async function DELETE(request: NextRequest) {
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim() || 'unknown';
+
   try {
     const authUser = await requireAdmin(request);
-    
     if (!authUser) {
-      return NextResponse.json(
-        { error: 'Unauthorized - Admin access required' },
-        { status: 403 }
-      );
+      return forbiddenResponse('Admin access required');
     }
     
     await dbConnect();
-    
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
     
+    if (!id) return errorResponse('Portfolio ID required', 400);
+
     const portfolio = await Portfolio.findByIdAndDelete(id);
     
     if (!portfolio) {
-      return NextResponse.json(
-        { error: 'Portfolio not found' },
-        { status: 404 }
-      );
+      return notFoundResponse('Portfolio not found');
     }
     
-    return NextResponse.json(
-      { message: 'Portfolio deleted successfully' },
-      { status: 200 }
-    );
+    await logAudit({
+      action: 'PORTFOLIO_UPDATE',
+      userId: authUser.userId,
+      email: authUser.email,
+      status: 'success',
+      details: `Deleted portfolio: ${id}`,
+      ip
+    });
+
+    return successResponse(null, 'Portfolio deleted successfully');
     
   } catch (error: any) {
-    console.error('Portfolio delete error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return serverError(error);
   }
 }

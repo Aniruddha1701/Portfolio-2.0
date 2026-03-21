@@ -50,8 +50,13 @@ export default function Home() {
         const response = await fetch('/api/portfolio');
 
         if (response.ok) {
-          const data = await response.json();
-          setPortfolioData(data);
+          const result = await response.json();
+          if (result.success) {
+            setPortfolioData(result.data);
+          } else {
+            console.error('API Error:', result.error);
+            setPortfolioData(null);
+          }
         } else if (response.status === 404) {
           console.log('No portfolio found in database');
           setPortfolioData(null);

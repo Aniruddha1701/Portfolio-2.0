@@ -36,7 +36,7 @@ export function ResumeRequestModal({ children }: ResumeRequestModalProps) {
 
       const data = await res.json()
 
-      if (!res.ok) {
+      if (!res.ok || (data.success === false)) {
         throw new Error(data.error || "Failed to submit request")
       }
 

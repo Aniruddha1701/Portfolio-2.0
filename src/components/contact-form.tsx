@@ -13,17 +13,34 @@ export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
 
+  const [error, setError] = useState("")
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setError("")
     
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
-    setIsSubmitting(false)
-    setIsSubmitted(true)
-    setFormData({ name: "", email: "", message: "" })
-    
-    setTimeout(() => setIsSubmitted(false), 3000)
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      })
+      
+      const data = await res.json()
+      
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Failed to send message")
+      }
+      
+      setIsSubmitted(true)
+      setFormData({ name: "", email: "", message: "" })
+      setTimeout(() => setIsSubmitted(false), 5000)
+    } catch (err: any) {
+      setError(err.message || "Something went wrong. Please try again.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -73,6 +90,12 @@ export function ContactForm() {
           placeholder="Your message..."
         />
       </div>
+
+      {error && (
+        <p className="text-red-400 text-sm bg-red-400/10 p-3 rounded-xl border border-red-400/20">
+          {error}
+        </p>
+      )}
 
       <motion.button
         type="submit"

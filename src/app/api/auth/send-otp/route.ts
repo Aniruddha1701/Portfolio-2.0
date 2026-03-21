@@ -1,53 +1,66 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import dbConnect from '@/lib/db/mongoose';
 import OTP from '@/models/OTP';
 import Admin from '@/models/Admin';
 import { generateOTP, sendOTPEmail } from '@/lib/email';
+import { successResponse, errorResponse, serverError, unauthorizedResponse } from '@/lib/api-response';
+import { logAudit } from '@/lib/audit';
+import { z } from 'zod';
+
+// Validation schema
+const sendOtpSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(1, "Password is required"),
+});
 
 export async function POST(request: NextRequest) {
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim() || 'unknown';
+  const userAgent = request.headers.get('user-agent') || 'unknown';
+  
   try {
-    let body;
-    try {
-      body = await request.json();
-    } catch (parseError) {
-      return NextResponse.json(
-        { error: 'Invalid request format' },
-        { status: 400 }
-      );
+    const body = await request.json();
+    
+    // 1. Validate input
+    const result = sendOtpSchema.safeParse(body);
+    if (!result.success) {
+      return errorResponse(result.error.errors[0].message, 400);
     }
     
-    const { email, password } = body;
-
-    if (!email || !password) {
-      return NextResponse.json(
-        { error: 'Email and password are required' },
-        { status: 400 }
-      );
-    }
+    const { email, password } = result.data;
 
     await dbConnect();
 
-    // Find admin by email and verify password using bcrypt
+    // 2. Find admin and verify password
     const admin = await Admin.findOne({ email: email.toLowerCase().trim(), isActive: true });
     
     if (!admin) {
-      return NextResponse.json(
-        { error: 'Invalid credentials' },
-        { status: 401 }
-      );
+      await logAudit({
+        action: 'OTP_REQUEST',
+        email,
+        status: 'failure',
+        details: 'Admin not found or inactive',
+        ip,
+        userAgent
+      });
+      return unauthorizedResponse('Invalid credentials');
     }
 
-    // Use bcrypt to compare passwords (Admin password is hashed in the database)
     const isPasswordValid = await admin.comparePassword(password);
     
     if (!isPasswordValid) {
-      return NextResponse.json(
-        { error: 'Invalid credentials' },
-        { status: 401 }
-      );
+      await logAudit({
+        action: 'OTP_REQUEST',
+        email,
+        userId: admin._id.toString(),
+        status: 'failure',
+        details: 'Invalid password',
+        ip,
+        userAgent
+      });
+      return unauthorizedResponse('Invalid credentials');
     }
 
-    // Check if there's a recent OTP (within last 1 minute)
+    // 3. Rate limit OTP requests (1 minute)
     const recentOTP = await OTP.findOne({
       email: email.toLowerCase().trim(),
       createdAt: { $gte: new Date(Date.now() - 60000) }, // 1 minute
@@ -55,58 +68,44 @@ export async function POST(request: NextRequest) {
     });
 
     if (recentOTP) {
-      return NextResponse.json(
-        { error: 'Please wait 1 minute before requesting a new OTP' },
-        { status: 429 }
-      );
+      return errorResponse('Please wait 1 minute before requesting a new OTP', 429);
     }
 
-    // Delete any existing unverified OTPs for this email
+    // 4. Generate and save OTP
     await OTP.deleteMany({ email: email.toLowerCase().trim(), verified: false });
-
-    // Generate new OTP
     const otpCode = generateOTP();
 
-    // Save OTP to database
-    const newOTP = await OTP.create({
+    await OTP.create({
       email: email.toLowerCase().trim(),
       otp: otpCode,
     });
 
-    // Log OTP to console for debugging
-    console.log('\n' + '='.repeat(50));
-    console.log('🔐 OTP GENERATED');
-    console.log('Email:', email);
-    console.log('OTP Code:', otpCode);
-    console.log('Time:', new Date().toLocaleString());
-    console.log('='.repeat(50) + '\n');
-
-    // Send OTP via email
-    try {
-      const emailSent = await sendOTPEmail(email, otpCode, 'Admin');
-      
-      if (!emailSent) {
-        console.error('Email sending failed - returning OTP in console');
-        // Don't delete OTP, allow verification even if email fails
-      } else {
-        console.log('✅ OTP email sent successfully to:', email);
-      }
-    } catch (emailError) {
-      console.error('Email error:', emailError);
-      // Continue anyway - OTP is logged to console
-    }
-
-    return NextResponse.json({
-      success: true,
-      message: 'OTP sent successfully to your email',
-      email: email.replace(/(.{2})(.*)(@.*)/, '$1***$3'), // Partially hide email
+    // 5. Log activity
+    await logAudit({
+      action: 'OTP_REQUEST',
+      email,
+      userId: admin._id.toString(),
+      status: 'success',
+      details: 'OTP generated and sent',
+      ip,
+      userAgent
     });
 
-  } catch (error) {
-    console.error('Send OTP error:', error);
-    return NextResponse.json(
-      { error: 'Failed to send OTP' },
-      { status: 500 }
-    );
+    // 6. Send email
+    try {
+      const emailSent = await sendOTPEmail(email, otpCode, admin.name || 'Admin');
+      if (!emailSent) {
+        console.error('[OTP Error]: Email sending failed');
+      }
+    } catch (emailError) {
+      console.error('[OTP Email Error]:', emailError);
+    }
+
+    return successResponse({
+      email: email.replace(/(.{2})(.*)(@.*)/, '$1***$3'),
+    }, 'OTP sent successfully to your email');
+
+  } catch (error: any) {
+    return serverError(error);
   }
 }

@@ -531,13 +531,17 @@ export default function AdminDashboard() {
           null
         );
       } else if (response.ok) {
-        const data = await response.json();
-        applyLoadedPortfolio(
-          data,
-          true,
-          { type: 'success', text: 'Portfolio loaded successfully.' },
-          data.updatedAt || new Date().toISOString()
-        );
+        const result = await response.json();
+        if (result.success) {
+          applyLoadedPortfolio(
+            result.data,
+            true,
+            { type: 'success', text: 'Portfolio loaded successfully.' },
+            result.data.updatedAt || new Date().toISOString()
+          );
+        } else {
+          throw new Error(result.error || 'Failed to load portfolio');
+        }
       } else {
         throw new Error('Failed to load portfolio');
       }
@@ -626,8 +630,12 @@ export default function AdminDashboard() {
         throw new Error(data.error || 'Failed to save portfolio');
       }
 
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to save portfolio');
+      }
+
       console.log('Save successful, data:', data);
-      setPortfolio(data);
+      setPortfolio(data.data);
       setMessage({ type: 'success', text: '✅ Portfolio saved successfully!' });
 
       // Clear success message after 3 seconds
@@ -687,7 +695,7 @@ export default function AdminDashboard() {
 
       const data = await response.json();
 
-      if (!response.ok) {
+      if (!response.ok || !data.success) {
         throw new Error(data.error || 'Failed to upload resume');
       }
 
@@ -696,7 +704,7 @@ export default function AdminDashboard() {
         ...portfolio,
         personalInfo: {
           ...portfolio.personalInfo,
-          resume: data.resumeUrl
+          resume: data.data.resumeUrl
         }
       });
 
@@ -738,7 +746,7 @@ export default function AdminDashboard() {
         data = { error: 'Invalid response from server' };
       }
 
-      if (!response.ok) {
+      if (!response.ok || !data.success) {
         console.error('Delete response not ok:', response.status, data);
         throw new Error(data.error || `Failed to remove resume (${response.status})`);
       }

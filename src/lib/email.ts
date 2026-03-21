@@ -164,3 +164,31 @@ export const verifyEmailConfig = async (): Promise<boolean> => {
     return false;
   }
 };
+
+/**
+ * Generic function to send an email using the shared transporter
+ */
+export const sendEmail = async (options: {
+  to: string;
+  subject: string;
+  html: string;
+  from?: string;
+  attachments?: any[];
+}): Promise<boolean> => {
+  try {
+    const mailOptions = {
+      from: options.from || `"Portfolio" <${process.env.EMAIL_FROM || 'lab205ab1@gmail.com'}>`,
+      to: options.to,
+      subject: options.subject,
+      html: options.html,
+      attachments: options.attachments,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email sent:', info.messageId);
+    return true;
+  } catch (error) {
+    console.error('Error sending email:', error);
+    return false;
+  }
+};

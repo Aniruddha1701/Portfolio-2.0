@@ -28,8 +28,13 @@ export function ResumeRequestsTab() {
     try {
       const res = await fetch(`/api/admin/resume-requests?t=${new Date().getTime()}`);
       if (res.ok) {
-        const data = await res.json();
-        setRequests(data);
+        const response = await res.json();
+        if (response.success && Array.isArray(response.data)) {
+          setRequests(response.data);
+        } else if (Array.isArray(response)) {
+          // Fallback for old format if any endpoints still use it
+          setRequests(response);
+        }
       }
     } catch (error) {
       console.error("Failed to fetch requests", error);

@@ -1,39 +1,43 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import dbConnect from '@/lib/db/mongoose';
 import ResumeRequest from '@/models/ResumeRequest';
 import ResumeFile from '@/models/ResumeFile';
 import { requireAdmin } from '@/middleware/auth';
 import { sendApprovalEmailToVisitor, sendRejectionEmailToVisitor } from '@/lib/mail';
+import { successResponse, unauthorizedResponse, errorResponse, serverError, notFoundResponse } from '@/lib/api-response';
+import { logAudit } from '@/lib/audit';
 
 export const dynamic = 'force-dynamic';
 
-// GET - Fetch all resume requests (Admin only)
+/**
+ * GET - Fetch all resume requests (Admin only)
+ */
 export async function GET(request: NextRequest) {
   try {
     const user = await requireAdmin(request);
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized - Admin access required' }, { status: 401 });
-    }
+    if (!user) return unauthorizedResponse('Admin access required');
 
     await dbConnect();
     
     // Fetch all requests, sort by newest first
     const requests = await ResumeRequest.find({}).sort({ createdAt: -1 }).lean();
     
-    return NextResponse.json(requests);
+    return successResponse(requests);
   } catch (error: any) {
-    console.error('Failed to fetch resume requests:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return serverError(error);
   }
 }
 
-// PUT - Update resume request status (approve/reject) (Admin only)
+/**
+ * PUT - Update resume request status (approve/reject) (Admin only)
+ */
 export async function PUT(request: NextRequest) {
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim() || 'unknown';
+  const userAgent = request.headers.get('user-agent') || 'unknown';
+
   try {
     const user = await requireAdmin(request);
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized - Admin access required' }, { status: 401 });
-    }
+    if (!user) return unauthorizedResponse('Admin access required');
 
     await dbConnect();
 
@@ -41,22 +45,35 @@ export async function PUT(request: NextRequest) {
     const { id, status, origin } = data; // status should be 'approved' or 'rejected'
 
     if (!id || !status || (status !== 'approved' && status !== 'rejected')) {
-      return NextResponse.json({ error: 'Invalid request data' }, { status: 400 });
+      return errorResponse('Invalid request data: id and valid status (approved/rejected) are required', 400);
     }
 
     const resumeRequest = await ResumeRequest.findById(id);
 
     if (!resumeRequest) {
-      return NextResponse.json({ error: 'Resume request not found' }, { status: 404 });
+      return notFoundResponse('Resume request not found');
     }
 
     if (resumeRequest.status !== 'pending') {
-         return NextResponse.json({ error: `Request has already been ${resumeRequest.status}` }, { status: 400 });
+      return errorResponse(`Request has already been ${resumeRequest.status}`, 400);
     }
 
     // Process the action
+    const oldStatus = resumeRequest.status;
     resumeRequest.status = status;
     await resumeRequest.save();
+
+    // Log the audit event
+    await logAudit({
+      action: status === 'approved' ? 'RESUME_REQUEST_APPROVE' : 'RESUME_REQUEST_REJECT',
+      userId: user.userId,
+      email: user.email,
+      resourceId: id,
+      details: `${status.charAt(0).toUpperCase() + status.slice(1)} resume request for ${resumeRequest.email}`,
+      ip,
+      userAgent,
+      status: 'success'
+    });
 
     let baseUrl = origin;
     if (!baseUrl) {
@@ -67,28 +84,27 @@ export async function PUT(request: NextRequest) {
 
     // Send corresponding email to the visitor
     try {
-        if (status === 'approved') {
-            const resumeFile = await ResumeFile.findOne({ filename: 'Resume_Aniruddha.pdf' }).sort({ uploadedAt: -1 });
-            await sendApprovalEmailToVisitor(
-                resumeRequest.name, 
-                resumeRequest.email, 
-                resumeRequest.token, 
-                baseUrl,
-                resumeFile ? resumeFile.data : undefined,
-                resumeFile ? resumeFile.filename : undefined
-            );
-        } else {
-            await sendRejectionEmailToVisitor(resumeRequest.name, resumeRequest.email);
-        }
+      if (status === 'approved') {
+        const resumeFile = await ResumeFile.findOne({ filename: 'Resume_Aniruddha.pdf' }).sort({ uploadedAt: -1 });
+        await sendApprovalEmailToVisitor(
+          resumeRequest.name, 
+          resumeRequest.email, 
+          resumeRequest.token, 
+          baseUrl,
+          resumeFile ? resumeFile.data : undefined,
+          resumeFile ? resumeFile.filename : undefined
+        );
+      } else {
+        await sendRejectionEmailToVisitor(resumeRequest.name, resumeRequest.email);
+      }
     } catch (emailError: any) {
-        console.error('Failed to send visitor update email:', emailError);
-        // Continue anyway since DB was updated
+      console.error('[Resume Request Email Error]:', emailError);
+      // We don't return an error here because the database update was successful
     }
 
-    return NextResponse.json({ success: true, request: resumeRequest }, { status: 200 });
+    return successResponse(resumeRequest, `Request ${status} successfully`);
 
   } catch (error: any) {
-    console.error('Update resume request error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return serverError(error);
   }
 }
