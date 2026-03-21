@@ -29,6 +29,16 @@ const resumeRequestSchema = new mongoose.Schema({
     type: Date,
     // By default, let's say the token is valid for 7 days after generation
     default: () => new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+  },
+  viewCount: {
+    type: Number,
+    default: 0,
+  },
+  viewedAt: {
+    type: Date,
+  },
+  lastViewedIp: {
+    type: String,
   }
 }, {
   timestamps: true,

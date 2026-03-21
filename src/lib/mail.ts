@@ -157,15 +157,13 @@ export const sendResumeRequestEmailToAdmin = async (
 export const sendApprovalEmailToVisitor = async (
   visitorName: string,
   visitorEmail: string,
-  downloadToken: string,
-  baseUrl?: string,
-  resumeBuffer?: Buffer,
-  resumeFilename?: string
+  viewToken: string,
+  baseUrl?: string
 ) => {
   const adminEmail = process.env.EMAIL_USER;
   const appUrl = getBaseUrl(baseUrl);
   
-  const downloadLink = `${appUrl}/api/resume/download?token=${downloadToken}`;
+  const viewLink = `${appUrl}/resume/view/${viewToken}`;
 
   const htmlContent = `
 <!DOCTYPE html>
@@ -205,30 +203,32 @@ export const sendApprovalEmailToVisitor = async (
               
               <p style="margin: 0 0 24px; color: #475569; font-size: 15px; line-height: 1.6;">
                 Great news! Your request to view the resume has been <strong style="color: #10b981;">approved</strong>. 
-                You can now access it using the secure download link below.
+                You can now access it using the secure, **one-time** view link below.
               </p>
               
-              ${resumeBuffer ? `
-              <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 1px solid #bbf7d0; border-radius: 12px; padding: 16px; margin: 24px 0;">
-                <p style="margin: 0; color: #166534; font-size: 14px; font-weight: 600;">
-                  📎 The resume is also attached to this email
+              <div style="background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border: 1px solid #fde68a; border-radius: 12px; padding: 16px; margin: 24px 0;">
+                <p style="margin: 0; color: #92400e; font-size: 14px; font-weight: 600;">
+                  ⚠️ Security Notice:
+                </p>
+                <p style="margin: 4px 0 0; color: #b45309; font-size: 13px;">
+                  This link is for **one-time view only**. Once you access the resume, the link will expire. 
+                  Downloads and screenshots are restricted for security.
                 </p>
               </div>
-              ` : ''}
               
-              <!-- Download Button -->
+              <!-- View Button -->
               <table width="100%" cellpadding="0" cellspacing="0" style="padding: 28px 0;">
                 <tr>
                   <td align="center">
-                    <a href="${downloadLink}" style="display: inline-block; background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%); color: white; text-decoration: none; padding: 16px 36px; border-radius: 12px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 14px 0 rgba(124, 58, 237, 0.39);">
-                      📥 Download Resume
+                    <a href="${viewLink}" style="display: inline-block; background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%); color: white; text-decoration: none; padding: 16px 36px; border-radius: 12px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 14px 0 rgba(124, 58, 237, 0.39);">
+                      👁️ View Resume
                     </a>
                   </td>
                 </tr>
               </table>
               
               <p style="margin: 24px 0 0; color: #94a3b8; font-size: 13px; text-align: center;">
-                This link will expire in 7 days
+                Link expires automatically after first use or in 7 days.
               </p>
             </td>
           </tr>
@@ -265,23 +265,12 @@ export const sendApprovalEmailToVisitor = async (
 </html>
   `;
 
-  const mailOptions: any = {
+  return transporter.sendMail({
     from: `"Aniruddha Patil" <${adminEmail}>`,
     to: visitorEmail,
-    subject: `🎉 Your Resume Request Has Been Approved!`,
+    subject: `🎉 Your Resume Access Request Has Been Approved!`,
     html: htmlContent,
-  };
-
-  if (resumeBuffer && resumeFilename) {
-    mailOptions.attachments = [
-      {
-        filename: resumeFilename,
-        content: resumeBuffer
-      }
-    ];
-  }
-
-  return transporter.sendMail(mailOptions);
+  });
 };
 
 export const sendRejectionEmailToVisitor = async (

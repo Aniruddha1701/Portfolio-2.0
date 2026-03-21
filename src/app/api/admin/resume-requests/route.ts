@@ -85,14 +85,11 @@ export async function PUT(request: NextRequest) {
     // Send corresponding email to the visitor
     try {
       if (status === 'approved') {
-        const resumeFile = await ResumeFile.findOne({ filename: 'Resume_Aniruddha.pdf' }).sort({ uploadedAt: -1 });
         await sendApprovalEmailToVisitor(
           resumeRequest.name, 
           resumeRequest.email, 
           resumeRequest.token, 
-          baseUrl,
-          resumeFile ? resumeFile.data : undefined,
-          resumeFile ? resumeFile.filename : undefined
+          baseUrl
         );
       } else {
         await sendRejectionEmailToVisitor(resumeRequest.name, resumeRequest.email);
