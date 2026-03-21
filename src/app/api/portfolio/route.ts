@@ -3,6 +3,8 @@ import dbConnect from '@/lib/db/mongoose';
 import Portfolio from '@/models/Portfolio';
 import { authenticateWithRefresh, requireAdmin } from '@/middleware/auth';
 
+export const dynamic = 'force-dynamic';
+
 // GET - Fetch portfolio data (Public - anyone can view)
 export async function GET(request: NextRequest) {
   try {
