@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, use } from 'react';
+import { useState, useEffect, useCallback, use, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ShieldAlert, 
@@ -28,6 +28,8 @@ export default function SecureViewerPage({ params }: { params: Promise<{ token: 
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isIdle, setIsIdle] = useState(true);
 
+  const blobUrlRef = useRef<string | null>(null);
+
   const fetchResume = useCallback(async () => {
     try {
       setLoading(true);
@@ -51,6 +53,7 @@ export default function SecureViewerPage({ params }: { params: Promise<{ token: 
       const blob = new Blob([byteArray], { type: result.data.contentType });
       const url = URL.createObjectURL(blob);
       setBlobUrl(url);
+      blobUrlRef.current = url;
 
     } catch (err: any) {
       setError(err.message);
@@ -61,8 +64,13 @@ export default function SecureViewerPage({ params }: { params: Promise<{ token: 
 
   useEffect(() => {
     fetchResume();
-    return () => { if (blobUrl) URL.revokeObjectURL(blobUrl); };
-  }, [fetchResume, blobUrl]);
+    return () => { 
+      if (blobUrlRef.current) {
+        URL.revokeObjectURL(blobUrlRef.current);
+        blobUrlRef.current = null;
+      }
+    };
+  }, [fetchResume]);
 
   // Anti-Screenshot & Focus Protections
   useEffect(() => {
