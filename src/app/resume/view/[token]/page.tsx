@@ -25,6 +25,7 @@ export default function SecureViewerPage({ params }: { params: Promise<{ token: 
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
   
   const [isFocused, setIsFocused] = useState(true);
+  const [isHolding, setIsHolding] = useState(false);
   const [isInteracting, setIsInteracting] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isIdle, setIsIdle] = useState(true);
@@ -81,18 +82,18 @@ export default function SecureViewerPage({ params }: { params: Promise<{ token: 
     const handleBlur = () => {
       setIsFocused(false);
       setIsInteracting(false);
+      setIsHolding(false);
     };
     const handleContextMenu = (e: MouseEvent) => e.preventDefault();
     
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Block all known capture/print shortcuts
       if ((e.ctrlKey || e.metaKey) && ['p', 's', 'c', 'u'].includes(e.key.toLowerCase())) e.preventDefault();
       if ((e.ctrlKey || e.metaKey) && e.shiftKey && ['i', 's', 'c'].includes(e.key.toLowerCase())) e.preventDefault();
       if (e.key === 'PrintScreen') {
         e.preventDefault();
         setIsFocused(false);
-        setIsInteracting(false);
-        setTimeout(() => setIsFocused(true), 2000); // 2 second blackout for PrintScreen
+        setIsHolding(false);
+        setTimeout(() => setIsFocused(true), 3000); 
       }
     };
 
@@ -109,16 +110,17 @@ export default function SecureViewerPage({ params }: { params: Promise<{ token: 
     };
   }, []);
 
-  // Active-Viewing Logic: Visibility only on motion
-  const handleMouseMove = (e: React.MouseEvent | React.TouchEvent) => {
+  const handleInteractionStart = () => {
     setIsIdle(false);
     setIsInteracting(true);
-    
-    // Reset idle timeout
+  };
+
+  const handleMouseMove = (e: React.MouseEvent | React.TouchEvent) => {
+    handleInteractionStart();
     if (interactionTimeout.current) clearTimeout(interactionTimeout.current);
     interactionTimeout.current = setTimeout(() => {
       setIsInteracting(false);
-    }, 400); // 400ms of no-motion = Blur
+    }, 1000);
 
     if ('clientX' in e) {
       setMousePos({ x: e.clientX, y: e.clientY });
@@ -130,76 +132,60 @@ export default function SecureViewerPage({ params }: { params: Promise<{ token: 
   if (loading) return (
     <div className="min-h-screen bg-[#020205] flex flex-col items-center justify-center">
       <Loader2 className="w-10 h-10 text-emerald-500 animate-spin mb-4" />
-      <span className="text-gray-500 font-mono text-sm tracking-tighter">Establishing Secure Gateway...</span>
+      <span className="text-gray-500 font-mono text-sm tracking-tighter">Securing Assets...</span>
     </div>
   );
 
   if (error) return (
     <div className="min-h-screen bg-[#020205] flex flex-col items-center justify-center p-6 text-center">
       <ShieldAlert className="w-12 h-12 text-red-500 mb-4" />
-      <h1 className="text-xl font-bold text-white mb-2">Access Revoked</h1>
+      <h1 className="text-xl font-bold text-white mb-2">Security Violation</h1>
       <p className="text-gray-400 max-w-sm text-sm mb-6">{error}</p>
-      <Button variant="outline" onClick={() => window.location.href = '/'}>Go Home</Button>
+      <Button variant="outline" onClick={() => window.location.href = '/'}>Return to Site</Button>
     </div>
   );
 
   return (
     <div className="min-h-screen bg-[#020205] text-white flex flex-col overflow-hidden select-none">
-      {/* Dynamic Overlay for Focus Loss */}
-      <AnimatePresence>
-        {!isFocused && (
-          <motion.div 
-            initial={{ opacity: 0 }} 
-            animate={{ opacity: 1 }} 
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-[#020205]/95 backdrop-blur-xl flex flex-col items-center justify-center p-6 text-center"
-          >
-            <Lock className="w-12 h-12 text-emerald-500 mb-4" />
-            <h2 className="text-xl font-bold">Document Shielded</h2>
-            <p className="text-gray-400 text-sm mt-2">Content is hidden while tab is out of focus for security.</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       <header className="h-14 border-b border-white/5 bg-black/40 backdrop-blur-sm flex items-center justify-between px-6 shrink-0 z-50">
         <div className="flex items-center gap-3">
-          <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span className="text-xs font-mono text-gray-400 uppercase tracking-widest">Secure Alpha Viewer v2</span>
+          <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+          <span className="text-xs font-mono text-gray-400 uppercase tracking-widest">Vault Secure v4 (Hold-to-View)</span>
         </div>
-        <div className="text-[10px] text-gray-500 font-mono hidden md:block italic">
-          Encryption Level: MIL-STD-2048 • Single-Use Session: Active
-        </div>
-        <div className="bg-emerald-500/10 text-emerald-500 text-[10px] py-1 px-3 rounded-full border border-emerald-500/20 font-bold uppercase tracking-tighter">
-          Spotlight Active
+        <div className="bg-emerald-500/10 text-emerald-500 text-[10px] py-1 px-3 rounded-full border border-emerald-500/20 font-bold uppercase">
+          Live Trace Active
         </div>
       </header>
 
       <main 
-        className="flex-1 relative cursor-none touch-none overflow-hidden"
+        className="flex-1 relative cursor-default overflow-hidden bg-black"
         onMouseMove={handleMouseMove}
         onTouchMove={handleMouseMove}
+        onMouseDown={() => setIsHolding(true)}
+        onMouseUp={() => setIsHolding(false)}
+        onTouchStart={() => setIsHolding(true)}
+        onTouchEnd={() => setIsHolding(false)}
       >
-        {/* The Protective Interaction Blocker & Noise Layer */}
-        <div className="w-full h-full p-4 md:p-12 flex justify-center items-start overflow-auto no-scrollbar relative">
+        <div className="w-full h-full p-2 md:p-8 flex justify-center items-start overflow-auto no-scrollbar relative">
           
-          {/* Animated Noise Filter (Deters OCR/Capture) */}
-          <div className="absolute inset-0 z-20 pointer-events-none opacity-[0.03] mix-blend-overlay">
+          {/* Animated Noise Layer */}
+          <div className="absolute inset-0 z-20 pointer-events-none opacity-[0.05] mix-blend-screen">
             <div className="noise-bg w-full h-full" />
           </div>
 
-          <div className="relative w-full max-w-4xl shadow-2xl rounded-sm overflow-hidden bg-white/5 ring-1 ring-white/10">
+          <div className="relative w-full max-w-5xl h-[85vh] shadow-2xl rounded-lg overflow-hidden bg-white/5 ring-1 ring-white/10">
             
-            {/* Document Layer with Active-Viewing Blur */}
+            {/* The Document Layer */}
             <div 
-              className={`w-full h-full transition-all duration-500 ease-in-out ${
-                isInteracting && isFocused ? 'blur-0 opacity-100 scale-100' : 'blur-[60px] opacity-20 scale-[0.98]'
+              className={`w-full h-full transition-all duration-700 ease-in-out ${
+                isHolding && isFocused ? 'blur-0 opacity-100 scale-100' : 'blur-[80px] opacity-10 scale-[0.95]'
               }`}
             >
               <div className="w-full h-full bg-white">
                 {blobUrl && (
                   <iframe
                     src={`${blobUrl}#toolbar=0&navpanes=0&scrollbar=1&view=FitH`}
-                    className="w-full h-full border-none"
+                    className="w-full h-full border-none pointer-events-none"
                     title="Resume"
                   />
                 )}
@@ -207,49 +193,47 @@ export default function SecureViewerPage({ params }: { params: Promise<{ token: 
             </div>
 
             {/* High-Density Traceability Watermark */}
-            <div className="absolute inset-0 z-30 pointer-events-none opacity-[0.04] overflow-hidden">
-               <div className="grid grid-cols-6 grid-rows-10 h-full w-full gap-4 p-8 -rotate-15 scale-110">
-                  {Array.from({ length: 60 }).map((_, i) => (
-                    <div key={i} className="text-[9px] font-black uppercase tracking-tighter text-black whitespace-nowrap">
-                      {viewerEmail} • SECURE-TRACE-{token.substring(0,4)}
+            <div className="absolute inset-0 z-30 pointer-events-none opacity-[0.08] overflow-hidden">
+               <div className="grid grid-cols-4 grid-rows-12 h-full w-full gap-4 p-8 -rotate-12 scale-110">
+                  {Array.from({ length: 48 }).map((_, i) => (
+                    <div key={i} className="text-[10px] font-black uppercase text-black whitespace-nowrap bg-white/20 px-2 rounded">
+                      {viewerEmail} • {token.substring(0,8)}
                     </div>
                   ))}
                </div>
             </div>
 
-            {/* Instant Blackout Protection Layer */}
+            {/* Instant Blackout Protection */}
             <AnimatePresence>
               {!isFocused && (
                 <motion.div 
-                  initial={{ opacity: 0 }} 
-                  animate={{ opacity: 1 }} 
-                  exit={{ opacity: 0 }}
-                  className="absolute inset-0 z-50 bg-[#020205] flex flex-col items-center justify-center p-12 text-center"
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                  className="absolute inset-0 z-50 bg-black flex flex-col items-center justify-center p-12 text-center"
                 >
-                  <ShieldAlert className="w-16 h-16 text-red-500 mb-6" />
-                  <h2 className="text-2xl font-bold text-white tracking-tight underline decoration-red-500 underline-offset-8">SECURITY PROTOCOL ACTIVE</h2>
-                  <p className="text-gray-400 text-sm mt-6 max-w-xs font-mono">
-                    CAPTURE ATTEMPT DETECTED OR FOCUS LOST. 
-                    SYSTEM LOCK ENGAGED.
+                  <ShieldAlert className="w-20 h-20 text-red-600 mb-6 animate-bounce" />
+                  <h2 className="text-3xl font-black text-white tracking-tighter">SCREENSHOT ATTEMPT BLOCKED</h2>
+                  <p className="text-red-500 text-sm mt-6 font-mono font-bold animate-pulse">
+                    ACCESS TO THIS ASSET IS VOLATILE. 
+                    NEVER LOSE FOCUS OF THE DOCUMENT.
                   </p>
                 </motion.div>
               )}
             </AnimatePresence>
 
-            {/* Idle Instruction Overlay */}
+            {/* Hold-to-View Instruction */}
             <AnimatePresence>
-              {!isInteracting && isFocused && (
+              {!isHolding && isFocused && (
                 <motion.div 
                   initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                  className="absolute inset-0 z-40 flex flex-col items-center justify-center text-center pointer-events-none"
+                  className="absolute inset-0 z-40 flex flex-col items-center justify-center text-center pointer-events-none bg-black/40 backdrop-blur-md"
                 >
                   <motion.div
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ repeat: Infinity, duration: 2 }}
-                    className="bg-emerald-500/10 backdrop-blur-md px-6 py-3 rounded-full border border-emerald-500/30"
+                    animate={{ scale: [1, 1.05, 1] }}
+                    transition={{ repeat: Infinity, duration: 1.5 }}
+                    className="bg-white text-black px-8 py-4 rounded-full border-4 border-emerald-500 shadow-[0_0_50px_rgba(16,185,129,0.5)]"
                   >
-                    <span className="text-emerald-500 font-bold text-sm uppercase tracking-widest flex items-center gap-2">
-                       <Eye className="w-4 h-4" /> Move Mouse to View Document
+                    <span className="font-black text-lg uppercase tracking-tighter flex items-center gap-3">
+                       <Lock className="w-6 h-6" /> CLICK & HOLD TO REVEAL
                     </span>
                   </motion.div>
                 </motion.div>
@@ -259,9 +243,9 @@ export default function SecureViewerPage({ params }: { params: Promise<{ token: 
         </div>
       </main>
 
-      <footer className="h-10 border-t border-white/5 bg-black/40 flex items-center justify-center px-6 z-50 text-gray-600">
-        <p className="text-[10px] uppercase tracking-[0.2em]">
-          Trace: {token.substring(0, 12)} • User: {viewerEmail} • Mode: Active-Viewing-v3
+      <footer className="h-10 border-t border-white/5 bg-black/40 flex items-center justify-center px-6 z-50 text-gray-600 font-mono">
+        <p className="text-[9px] uppercase tracking-widest italic">
+          Session Hash: {token} • Protection: HOLD-TO-VIEW ALPHA-4
         </p>
       </footer>
 
@@ -271,22 +255,14 @@ export default function SecureViewerPage({ params }: { params: Promise<{ token: 
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
         .noise-bg {
-          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-          animation: noise-move 0.2s infinite;
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+          animation: noise-move 0.1s steps(2) infinite;
         }
 
         @keyframes noise-move {
           0% { transform: translate(0,0) }
-          10% { transform: translate(-1%,-1%) }
-          20% { transform: translate(-2%,1%) }
-          30% { transform: translate(1%,-2%) }
-          40% { transform: translate(-1%,2%) }
-          50% { transform: translate(-2%,-1%) }
-          60% { transform: translate(2%,1%) }
-          70% { transform: translate(1%,2%) }
-          80% { transform: translate(-2%,1%) }
-          90% { transform: translate(2%,-2%) }
-          100% { transform: translate(0,0) }
+          50% { transform: translate(-1%,1%) }
+          100% { transform: translate(1%,-1%) }
         }
       `}</style>
     </div>
