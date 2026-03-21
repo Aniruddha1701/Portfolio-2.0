@@ -40,16 +40,29 @@ export async function GET(
       return forbiddenResponse('This view link has expired');
     }
 
-    // 3. One-Time Access Check
+    // 3. One-Time Access Check with Grace Period
     if (resumeRequest.viewCount > 0) {
-      return forbiddenResponse('This link has already been used. Access is restricted to one-time view only.');
+      const now = new Date();
+      const viewedAt = new Date(resumeRequest.viewedAt);
+      const timeDiffInSeconds = (now.getTime() - viewedAt.getTime()) / 1000;
+      
+      const isSameIp = resumeRequest.lastViewedIp === ip;
+      
+      // If it's the same IP and within 60 seconds, allow the "re-view" (handles refreshes, double-effects)
+      if (isSameIp && timeDiffInSeconds < 60) {
+        // Record it but don't block
+        resumeRequest.viewCount += 1;
+        await resumeRequest.save();
+      } else {
+        return forbiddenResponse('This link has already been used. Access is restricted to one-time view only.');
+      }
+    } else {
+      // 4. Record the FIRST view
+      resumeRequest.viewCount = 1;
+      resumeRequest.viewedAt = new Date();
+      resumeRequest.lastViewedIp = ip;
+      await resumeRequest.save();
     }
-
-    // 4. Record the view (Self-destruct mechanism)
-    resumeRequest.viewCount += 1;
-    resumeRequest.viewedAt = new Date();
-    resumeRequest.lastViewedIp = ip;
-    await resumeRequest.save();
 
     // 5. Fetch the actual resume file
     // First, check the Portfolio model to see which file is active
