@@ -166,14 +166,14 @@ export default function SecureViewerPage({ params }: { params: Promise<{ token: 
         onTouchStart={() => setIsHolding(true)}
         onTouchEnd={() => setIsHolding(false)}
       >
-        <div className="w-full h-full p-2 md:p-8 flex justify-center items-start overflow-auto no-scrollbar relative">
+        <div className="w-full h-full p-2 md:p-6 flex justify-center items-center overflow-hidden relative">
           
           {/* Animated Noise Layer */}
           <div className="absolute inset-0 z-20 pointer-events-none opacity-[0.05] mix-blend-screen">
             <div className="noise-bg w-full h-full" />
           </div>
 
-          <div className="relative w-full max-w-5xl h-[85vh] shadow-2xl rounded-lg overflow-hidden bg-white/5 ring-1 ring-white/10">
+          <div className="relative w-full max-w-4xl h-[90vh] shadow-2xl rounded-lg overflow-hidden bg-white/5 ring-1 ring-white/10">
             
             {/* The Document Layer */}
             <div 
@@ -181,12 +181,13 @@ export default function SecureViewerPage({ params }: { params: Promise<{ token: 
                 isHolding && isFocused ? 'blur-0 opacity-100 scale-100' : 'blur-[80px] opacity-10 scale-[0.95]'
               }`}
             >
-              <div className="w-full h-full bg-white">
+              <div className="w-full h-full bg-white overflow-hidden">
                 {blobUrl && (
                   <iframe
-                    src={`${blobUrl}#toolbar=0&navpanes=0&scrollbar=1&view=FitH`}
+                    src={`${blobUrl}#toolbar=0&navpanes=0&scrollbar=0&view=Fit`}
                     className="w-full h-full border-none pointer-events-none"
                     title="Resume"
+                    loading="eager"
                   />
                 )}
               </div>
