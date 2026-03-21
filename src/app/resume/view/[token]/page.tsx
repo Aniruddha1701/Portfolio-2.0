@@ -174,74 +174,43 @@ export default function SecureViewerPage({ params }: { params: Promise<{ token: 
         <div className="w-full h-full p-4 md:p-12 flex justify-center items-start overflow-auto no-scrollbar">
           <div className="relative w-full max-w-4xl shadow-2xl rounded-sm overflow-hidden bg-white/5 ring-1 ring-white/10">
             
-            {/* Blurry Background Layer */}
-            <div className={`w-full h-full transition-all duration-700 ${isFocused ? 'blur-[40px] opacity-40 scale-[1.05]' : 'blur-[60px] opacity-0'}`}>
-               <div className="aspect-[1/1.41] bg-white/5 flex items-center justify-center">
-                  <FileText className="w-32 h-32 text-white/10" />
-               </div>
-            </div>
-
-            {/* Clear Spotlight Layer */}
-            <div 
-              className="absolute inset-0 z-10 transition-opacity duration-300 pointer-events-none"
-              style={{
-                opacity: isFocused ? 1 : 0,
-                WebkitMaskImage: `radial-gradient(circle 150px at ${mousePos.x}px ${mousePos.y - 56}px, black 0%, transparent 100%)`,
-                maskImage: `radial-gradient(circle 150px at ${mousePos.x}px ${mousePos.y - 56}px, black 0%, transparent 100%)`,
-              }}
-            >
-              <div className="w-full h-full bg-black">
+            {/* Full Document Layer (No Blur) */}
+            <div className={`w-full h-full transition-all duration-300 ${isFocused ? 'opacity-100 scale-100' : 'opacity-0 scale-95 blur-2xl'}`}>
+              <div className="w-full h-full bg-white">
                 {blobUrl && (
                   <iframe
-                    src={`${blobUrl}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
-                    className="w-full h-full border-none pointer-events-none"
+                    src={`${blobUrl}#toolbar=0&navpanes=0&scrollbar=1&view=FitH`}
+                    className="w-full h-full border-none"
                     title="Resume"
                   />
                 )}
               </div>
             </div>
 
-            {/* Floating Watermark (Follows Spotlight) */}
-            <AnimatePresence>
-              {isFocused && !isIdle && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 0.4 }}
-                  exit={{ opacity: 0 }}
-                  className="fixed pointer-events-none z-[110] text-[9px] font-mono text-emerald-400 whitespace-nowrap bg-black/40 px-2 py-0.5 rounded-full border border-emerald-500/20"
-                  style={{ 
-                    left: mousePos.x + 20, 
-                    top: mousePos.y + 20 
-                  }}
-                >
-                  {viewerEmail} • {new Date().toLocaleTimeString()}
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Advanced Watermark Grid */}
-            <div className="absolute inset-0 z-30 pointer-events-none opacity-[0.05] overflow-hidden">
-               <div className="grid grid-cols-4 grid-rows-6 h-full w-full gap-8 p-12 -rotate-12 scale-125">
-                  {Array.from({ length: 24 }).map((_, i) => (
-                    <div key={i} className="text-[10px] font-black uppercase tracking-tighter text-white whitespace-nowrap">
-                      {viewerEmail} • {new Date().toLocaleDateString()}
+            {/* High-Density Traceability Watermark */}
+            <div className="absolute inset-0 z-30 pointer-events-none opacity-[0.04] overflow-hidden">
+               <div className="grid grid-cols-6 grid-rows-10 h-full w-full gap-4 p-8 -rotate-15 scale-110">
+                  {Array.from({ length: 60 }).map((_, i) => (
+                    <div key={i} className="text-[9px] font-black uppercase tracking-tighter text-black whitespace-nowrap">
+                      {viewerEmail} • SECURE-TRACE-{token.substring(0,4)}
                     </div>
                   ))}
                </div>
             </div>
 
-            {/* Visual Instruction Overlay (Fades out) */}
+            {/* Instant Blackout Protection Layer */}
             <AnimatePresence>
-              {isIdle && (
+              {!isFocused && (
                 <motion.div 
-                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                  className="absolute inset-0 z-40 bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center p-12 text-center"
+                  initial={{ opacity: 0 }} 
+                  animate={{ opacity: 1 }} 
+                  exit={{ opacity: 0 }}
+                  className="absolute inset-0 z-50 bg-[#020205] flex flex-col items-center justify-center p-12 text-center"
                 >
-                  <Eye className="w-12 h-12 text-emerald-500 mb-4" />
-                  <h3 className="text-lg font-bold">Move pointer to reveal content</h3>
-                  <p className="text-sm text-gray-400 mt-2 max-w-xs">
-                    This document is protected by **Spotlight Shield**. You can only view small sections at a time 
-                    to prevent unauthorized screen captures.
+                  <ShieldAlert className="w-16 h-16 text-red-500 mb-6" />
+                  <h2 className="text-2xl font-bold text-white tracking-tight underline decoration-red-500 underline-offset-8">SECURITY PROTOCOL ACTIVE</h2>
+                  <p className="text-gray-400 text-sm mt-6 max-w-xs">
+                    Access to this document is temporarily suspended while focus is lost or a capture tool is detected.
                   </p>
                 </motion.div>
               )}
@@ -249,22 +218,15 @@ export default function SecureViewerPage({ params }: { params: Promise<{ token: 
           </div>
         </div>
 
-        {/* The Flashlight Pointer (Custom Cursor) */}
+        {/* The Protective Interaction Blocker (Fades in on mouse move) */}
         {!isIdle && isFocused && (
-          <div 
-            className="fixed pointer-events-none z-[100] w-[150px] h-[150px] rounded-full border border-emerald-500/50 shadow-[0_0_50px_rgba(16,185,129,0.3)] ring-[100vw] ring-black/80"
-            style={{ 
-              left: mousePos.x - 75, 
-              top: mousePos.y - 75,
-              transition: 'transform 0.1s ease-out'
-            }}
-          />
+          <div className="fixed pointer-events-none z-[100] inset-0 border-[20px] border-emerald-500/5 shadow-[inset_0_0_100px_rgba(16,185,129,0.05)]" />
         )}
       </main>
 
       <footer className="h-10 border-t border-white/5 bg-black/40 flex items-center justify-center px-6 z-50 text-gray-600">
         <p className="text-[10px] uppercase tracking-[0.2em]">
-          Trace: {token.substring(0, 12)} • User: {viewerEmail} • Protocol: Spotlight-V2
+          Trace: {token.substring(0, 12)} • User: {viewerEmail} • Full-View Enabled
         </p>
       </footer>
 
