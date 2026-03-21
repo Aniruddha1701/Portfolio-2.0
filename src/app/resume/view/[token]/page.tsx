@@ -175,7 +175,7 @@ export default function SecureViewerPage({ params }: { params: Promise<{ token: 
           <div className="relative w-full max-w-4xl shadow-2xl rounded-sm overflow-hidden bg-white/5 ring-1 ring-white/10">
             
             {/* Blurry Background Layer */}
-            <div className={`w-full h-full transition-all duration-700 ${isFocused ? 'blur-[20px] opacity-40 scale-[1.02]' : 'blur-[50px] opacity-0'}`}>
+            <div className={`w-full h-full transition-all duration-700 ${isFocused ? 'blur-[40px] opacity-40 scale-[1.05]' : 'blur-[60px] opacity-0'}`}>
                <div className="aspect-[1/1.41] bg-white/5 flex items-center justify-center">
                   <FileText className="w-32 h-32 text-white/10" />
                </div>
@@ -186,8 +186,8 @@ export default function SecureViewerPage({ params }: { params: Promise<{ token: 
               className="absolute inset-0 z-10 transition-opacity duration-300 pointer-events-none"
               style={{
                 opacity: isFocused ? 1 : 0,
-                WebkitMaskImage: `radial-gradient(circle 120px at ${mousePos.x}px ${mousePos.y - 56}px, black 0%, transparent 100%)`,
-                maskImage: `radial-gradient(circle 120px at ${mousePos.x}px ${mousePos.y - 56}px, black 0%, transparent 100%)`,
+                WebkitMaskImage: `radial-gradient(circle 150px at ${mousePos.x}px ${mousePos.y - 56}px, black 0%, transparent 100%)`,
+                maskImage: `radial-gradient(circle 150px at ${mousePos.x}px ${mousePos.y - 56}px, black 0%, transparent 100%)`,
               }}
             >
               <div className="w-full h-full bg-black">
@@ -200,6 +200,24 @@ export default function SecureViewerPage({ params }: { params: Promise<{ token: 
                 )}
               </div>
             </div>
+
+            {/* Floating Watermark (Follows Spotlight) */}
+            <AnimatePresence>
+              {isFocused && !isIdle && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.4 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed pointer-events-none z-[110] text-[9px] font-mono text-emerald-400 whitespace-nowrap bg-black/40 px-2 py-0.5 rounded-full border border-emerald-500/20"
+                  style={{ 
+                    left: mousePos.x + 20, 
+                    top: mousePos.y + 20 
+                  }}
+                >
+                  {viewerEmail} • {new Date().toLocaleTimeString()}
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Advanced Watermark Grid */}
             <div className="absolute inset-0 z-30 pointer-events-none opacity-[0.05] overflow-hidden">
@@ -234,10 +252,10 @@ export default function SecureViewerPage({ params }: { params: Promise<{ token: 
         {/* The Flashlight Pointer (Custom Cursor) */}
         {!isIdle && isFocused && (
           <div 
-            className="fixed pointer-events-none z-[100] w-[120px] h-[120px] rounded-full border border-emerald-500/50 shadow-[0_0_50px_rgba(16,185,129,0.3)] ring-[100vw] ring-black/40"
+            className="fixed pointer-events-none z-[100] w-[150px] h-[150px] rounded-full border border-emerald-500/50 shadow-[0_0_50px_rgba(16,185,129,0.3)] ring-[100vw] ring-black/80"
             style={{ 
-              left: mousePos.x - 60, 
-              top: mousePos.y - 60,
+              left: mousePos.x - 75, 
+              top: mousePos.y - 75,
               transition: 'transform 0.1s ease-out'
             }}
           />
