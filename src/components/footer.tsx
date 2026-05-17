@@ -145,8 +145,8 @@ export function Footer({ personalInfo, socialLinks }: FooterProps) {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex flex-col md:flex-row items-center gap-4 text-sm">
               <span className="text-muted-foreground">© {new Date().getFullYear()} {personalInfo?.name || 'Portfolio Owner'}. All Rights Reserved.</span>
-              <span className="hidden md:block text-gray-700">·</span>
-              <span className="text-gray-600 text-xs">Built with Next.js & ❤️</span>
+              <span className="hidden md:block text-muted-foreground/40">·</span>
+              <span className="text-muted-foreground/60 text-xs">Built with Next.js & ❤️</span>
             </div>
             <motion.button
               onClick={scrollToTop}

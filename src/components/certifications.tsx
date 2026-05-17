@@ -137,7 +137,7 @@ const CertificateCard = ({ cert }: { cert: any }) => {
   return (
     <CardContainer className="h-full w-full py-0">
       <CardBody 
-        className="group/card relative w-full h-full min-h-[380px] flex flex-col rounded-[2.5rem] bg-foreground/80 dark:bg-[#0c0c11]/90 backdrop-blur-2xl border border-gray-200 dark:border-foreground/[0.03] p-6 sm:p-8 hover:border-violet-500/30 dark:hover:border-foreground/[0.1] hover:shadow-[0_8px_30px_rgba(0,0,0,0.05)] dark:hover:shadow-[0_8px_30px_rgb(0,0,0,0.5)] transition-all duration-500 overflow-hidden"
+        className="group/card relative w-full h-full min-h-[380px] flex flex-col rounded-[2.5rem] bg-white/80 dark:bg-[#0c0c11]/90 backdrop-blur-2xl border border-gray-200 dark:border-foreground/[0.03] p-6 sm:p-8 hover:border-violet-500/30 dark:hover:border-foreground/[0.1] hover:shadow-[0_8px_30px_rgba(0,0,0,0.05)] dark:hover:shadow-[0_8px_30px_rgb(0,0,0,0.5)] transition-all duration-500 overflow-hidden"
         onMouseMove={handleMouseMove}
       >
         
@@ -285,7 +285,7 @@ export function Certifications({ certifications = [] }: CertificationsProps) {
           className="relative group"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-violet-500 to-cyan-500 rounded-full blur-xl opacity-40 group-hover:opacity-70 transition-opacity duration-500 animate-pulse" />
-          <div className="relative inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-foreground/80 dark:bg-black/40 border border-gray-200 dark:border-foreground/10 backdrop-blur-md">
+          <div className="relative inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-white/80 dark:bg-black/40 border border-gray-200 dark:border-foreground/10 backdrop-blur-md">
             <Award className="w-5 h-5 text-violet-600 dark:text-violet-400" />
             <span className="text-sm font-semibold tracking-wide bg-gradient-to-r from-violet-600 via-violet-800 to-cyan-600 dark:from-violet-300 dark:via-white dark:to-cyan-300 bg-clip-text text-transparent">
               Professional Credentials

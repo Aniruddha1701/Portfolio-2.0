@@ -219,7 +219,7 @@ const ProjectCard = ({ project, index }: { project: Project, index: number }) =>
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={handleMouseLeave}
       >
-        <Card className="relative h-full min-h-[360px] overflow-hidden rounded-2xl border border-foreground/[0.06] bg-[#0a0a12] hover:border-foreground/[0.12] transition-all duration-500">
+        <Card className="relative h-full min-h-[360px] overflow-hidden rounded-2xl border border-foreground/[0.06] bg-card dark:bg-[#0a0a12] hover:border-foreground/[0.12] transition-all duration-500">
           {/* Left accent stripe */}
           <div
             className="absolute left-0 top-0 bottom-0 w-1 rounded-l-2xl transition-all duration-500 group-hover:w-1.5"
@@ -265,7 +265,7 @@ const ProjectCard = ({ project, index }: { project: Project, index: number }) =>
                   style={{
                     backgroundImage: isHovered ? `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})` : 'none',
                     WebkitBackgroundClip: isHovered ? 'text' : 'unset',
-                    WebkitTextFillColor: isHovered ? 'transparent' : 'white',
+                    WebkitTextFillColor: isHovered ? 'transparent' : 'currentColor',
                     transition: 'all 0.5s ease',
                   }}
                 >

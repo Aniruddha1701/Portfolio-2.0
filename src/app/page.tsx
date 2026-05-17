@@ -104,7 +104,7 @@ export default function Home() {
           href={socialLinks.github}
           aria-label="Github"
           target="_blank"
-          className="p-2 rounded-full glass-effect transition-all text-[#e4e4e4] hover:text-white hover:scale-110"
+          className="p-2 rounded-full glass-effect transition-all text-foreground/80 hover:text-foreground hover:scale-110"
           whileHover={{ rotate: 360 }}
           transition={{ duration: 0.3 }}
         >
@@ -231,7 +231,7 @@ export default function Home() {
                 </h2>
                 <TextReveal
                   text="Beyond simply writing code, I build systems that enforce constraints and handle complex state. Think you can crack the logic?"
-                  className="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed"
+                  className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed"
                 />
               </motion.div>
 
@@ -240,12 +240,12 @@ export default function Home() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setShowDemo(true)}
-                  className="group relative inline-flex items-center gap-3 px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full backdrop-blur-md transition-all duration-300"
+                  className="group relative inline-flex items-center gap-3 px-8 py-4 bg-foreground/5 hover:bg-foreground/10 border border-foreground/10 rounded-full backdrop-blur-md transition-all duration-300"
                 >
                   <span className="absolute inset-0 rounded-full bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <Brain className="w-6 h-6 text-emerald-400 group-hover:rotate-12 transition-transform" />
-                  <span className="text-xl font-semibold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-                    Test My Brain 🧠
+                  <Brain className="w-6 h-6 text-emerald-500 group-hover:rotate-12 transition-transform" />
+                  <span className="text-xl font-semibold text-foreground">
+                    Test My Brain
                   </span>
                 </motion.button>
 
@@ -253,10 +253,10 @@ export default function Home() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setShowTerminal(true)}
-                  className="group relative inline-flex items-center gap-3 px-8 py-4 bg-black/40 hover:bg-black/60 border border-emerald-500/20 rounded-full backdrop-blur-md transition-all duration-300"
+                  className="group relative inline-flex items-center gap-3 px-8 py-4 bg-foreground/5 hover:bg-foreground/10 border border-emerald-500/20 rounded-full backdrop-blur-md transition-all duration-300"
                 >
                   <span className="text-emerald-500 font-mono text-xl mr-1">&gt;_</span>
-                  <span className="text-lg font-mono text-gray-300 group-hover:text-emerald-400 transition-colors">
+                  <span className="text-lg font-mono text-muted-foreground group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors">
                     Dev Terminal
                   </span>
                 </motion.button>
@@ -266,7 +266,7 @@ export default function Home() {
         </Suspense>
 
         <Suspense fallback={<div className="w-full py-24" />}>
-          <section id="tech-radar" className="w-full py-16 md:py-24 relative bg-black/40">
+          <section id="tech-radar" className="w-full py-16 md:py-24 relative bg-foreground/[0.03]">
             <div className="container px-4 md:px-6">
               <motion.div
                 className="flex flex-col items-center justify-center text-center mb-12 space-y-6"
@@ -305,10 +305,10 @@ export default function Home() {
                   viewport={{ once: true }}
                   transition={{ delay: 0.2, duration: 0.5 }}
                 >
-                  <span className="text-white">Global </span>
+                  <span className="text-foreground">Global </span>
                   <span className="relative inline-block">
-                    <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400">
-                      Tech Radar 📡
+                    <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 dark:from-emerald-400 via-teal-500 dark:via-teal-400 to-cyan-500 dark:to-cyan-400">
+                      Global Tech Radar
                     </span>
                     <motion.svg
                       className="absolute -bottom-6 left-0 w-full overflow-visible z-0"
@@ -377,7 +377,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-lg"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-lg"
             onClick={() => setShowDemo(false)} // Close on backdrop click
           >
             <motion.div
@@ -398,7 +398,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/90 backdrop-blur-xl"
             onClick={() => setShowTerminal(false)}
           >
             <motion.div

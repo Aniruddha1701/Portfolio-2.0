@@ -49,27 +49,27 @@ export interface ThemeToggleProps {
 
 const TOKENS: Record<Theme, Record<string, string>> = {
   light: {
-    pageBg:    "#f3ede1",
-    pageText:  "#1a1a1a",
-    barBg:     "#1a1a1a",
-    barText:   "#ffffff",
+    pageBg: "#f3ede1",
+    pageText: "#1a1a1a",
+    barBg: "#1a1a1a",
+    barText: "#ffffff",
     barBorder: "rgba(255,255,255,0.07)",
-    btnBg:     "#f3ede1",
-    btnText:   "#1a1a1a",
-    btnRing:   "rgba(255,255,255,0.15)",
-    inputBg:   "rgba(255,255,255,0.1)",
+    btnBg: "#f3ede1",
+    btnText: "#1a1a1a",
+    btnRing: "rgba(255,255,255,0.15)",
+    inputBg: "rgba(255,255,255,0.1)",
     inputText: "#ffffff",
   },
   dark: {
-    pageBg:    "#0e0e0e",
-    pageText:  "#dfd8c6",
-    barBg:     "#dfd8c6",
-    barText:   "#1a1a1a",
+    pageBg: "#0e0e0e",
+    pageText: "#dfd8c6",
+    barBg: "#dfd8c6",
+    barText: "#1a1a1a",
     barBorder: "rgba(0,0,0,0.10)",
-    btnBg:     "#0e0e0e",
-    btnText:   "#dfd8c6",
-    btnRing:   "rgba(0,0,0,0.25)",
-    inputBg:   "rgba(0,0,0,0.08)",
+    btnBg: "#0e0e0e",
+    btnText: "#dfd8c6",
+    btnRing: "rgba(0,0,0,0.25)",
+    inputBg: "rgba(0,0,0,0.08)",
     inputText: "#1a1a1a",
   },
 };
@@ -104,14 +104,14 @@ function SunIcon() {
       strokeLinejoin="round"
     >
       <circle cx="12" cy="12" r="4" />
-      <line x1="12" y1="1"     x2="12" y2="3"     />
-      <line x1="12" y1="21"    x2="12" y2="23"    />
-      <line x1="4.22"  y1="4.22"  x2="5.64"  y2="5.64"  />
+      <line x1="12" y1="1" x2="12" y2="3" />
+      <line x1="12" y1="21" x2="12" y2="23" />
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
       <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-      <line x1="1"     y1="12"    x2="3"     y2="12"    />
-      <line x1="21"    y1="12"    x2="23"    y2="12"    />
-      <line x1="4.22"  y1="19.78" x2="5.64"  y2="18.36" />
-      <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22"  />
+      <line x1="1" y1="12" x2="3" y2="12" />
+      <line x1="21" y1="12" x2="23" y2="12" />
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
     </svg>
   );
 }
@@ -141,12 +141,12 @@ type CurtainPhase = "idle" | "falling" | "rising";
 const EASING = "cubic-bezier(0.76, 0, 0.24, 1)";
 
 export function ThemeToggle({
-  variant      = "default",
+  variant = "default",
   appBarProps,
   defaultTheme = "light",
   barHeight: explicitBarHeight,
-  buttonSize   = 36,
-  duration     = 550,
+  buttonSize = 36,
+  duration = 550,
   onThemeChange,
   children,
 }: ThemeToggleProps) {
@@ -154,12 +154,12 @@ export function ThemeToggle({
   const isIcon = variant === "icon";
   const barHeight = explicitBarHeight ?? (isAppBar ? 60 : 44);
 
-  const [theme, setTheme]     = useState<Theme>(defaultTheme);
-  const [phase, setPhase]     = useState<CurtainPhase>("idle");
+  const [theme, setTheme] = useState<Theme>(defaultTheme);
+  const [phase, setPhase] = useState<CurtainPhase>("idle");
   const [hovered, setHovered] = useState(false);
   const [pressed, setPressed] = useState(false);
-  const curtainColorRef       = useRef<string>("");
-  const t                     = TOKENS[theme];
+  const curtainColorRef = useRef<string>("");
+  const t = TOKENS[theme];
 
   // Sync with global Tailwind dark class on mount
   useEffect(() => {
@@ -182,7 +182,7 @@ export function ThemeToggle({
     setTimeout(() => {
       setTheme(next);
       onThemeChange?.(next);
-      
+
       if (typeof document !== "undefined") {
         if (next === "dark") {
           document.documentElement.classList.add("dark");
@@ -293,7 +293,7 @@ export function ThemeToggle({
 
       {/* Fixed top bar */}
       <div style={barStyle}>
-        
+
         {isAppBar && (
           <div style={{ ...appBarSectionStyle, flex: 1 }}>
             {appBarProps?.logo && (
@@ -311,9 +311,9 @@ export function ThemeToggle({
 
         {isAppBar && appBarProps?.onSearch && (
           <div style={{ ...appBarSectionStyle, flex: 1, justifyContent: "center" }}>
-            <div style={{ 
-              position: "relative", 
-              width: "100%", 
+            <div style={{
+              position: "relative",
+              width: "100%",
               maxWidth: "320px",
               display: "flex",
               alignItems: "center"
@@ -321,8 +321,8 @@ export function ThemeToggle({
               <div style={{ position: "absolute", left: "12px", display: "flex", opacity: 0.6 }}>
                 <SearchIcon />
               </div>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 placeholder="Search..."
                 onChange={(e) => appBarProps.onSearch?.(e.target.value)}
                 style={{
@@ -365,7 +365,7 @@ export function ThemeToggle({
                 <UserIcon />
               </div>
             )}
-            
+
             {/* Toggle Button in AppBar */}
             <button
               style={btnStyle}

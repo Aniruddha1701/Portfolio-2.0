@@ -847,7 +847,7 @@ export default function AdminLogin() {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="mt-4 p-3 bg-red-500/20 border border-red-500/50 rounded-lg text-red-300 text-sm"
+                  className="mt-4 p-3 bg-red-100/50 dark:bg-red-500/20 border border-red-200 dark:border-red-500/50 rounded-lg text-red-500 dark:text-red-300 text-sm"
                 >
                   {error}
                 </motion.div>
@@ -861,7 +861,7 @@ export default function AdminLogin() {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="mt-4 p-3 bg-green-500/20 border border-green-500/50 rounded-lg text-green-300 text-sm flex items-center gap-2"
+                  className="mt-4 p-3 bg-green-100/50 dark:bg-green-500/20 border border-green-200 dark:border-green-500/50 rounded-lg text-green-600 dark:text-green-300 text-sm flex items-center gap-2"
                 >
                   <CheckCircle className="w-4 h-4" />
                   {successMessage}

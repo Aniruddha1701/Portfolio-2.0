@@ -5,6 +5,7 @@ import { AnimatePresence, motion, useScroll, useSpring, useTransform } from "fra
 import { Award, Briefcase, FlaskConical, Home, Lock, Menu, Trophy, User, X } from "lucide-react"
 import Link from "next/link"
 import { useEffect, useState } from "react"
+import { ThemeToggle } from "./theme-toggle"
 
 const navItems = [
     { label: "Home", href: "#home", icon: Home },
@@ -112,7 +113,7 @@ export default function FloatingNavbar() {
                                             {/* Icon only shows on hover or active to keep it clean, OR always show if space permits. 
                            Let's show only on active for minimized look when scrolled? No, cleaner to always show or only text. 
                            Let's do Icon + Text but ensure layout handles it well. */}
-                                            <item.icon className={cn("w-4 h-4", isActive ? "text-white" : "text-current")} />
+                                            <item.icon className={cn("w-4 h-4", isActive ? "text-primary-foreground" : "text-current")} />
                                             {item.label}
                                         </span>
                                     </motion.button>
@@ -136,6 +137,10 @@ export default function FloatingNavbar() {
                             <Lock className="w-4 h-4" />
                             <span>Admin</span>
                         </Link>
+                    </motion.div>
+                    
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="ml-1">
+                        <ThemeToggle />
                     </motion.div>
                 </motion.div>
             </motion.nav>
@@ -177,7 +182,7 @@ export default function FloatingNavbar() {
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
-                        className="fixed inset-0 z-40 md:hidden bg-black/60 backdrop-blur-md"
+                        className="fixed inset-0 z-40 md:hidden bg-background/60 backdrop-blur-md"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
@@ -229,6 +234,16 @@ export default function FloatingNavbar() {
                                         <Lock className="w-5 h-5" />
                                         Admin Portal
                                     </Link>
+                                </motion.li>
+                                <motion.li
+                                    initial={{ x: -20, opacity: 0 }}
+                                    animate={{ x: 0, opacity: 1 }}
+                                    transition={{ delay: (navItems.length + 1) * 0.05 }}
+                                    className="mt-2"
+                                >
+                                    <div className="flex items-center gap-4 w-full p-4 rounded-xl text-lg font-medium">
+                                        <ThemeToggle />
+                                    </div>
                                 </motion.li>
                             </ul>
                         </motion.nav>

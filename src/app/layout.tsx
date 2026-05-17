@@ -54,9 +54,9 @@ export default function RootLayout({
           disableTransitionOnChange={false}
         >
           {/* Lightweight CSS-only ambient background — no JS, no rAF, no re-renders */}
-          <div className="fixed inset-0 -z-10 bg-[#0a0a12]">
-            <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-violet-500/[0.03] rounded-full blur-[120px]" />
-            <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-blue-500/[0.03] rounded-full blur-[100px]" />
+          <div className="fixed inset-0 -z-10 bg-background transition-colors duration-500">
+            <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/[0.05] dark:bg-primary/[0.03] rounded-full blur-[120px]" />
+            <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-accent/[0.05] dark:bg-accent/[0.03] rounded-full blur-[100px]" />
           </div>
           <CustomCursor />
           <ScrollProgress />
