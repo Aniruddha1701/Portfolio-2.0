@@ -33,12 +33,12 @@ export function Sidebar({ activeTab, setActiveTab, userName, onLogout }: Sidebar
     ];
 
     const SidebarContent = () => (
-        <div className="flex flex-col h-full bg-gray-900/80 backdrop-blur-xl border-r border-white/10">
-            <div className="p-6 border-b border-white/10">
+        <div className="flex flex-col h-full bg-background/80 backdrop-blur-xl border-r border-foreground/10">
+            <div className="p-6 border-b border-foreground/10">
                 <h2 className="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
                     Admin Panel
                 </h2>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                     Welcome, {userName || "Admin"}
                 </p>
             </div>
@@ -54,20 +54,20 @@ export function Sidebar({ activeTab, setActiveTab, userName, onLogout }: Sidebar
                         className={cn(
                             "flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200",
                             activeTab === item.id
-                                ? "bg-gradient-to-r from-purple-600/20 to-pink-600/20 text-white border border-purple-500/30 shadow-[0_0_15px_rgba(168,85,247,0.15)]"
-                                : "text-gray-400 hover:text-white hover:bg-white/5"
+                                ? "bg-gradient-to-r from-purple-600/20 to-pink-600/20 text-foreground dark:text-white border border-purple-500/30 shadow-[0_0_15px_rgba(168,85,247,0.15)]"
+                                : "text-muted-foreground hover:text-foreground dark:text-white hover:bg-foreground/5"
                         )}
                     >
                         <item.icon className={cn(
                             "w-5 h-5",
-                            activeTab === item.id ? "text-purple-400" : "text-gray-500 group-hover:text-gray-300"
+                            activeTab === item.id ? "text-purple-400" : "text-muted-foreground group-hover:text-muted-foreground"
                         )} />
                         {item.label}
                     </button>
                 ))}
             </nav>
 
-            <div className="p-4 border-t border-white/10">
+            <div className="p-4 border-t border-foreground/10">
                 <Button
                     variant="ghost"
                     className="w-full justify-start text-red-400 hover:text-red-300 hover:bg-red-500/10"
@@ -89,7 +89,7 @@ export function Sidebar({ activeTab, setActiveTab, userName, onLogout }: Sidebar
 
             {/* Mobile Toggle */}
             <div className="lg:hidden fixed top-4 left-4 z-50">
-                <Button size="icon" variant="outline" onClick={() => setIsOpen(!isOpen)} className="bg-gray-900/50 border-white/10 backdrop-blur">
+                <Button size="icon" variant="outline" onClick={() => setIsOpen(!isOpen)} className="bg-background/50 border-foreground/10 backdrop-blur">
                     {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                 </Button>
             </div>
@@ -107,7 +107,7 @@ export function Sidebar({ activeTab, setActiveTab, userName, onLogout }: Sidebar
                         initial={{ x: -300 }}
                         animate={{ x: 0 }}
                         exit={{ x: -300 }}
-                        className="w-72 h-full bg-gray-900"
+                        className="w-72 h-full bg-background"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <SidebarContent />

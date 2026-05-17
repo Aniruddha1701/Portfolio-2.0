@@ -38,7 +38,7 @@ const getCertificateLogo = (cert: any) => {
       />
       {/* Main logo container */}
       <div
-        className="relative w-16 h-16 rounded-[18px] flex items-center justify-center backdrop-blur-xl border-t border-l border-white/20 shadow-2xl overflow-hidden"
+        className="relative w-16 h-16 rounded-[18px] flex items-center justify-center backdrop-blur-xl border-t border-l border-foreground/20 shadow-2xl overflow-hidden"
         style={{ background: `linear-gradient(135deg, ${gradientFrom}30, ${gradientTo}10)` }}
       >
         {/* Holographic shine overlay */}
@@ -96,12 +96,12 @@ const getCertificateLogo = (cert: any) => {
   }
 
   // Icons based on type
-  if (title.includes('ai') || title.includes('machine learning')) return logoWrapper(<Brain className="w-8 h-8 text-white" />, "#A855F7", "#EC4899");
-  if (title.includes('cloud') || title.includes('devops')) return logoWrapper(<Cloud className="w-8 h-8 text-white" />, "#06B6D4", "#3B82F6");
-  if (title.includes('data')) return logoWrapper(<Database className="w-8 h-8 text-white" />, "#10B981", "#14B8A6");
+  if (title.includes('ai') || title.includes('machine learning')) return logoWrapper(<Brain className="w-8 h-8 text-foreground dark:text-white" />, "#A855F7", "#EC4899");
+  if (title.includes('cloud') || title.includes('devops')) return logoWrapper(<Cloud className="w-8 h-8 text-foreground dark:text-white" />, "#06B6D4", "#3B82F6");
+  if (title.includes('data')) return logoWrapper(<Database className="w-8 h-8 text-foreground dark:text-white" />, "#10B981", "#14B8A6");
 
   // Default
-  return logoWrapper(<Award className="w-8 h-8 text-white" />, "#8B5CF6", "#EC4899");
+  return logoWrapper(<Award className="w-8 h-8 text-foreground dark:text-white" />, "#8B5CF6", "#EC4899");
 };
 
 // Container animation variants
@@ -137,7 +137,7 @@ const CertificateCard = ({ cert }: { cert: any }) => {
   return (
     <CardContainer className="h-full w-full py-0">
       <CardBody 
-        className="group/card relative w-full h-full min-h-[380px] flex flex-col rounded-[2.5rem] bg-[#0c0c11]/90 backdrop-blur-2xl border border-white/[0.03] p-6 sm:p-8 hover:border-white/[0.1] hover:shadow-[0_8px_30px_rgb(0,0,0,0.5)] transition-all duration-500 overflow-hidden"
+        className="group/card relative w-full h-full min-h-[380px] flex flex-col rounded-[2.5rem] bg-foreground/80 dark:bg-[#0c0c11]/90 backdrop-blur-2xl border border-gray-200 dark:border-foreground/[0.03] p-6 sm:p-8 hover:border-violet-500/30 dark:hover:border-foreground/[0.1] hover:shadow-[0_8px_30px_rgba(0,0,0,0.05)] dark:hover:shadow-[0_8px_30px_rgb(0,0,0,0.5)] transition-all duration-500 overflow-hidden"
         onMouseMove={handleMouseMove}
       >
         
@@ -177,19 +177,19 @@ const CertificateCard = ({ cert }: { cert: any }) => {
 
           {/* Title Area */}
           <CardItem translateZ="60" className="flex-1 w-full">
-            <h3 className="text-xl sm:text-2xl font-bold leading-snug tracking-tight text-white/90 group-hover/card:text-white transition-colors duration-300 drop-shadow-sm">
+            <h3 className="text-xl sm:text-2xl font-bold leading-snug tracking-tight text-gray-900 dark:text-foreground/90 group-hover/card:text-violet-600 dark:group-hover/card:text-foreground dark:text-white transition-colors duration-300 drop-shadow-sm">
               {cert.title}
             </h3>
             
             {(cert.issuer || issueDateFormatted) && (
               <div className="mt-4 flex flex-col gap-1">
                 {cert.issuer && (
-                  <span className="text-sm font-medium text-white/60">
-                    Issuer: <span className="text-white/80">{cert.issuer}</span>
+                  <span className="text-sm font-medium text-gray-600 dark:text-foreground/60">
+                    Issuer: <span className="text-gray-900 dark:text-foreground/80">{cert.issuer}</span>
                   </span>
                 )}
                 {issueDateFormatted && (
-                  <span className="text-xs text-white/40 font-medium">
+                  <span className="text-xs text-muted-foreground dark:text-foreground/40 font-medium">
                     Issued {issueDateFormatted}
                   </span>
                 )}
@@ -197,9 +197,9 @@ const CertificateCard = ({ cert }: { cert: any }) => {
             )}
             
             {cert.credentialId && (
-              <div className="mt-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.03] border border-white/[0.06]">
-                <Code className="w-3.5 h-3.5 text-white/40" />
-                <span className="text-xs text-white/50 font-mono truncate max-w-[200px]">
+              <div className="mt-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-100 dark:bg-foreground/[0.03] border border-gray-200 dark:border-foreground/[0.06]">
+                <Code className="w-3.5 h-3.5 text-muted-foreground dark:text-foreground/40" />
+                <span className="text-xs text-gray-600 dark:text-foreground/50 font-mono truncate max-w-[200px]">
                   ID: {cert.credentialId}
                 </span>
               </div>
@@ -207,7 +207,7 @@ const CertificateCard = ({ cert }: { cert: any }) => {
           </CardItem>
 
           {/* Footer content */}
-          <CardItem translateZ="30" className="w-full mt-6 pt-5 border-t border-white/[0.04]">
+          <CardItem translateZ="30" className="w-full mt-6 pt-5 border-t border-gray-200 dark:border-foreground/[0.04]">
             <div className="flex items-center justify-between">
               {/* Verified Pill */}
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/[0.04] border border-emerald-500/10">
@@ -216,7 +216,7 @@ const CertificateCard = ({ cert }: { cert: any }) => {
               </div>
 
               {/* Active Badge */}
-              <div className="flex items-center gap-1.5 text-[10px] font-bold text-white/30 uppercase tracking-widest">
+              <div className="flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground dark:text-foreground/30 uppercase tracking-widest">
                 <Zap className="w-3.5 h-3.5" style={{ color: colors.accent }} />
                 <span className="mt-[1px]">Active</span>
               </div>
@@ -229,7 +229,7 @@ const CertificateCard = ({ cert }: { cert: any }) => {
                   href={cert.verifyUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 w-full h-full rounded-xl text-sm font-semibold transition-all duration-300 backdrop-blur-md hover:brightness-125"
+                  className="flex items-center justify-center gap-2 w-full h-full rounded-xl text-sm font-semibold transition-all duration-300 backdrop-blur-md hover:brightness-125 text-gray-900 dark:text-foreground dark:text-white"
                   style={{
                     background: `linear-gradient(135deg, ${colors.primary}30, transparent)`,
                     border: `1px solid ${colors.primary}40`,
@@ -237,7 +237,7 @@ const CertificateCard = ({ cert }: { cert: any }) => {
                   }}
                 >
                   <Sparkles className="w-4 h-4" style={{ color: colors.secondary }} />
-                  <span className="text-white">View Credential</span>
+                  <span>View Credential</span>
                   <ExternalLink className="w-4 h-4 ml-1 opacity-70" />
                 </a>
               </div>
@@ -285,9 +285,9 @@ export function Certifications({ certifications = [] }: CertificationsProps) {
           className="relative group"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-violet-500 to-cyan-500 rounded-full blur-xl opacity-40 group-hover:opacity-70 transition-opacity duration-500 animate-pulse" />
-          <div className="relative inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-black/40 border border-white/10 backdrop-blur-md">
-            <Award className="w-5 h-5 text-violet-400" />
-            <span className="text-sm font-semibold tracking-wide bg-gradient-to-r from-violet-300 via-white to-cyan-300 bg-clip-text text-transparent">
+          <div className="relative inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-foreground/80 dark:bg-black/40 border border-gray-200 dark:border-foreground/10 backdrop-blur-md">
+            <Award className="w-5 h-5 text-violet-600 dark:text-violet-400" />
+            <span className="text-sm font-semibold tracking-wide bg-gradient-to-r from-violet-600 via-violet-800 to-cyan-600 dark:from-violet-300 dark:via-white dark:to-cyan-300 bg-clip-text text-transparent">
               Professional Credentials
             </span>
           </div>
@@ -301,7 +301,7 @@ export function Certifications({ certifications = [] }: CertificationsProps) {
           viewport={{ once: true }}
           transition={{ delay: 0.3, duration: 0.6 }}
         >
-          <span className="text-white/90">Certified </span>
+          <span className="text-gray-900 dark:text-foreground/90">Certified </span>
           <span className="relative inline-block mt-4 md:mt-0 xl:ml-3">
             <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-pink-400 to-cyan-400 animate-gradient-x">
               Excellence
@@ -339,7 +339,7 @@ export function Certifications({ certifications = [] }: CertificationsProps) {
         </motion.h2>
 
         <motion.p
-          className="max-w-[700px] text-gray-400 md:text-lg lg:text-xl leading-relaxed mt-6"
+          className="max-w-[700px] text-gray-600 dark:text-muted-foreground md:text-lg lg:text-xl leading-relaxed mt-6"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -375,7 +375,7 @@ export function Certifications({ certifications = [] }: CertificationsProps) {
         </motion.div>
       ) : (
         <motion.div
-          className="text-center p-20 border border-dashed border-white/10 rounded-3xl bg-gradient-to-br from-gray-900/50 to-gray-950/50 backdrop-blur-xl relative overflow-hidden"
+          className="text-center p-20 border border-dashed border-gray-300 dark:border-foreground/10 rounded-3xl bg-gradient-to-br from-white/50 to-gray-50/50 dark:from-gray-900/50 dark:to-gray-950/50 backdrop-blur-xl relative overflow-hidden"
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
@@ -388,7 +388,7 @@ export function Certifications({ certifications = [] }: CertificationsProps) {
           >
             <Award className="w-12 h-12 text-violet-400/50" />
           </motion.div>
-          <p className="text-gray-500 text-xl font-medium">No certifications available yet</p>
+          <p className="text-muted-foreground text-xl font-medium">No certifications available yet</p>
         </motion.div>
       )}
     </div>

@@ -65,10 +65,10 @@ const ExpandableList = ({ items, theme = "violet" }: { items: string[], theme?: 
   }[theme];
 
   return (
-    <div className="mt-4 pt-4 border-t border-white/[0.04]">
+    <div className="mt-4 pt-4 border-t border-border/50">
       <ul className="space-y-2.5">
         {visibleItems.map((desc, index) => (
-          <li key={index} className="text-sm text-gray-400/90 leading-relaxed flex items-start gap-2.5 group/item cursor-default hover:text-gray-300 transition-colors">
+          <li key={index} className="text-sm text-muted-foreground leading-relaxed flex items-start gap-2.5 group/item cursor-default hover:text-foreground/80 transition-colors">
             <ChevronRight className={`w-4 h-4 mt-[3px] shrink-0 transition-colors ${themeClasses.icon}`} />
             <span className="tracking-wide leading-relaxed">{desc}</span>
           </li>
@@ -187,7 +187,7 @@ const Journey = ({ education = [], experience = [], openToWork = false }: { educ
           viewport={{ once: true }}
           transition={{ delay: 0.2, duration: 0.5 }}
         >
-          <span className="text-white">Professional </span>
+          <span className="text-foreground">Professional </span>
           <span className="relative inline-block">
             <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-purple-400 to-blue-400">
               Journey
@@ -196,7 +196,7 @@ const Journey = ({ education = [], experience = [], openToWork = false }: { educ
         </motion.h2>
 
         <motion.p
-          className="max-w-[600px] text-gray-400 md:text-lg leading-relaxed mb-6"
+          className="max-w-[600px] text-muted-foreground md:text-lg leading-relaxed mb-6"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -219,8 +219,8 @@ const Journey = ({ education = [], experience = [], openToWork = false }: { educ
 
       {/* Experience Section */}
       <div className="relative w-full max-w-[100vw] -mx-4 md:mx-0 px-4 md:px-0">
-        <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-r from-[#0a0a12] to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-l from-[#0a0a12] to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, var(--fade-edge), transparent)' }} />
+        <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 z-10 pointer-events-none" style={{ background: 'linear-gradient(to left, var(--fade-edge), transparent)' }} />
         
         <motion.div ref={expCarousel} className="overflow-hidden cursor-grab active:cursor-grabbing w-full relative">
           <motion.div
@@ -230,7 +230,7 @@ const Journey = ({ education = [], experience = [], openToWork = false }: { educ
             whileTap={{ cursor: "grabbing" }}
           >
             {/* Structural IT Track Background */}
-            <div className="absolute top-[40px] left-0 right-0 h-[2px] bg-white/5 z-0">
+            <div className="absolute top-[40px] left-0 right-0 h-[2px] bg-border/50 z-0">
                <motion.div 
                  className="h-full w-full bg-gradient-to-r from-violet-600 via-blue-500 to-purple-600 origin-left shadow-[0_0_10px_rgba(139,92,246,0.4)]"
                  initial={{ scaleX: 0 }}
@@ -255,7 +255,7 @@ const Journey = ({ education = [], experience = [], openToWork = false }: { educ
                      initial={{ scale: 0 }} 
                      whileInView={{ scale: 1 }} 
                      transition={{ delay: 0.5 + index * 0.1 }}
-                     className="w-3 h-3 bg-violet-400 rotate-45 shadow-[0_0_12px_rgba(139,92,246,0.8)] border border-white/20 relative z-20"
+                     className="w-3 h-3 bg-violet-400 rotate-45 shadow-[0_0_12px_rgba(139,92,246,0.8)] border border-foreground/20 relative z-20"
                    >
                      <div className="absolute inset-0 bg-violet-300 animate-ping opacity-50" />
                    </motion.div>
@@ -268,7 +268,7 @@ const Journey = ({ education = [], experience = [], openToWork = false }: { educ
                 </div>
 
                 {/* Story Card */}
-                <div className="relative w-full rounded-xl border border-white/[0.08] bg-[#0a0a12]/90 hover:border-violet-500/40 hover:bg-[#0c0c16] hover:shadow-[0_8px_32px_-12px_rgba(139,92,246,0.3)] transition-all duration-500 overflow-hidden flex flex-col group backdrop-blur-xl mt-0">
+                <div className="relative w-full rounded-xl border border-border/60 bg-card/90 hover:border-violet-500/40 hover:bg-card hover:shadow-[0_8px_32px_-12px_rgba(139,92,246,0.3)] transition-all duration-500 overflow-hidden flex flex-col group backdrop-blur-xl mt-0">
                   {/* Subtle top highlight */}
                   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-violet-600 via-blue-500 to-purple-600 opacity-60 group-hover:opacity-100 transition-opacity duration-300" />
                   
@@ -276,7 +276,7 @@ const Journey = ({ education = [], experience = [], openToWork = false }: { educ
                     {/* Header: Company & Duration */}
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500/15 to-blue-500/10 border border-white/[0.08] group-hover:border-violet-500/30 flex items-center justify-center shrink-0 transition-colors shadow-inner">
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500/15 to-blue-500/10 border border-border/60 group-hover:border-violet-500/30 flex items-center justify-center shrink-0 transition-colors shadow-inner">
                           {group.logo ? (
                             <Image src={group.logo} alt={group.company} width={28} height={28} className="rounded-lg object-contain" />
                           ) : (
@@ -284,7 +284,7 @@ const Journey = ({ education = [], experience = [], openToWork = false }: { educ
                           )}
                         </div>
                         <div>
-                          <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-white to-gray-400 group-hover:to-white transition-colors">
+                          <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-foreground to-muted-foreground group-hover:to-foreground transition-colors">
                             {group.company}
                           </h3>
                         </div>
@@ -303,7 +303,7 @@ const Journey = ({ education = [], experience = [], openToWork = false }: { educ
                           <div className="flex items-start gap-4">
                             <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-violet-400 shrink-0 shadow-[0_0_8px_rgba(167,139,250,0.8)]" />
                             <div className="flex-1 min-w-0">
-                              <h4 className="text-base font-semibold text-gray-100 leading-snug">
+                              <h4 className="text-base font-semibold text-foreground/90 leading-snug">
                                 {role.degree}
                               </h4>
                               <div className="flex flex-wrap items-center gap-2 mt-1.5 text-xs text-violet-300/80 font-mono">
@@ -336,7 +336,7 @@ const Journey = ({ education = [], experience = [], openToWork = false }: { educ
       <div className="flex items-center justify-center my-20">
         <div className="h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent w-full max-w-sm" />
         <motion.div
-          className="mx-6 p-4 rounded-2xl bg-[#0a0a12] border border-blue-500/20 shadow-[0_0_20px_rgba(59,130,246,0.15)]"
+          className="mx-6 p-4 rounded-2xl bg-card border border-blue-500/20 shadow-[0_0_20px_rgba(59,130,246,0.15)]"
           whileInView={{ rotate: [0, -10, 10, 0] }}
           viewport={{ once: true }}
           transition={{ delay: 0.3, duration: 0.6 }}
@@ -348,8 +348,8 @@ const Journey = ({ education = [], experience = [], openToWork = false }: { educ
 
       {/* Education Section */}
       <div className="relative w-full max-w-[100vw] -mx-4 md:mx-0 px-4 md:px-0">
-        <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-r from-[#0a0a12] to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-l from-[#0a0a12] to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, var(--fade-edge), transparent)' }} />
+        <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 z-10 pointer-events-none" style={{ background: 'linear-gradient(to left, var(--fade-edge), transparent)' }} />
         
         <motion.div ref={eduCarousel} className="overflow-hidden cursor-grab active:cursor-grabbing w-full pb-8 relative">
           <motion.div
@@ -359,7 +359,7 @@ const Journey = ({ education = [], experience = [], openToWork = false }: { educ
             whileTap={{ cursor: "grabbing" }}
           >
             {/* Structural IT Track Background for Education */}
-            <div className="absolute top-[40px] left-0 right-0 h-[2px] bg-white/5 z-0">
+            <div className="absolute top-[40px] left-0 right-0 h-[2px] bg-border/50 z-0">
                <motion.div 
                  className="h-full w-full bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-500 origin-left shadow-[0_0_10px_rgba(6,182,212,0.4)]"
                  initial={{ scaleX: 0 }}
@@ -384,7 +384,7 @@ const Journey = ({ education = [], experience = [], openToWork = false }: { educ
                      initial={{ scale: 0 }} 
                      whileInView={{ scale: 1 }} 
                      transition={{ delay: 0.5 + eIndex * 0.1 }}
-                     className="w-3 h-3 bg-cyan-400 rotate-45 shadow-[0_0_12px_rgba(6,182,212,0.8)] border border-white/20 relative z-20"
+                     className="w-3 h-3 bg-cyan-400 rotate-45 shadow-[0_0_12px_rgba(6,182,212,0.8)] border border-foreground/20 relative z-20"
                    >
                      <div className="absolute inset-0 bg-cyan-300 animate-ping opacity-50" />
                    </motion.div>
@@ -397,28 +397,28 @@ const Journey = ({ education = [], experience = [], openToWork = false }: { educ
                 </div>
 
                 {/* Education Card */}
-                <div className="relative w-full p-6 bg-[#0a0a12]/90 border border-blue-500/10 rounded-xl hover:border-cyan-500/40 hover:bg-[#0c0c16] hover:shadow-[0_8px_32px_-12px_rgba(6,182,212,0.3)] transition-all duration-500 overflow-hidden flex flex-col group backdrop-blur-xl mt-0">
+                <div className="relative w-full p-6 bg-card/90 border border-blue-500/10 rounded-xl hover:border-cyan-500/40 hover:bg-card hover:shadow-[0_8px_32px_-12px_rgba(6,182,212,0.3)] transition-all duration-500 overflow-hidden flex flex-col group backdrop-blur-xl mt-0">
                   {/* Subtle top highlight */}
                   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 to-cyan-400 opacity-60 group-hover:opacity-100 transition-opacity duration-300" />
                   
                   <div className="flex items-start gap-4 mb-5">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/15 to-cyan-500/10 border border-blue-500/20 group-hover:border-blue-500/40 flex items-center justify-center shrink-0 transition-colors shadow-inner">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/15 to-cyan-500/10 border border-border/60 group-hover:border-blue-500/40 flex items-center justify-center shrink-0 transition-colors shadow-inner">
                       <School className="w-6 h-6 text-blue-400 drop-shadow-md" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-white to-gray-400 group-hover:to-white transition-colors">{edu.institution}</h3>
+                      <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-foreground to-muted-foreground group-hover:to-foreground transition-colors">{edu.institution}</h3>
                     </div>
                   </div>
 
                   <div className="space-y-4">
-                    <div className="flex items-center justify-between gap-2 border-b border-white/[0.04] pb-3">
+                    <div className="flex items-center justify-between gap-2 border-b border-border/50 pb-3">
                        <span className="text-[11px] font-mono font-semibold tracking-wider text-blue-300 uppercase bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20 shrink-0">
                         {edu.startDate ? new Date(edu.startDate).getFullYear() : ''} – {edu.endDate ? new Date(edu.endDate).getFullYear() : 'Present'}
                        </span>
                     </div>
 
                     <div>
-                      <h4 className="text-base font-semibold text-gray-200">{edu.degree}</h4>
+                      <h4 className="text-base font-semibold text-foreground/90">{edu.degree}</h4>
                       {edu.field && !edu.degree?.toLowerCase().includes(edu.field?.toLowerCase()) && (
                         <p className="text-sm text-blue-400/80 mt-1 font-medium italic">in {edu.field}</p>
                       )}

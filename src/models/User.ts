@@ -20,8 +20,7 @@ const UserSchema = new Schema<IUser>({
     required: true,
     unique: true,
     lowercase: true,
-    trim: true,
-    index: true
+    trim: true
   },
   password: {
     type: String,
@@ -61,7 +60,6 @@ const UserSchema = new Schema<IUser>({
   timestamps: true
 });
 
-UserSchema.index({ email: 1 });
 
 UserSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();

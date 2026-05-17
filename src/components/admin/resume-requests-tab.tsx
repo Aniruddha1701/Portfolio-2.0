@@ -79,16 +79,16 @@ export function ResumeRequestsTab() {
       transition={{ duration: 0.5 }}
       className="space-y-6"
     >
-      <Card className="bg-gray-900/50 border-white/10">
+      <Card className="bg-card/50 border-foreground/10">
         <CardHeader>
-          <CardTitle className="text-xl flex items-center gap-2 text-white">
+          <CardTitle className="text-xl flex items-center gap-2 text-foreground dark:text-white">
             <FileText className="w-5 h-5 text-purple-400" />
             Resume Access Requests
           </CardTitle>
         </CardHeader>
         <CardContent>
           {requests.length === 0 ? (
-            <div className="text-center py-10 text-gray-400">
+            <div className="text-center py-10 text-muted-foreground">
               <Mail className="w-12 h-12 mx-auto mb-4 opacity-20" />
               <p>No resume requests found.</p>
             </div>
@@ -97,11 +97,11 @@ export function ResumeRequestsTab() {
               {requests.map((req) => (
                 <div 
                   key={req._id}
-                  className="flex flex-col md:flex-row items-start md:items-center justify-between p-4 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-colors"
+                  className="flex flex-col md:flex-row items-start md:items-center justify-between p-4 bg-foreground/5 border border-foreground/10 rounded-xl hover:bg-foreground/10 transition-colors"
                 >
                   <div className="space-y-1 mb-4 md:mb-0">
                     <div className="flex items-center gap-2">
-                      <span className="font-medium text-white">{req.name}</span>
+                      <span className="font-medium text-foreground dark:text-white">{req.name}</span>
                       {req.status === "pending" && (
                         <Badge className="bg-yellow-500/20 text-yellow-500 border-none">Pending</Badge>
                       )}
@@ -112,7 +112,7 @@ export function ResumeRequestsTab() {
                         <Badge className="bg-red-500/20 text-red-500 border-none">Rejected</Badge>
                       )}
                     </div>
-                    <div className="text-sm text-gray-400 flex items-center gap-4">
+                    <div className="text-sm text-muted-foreground flex items-center gap-4">
                       <span>{req.email}</span>
                       <span className="flex items-center gap-1">
                         <Clock className="w-3 h-3" />
@@ -127,7 +127,7 @@ export function ResumeRequestsTab() {
                         size="sm"
                         disabled={processingId === req._id}
                         onClick={() => handleAction(req._id, "approved")}
-                        className="bg-emerald-500 hover:bg-emerald-600 text-white flex-1 md:flex-none"
+                        className="bg-emerald-500 hover:bg-emerald-600 text-foreground dark:text-white flex-1 md:flex-none"
                       >
                         {processingId === req._id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4 mr-1" />}
                         Approve

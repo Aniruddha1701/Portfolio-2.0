@@ -55,7 +55,7 @@ const ProjectLogo = ({ title, colors, index }: { title: string, colors: { primar
         <div className="absolute -inset-1 rounded-xl blur-lg opacity-60"
           style={{ background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})` }}
         />
-        <div className="relative w-14 h-14 rounded-xl flex items-center justify-center bg-gradient-to-br border border-white/20"
+        <div className="relative w-14 h-14 rounded-xl flex items-center justify-center bg-gradient-to-br border border-foreground/20"
           style={{ background: `linear-gradient(135deg, ${colors.primary}20, ${colors.secondary}10)` }}
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24">
@@ -80,7 +80,7 @@ const ProjectLogo = ({ title, colors, index }: { title: string, colors: { primar
         <div className="absolute -inset-1 rounded-xl blur-lg opacity-60"
           style={{ background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})` }}
         />
-        <div className="relative w-14 h-14 rounded-xl flex items-center justify-center border border-white/20"
+        <div className="relative w-14 h-14 rounded-xl flex items-center justify-center border border-foreground/20"
           style={{ background: `linear-gradient(135deg, ${colors.primary}20, ${colors.secondary}10)` }}
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24">
@@ -105,7 +105,7 @@ const ProjectLogo = ({ title, colors, index }: { title: string, colors: { primar
         <div className="absolute -inset-1 rounded-xl blur-lg opacity-60"
           style={{ background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})` }}
         />
-        <div className="relative w-14 h-14 rounded-xl flex items-center justify-center border border-white/20"
+        <div className="relative w-14 h-14 rounded-xl flex items-center justify-center border border-foreground/20"
           style={{ background: `linear-gradient(135deg, ${colors.primary}20, ${colors.secondary}10)` }}
         >
           <motion.svg
@@ -134,7 +134,7 @@ const ProjectLogo = ({ title, colors, index }: { title: string, colors: { primar
         <div className="absolute -inset-1 rounded-xl blur-lg opacity-60"
           style={{ background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})` }}
         />
-        <div className="relative w-14 h-14 rounded-xl flex items-center justify-center border border-white/20"
+        <div className="relative w-14 h-14 rounded-xl flex items-center justify-center border border-foreground/20"
           style={{ background: `linear-gradient(135deg, ${colors.primary}20, ${colors.secondary}10)` }}
         >
           <motion.svg
@@ -219,7 +219,7 @@ const ProjectCard = ({ project, index }: { project: Project, index: number }) =>
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={handleMouseLeave}
       >
-        <Card className="relative h-full min-h-[360px] overflow-hidden rounded-2xl border border-white/[0.06] bg-[#0a0a12] hover:border-white/[0.12] transition-all duration-500">
+        <Card className="relative h-full min-h-[360px] overflow-hidden rounded-2xl border border-foreground/[0.06] bg-[#0a0a12] hover:border-foreground/[0.12] transition-all duration-500">
           {/* Left accent stripe */}
           <div
             className="absolute left-0 top-0 bottom-0 w-1 rounded-l-2xl transition-all duration-500 group-hover:w-1.5"
@@ -261,7 +261,7 @@ const ProjectCard = ({ project, index }: { project: Project, index: number }) =>
 
               <div className="flex-1 min-w-0">
                 <motion.h3
-                  className="text-xl md:text-2xl font-bold leading-tight text-white mb-1"
+                  className="text-xl md:text-2xl font-bold leading-tight text-foreground mb-1"
                   style={{
                     backgroundImage: isHovered ? `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})` : 'none',
                     WebkitBackgroundClip: isHovered ? 'text' : 'unset',
@@ -284,7 +284,7 @@ const ProjectCard = ({ project, index }: { project: Project, index: number }) =>
             </div>
 
             {/* Description */}
-            <p className="text-sm md:text-[15px] text-gray-400 leading-relaxed line-clamp-3 mb-6">
+            <p className="text-sm md:text-[15px] text-muted-foreground leading-relaxed line-clamp-3 mb-6">
               {project.description}
             </p>
 
@@ -307,20 +307,20 @@ const ProjectCard = ({ project, index }: { project: Project, index: number }) =>
                 </motion.span>
               ))}
               {project.technologies && project.technologies.length > 4 && (
-                <span className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white/[0.03] border border-white/[0.06] text-gray-500">
+                <span className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-foreground/[0.03] border border-foreground/[0.06] text-muted-foreground">
                   +{project.technologies.length - 4}
                 </span>
               )}
             </div>
 
             {/* Footer — action buttons */}
-            <div className="flex gap-3 pt-5 mt-5 border-t border-white/[0.05]">
+            <div className="flex gap-3 pt-5 mt-5 border-t border-foreground/[0.05]">
               {project.liveUrl && project.liveUrl !== '#' && (
                 <motion.a
                   href={project.liveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2.5 py-3 rounded-xl text-sm font-bold transition-all duration-400 text-white"
+                  className="flex-1 flex items-center justify-center gap-2.5 py-3 rounded-xl text-sm font-bold transition-all duration-400 text-foreground"
                   style={{
                     background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
                     boxShadow: `0 4px 20px ${colors.primary}30`,
@@ -341,7 +341,7 @@ const ProjectCard = ({ project, index }: { project: Project, index: number }) =>
                   href={project.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2.5 py-3 rounded-xl text-sm font-bold transition-all duration-300 text-gray-300 hover:text-white"
+                  className="flex-1 flex items-center justify-center gap-2.5 py-3 rounded-xl text-sm font-bold transition-all duration-300 text-muted-foreground hover:text-foreground"
                   style={{
                     background: 'rgba(255,255,255,0.03)',
                     border: `1px solid ${isHovered ? colors.primary + '25' : 'rgba(255,255,255,0.08)'}`,
@@ -436,7 +436,7 @@ const PortfolioComponent = ({ projects = [] }: PortfolioProps) => {
           viewport={{ once: true }}
           transition={{ delay: 0.2, duration: 0.5 }}
         >
-          <span className="text-white">My </span>
+          <span className="text-foreground">My </span>
           <span className="relative inline-block">
             <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-purple-400 to-cyan-400">
               Work
@@ -474,7 +474,7 @@ const PortfolioComponent = ({ projects = [] }: PortfolioProps) => {
         </motion.h2>
 
         <motion.p
-          className="max-w-[650px] text-gray-400 md:text-lg leading-relaxed"
+          className="max-w-[650px] text-muted-foreground md:text-lg leading-relaxed"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -498,8 +498,8 @@ const PortfolioComponent = ({ projects = [] }: PortfolioProps) => {
         <motion.button
           onClick={() => setFilter("all")}
           className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background ${filter === "all"
-              ? "bg-gradient-to-r from-violet-500 to-cyan-500 text-white shadow-lg shadow-violet-500/25"
-              : "bg-white/[0.05] border border-white/[0.1] text-gray-400 hover:bg-white/[0.08] hover:text-white"
+              ? "bg-gradient-to-r from-violet-500 to-cyan-500 text-foreground dark:text-white shadow-lg shadow-violet-500/25"
+              : "bg-foreground/[0.05] border border-foreground/[0.1] text-muted-foreground hover:bg-foreground/[0.08] hover:text-foreground"
             }`}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -511,8 +511,8 @@ const PortfolioComponent = ({ projects = [] }: PortfolioProps) => {
             key={tag}
             onClick={() => setFilter(tag.toLowerCase())}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background ${filter === tag.toLowerCase()
-                ? "bg-gradient-to-r from-violet-500/80 to-cyan-500/80 text-white shadow-md"
-                : "bg-white/[0.04] border border-white/[0.08] text-gray-400 hover:bg-white/[0.06] hover:border-white/[0.12] hover:text-gray-300"
+                ? "bg-gradient-to-r from-violet-500/80 to-cyan-500/80 text-foreground dark:text-white shadow-md"
+                : "bg-foreground/[0.04] border border-foreground/[0.08] text-muted-foreground hover:bg-foreground/[0.06] hover:border-foreground/[0.12] hover:text-muted-foreground"
               }`}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
@@ -537,15 +537,15 @@ const PortfolioComponent = ({ projects = [] }: PortfolioProps) => {
         </motion.div>
       ) : (
         <motion.div
-          className="text-center p-16 border border-dashed border-white/[0.08] rounded-3xl bg-white/[0.02]"
+          className="text-center p-16 border border-dashed border-foreground/[0.08] rounded-3xl bg-foreground/[0.02]"
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
         >
-          <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-white/[0.03] flex items-center justify-center border border-white/[0.08]">
-            <Layers className="w-8 h-8 text-white/30" />
+          <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-foreground/[0.03] flex items-center justify-center border border-foreground/[0.08]">
+            <Layers className="w-8 h-8 text-foreground/30" />
           </div>
-          <p className="text-white/40 text-lg">No projects found for this filter</p>
+          <p className="text-foreground/40 text-lg">No projects found for this filter</p>
         </motion.div>
       )}
     </div>

@@ -137,18 +137,30 @@ export const generateOTP = (): string => {
 // Send OTP email
 export const sendOTPEmail = async (email: string, otp: string, name?: string): Promise<boolean> => {
   try {
-    const mailOptions = {
-      from: `"Portfolio Admin" <${process.env.EMAIL_FROM || 'lab205ab1@gmail.com'}>`,
-      to: email,
-      subject: '🔐 Your Admin Login OTP',
-      html: getOTPEmailTemplate(otp, name),
-    };
+    const from = `"Portfolio Admin" <${process.env.EMAIL_FROM || 'lab205ab1@gmail.com'}>`;
+    const subject = '🔐 Your Admin Login OTP';
+    const html = getOTPEmailTemplate(otp, name);
 
-    const info = await transporter.sendMail(mailOptions);
-    console.log('OTP email sent:', info.messageId);
-    return true;
+    // Dynamic import to avoid circular dependency if any
+    const { enqueueEmail } = await import('@/lib/email');
+    const emailEnqueued = await enqueueEmail({
+      to: email,
+      subject,
+      html,
+      from,
+    });
+
+    if (emailEnqueued) {
+      // Use full URL to trigger the queue process in background
+      // Because we're in a utility function, we might not have request.url
+      // We'll rely on the caller to trigger it, or trigger it here with an absolute URL if NEXT_PUBLIC_APP_URL is defined.
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:9002');
+      fetch(`${baseUrl}/api/queue/process`, { method: 'POST' }).catch(e => console.error('Queue trigger failed:', e));
+    }
+    
+    return emailEnqueued;
   } catch (error) {
-    console.error('Error sending OTP email:', error);
+    console.error('Error queueing OTP email:', error);
     return false;
   }
 };
@@ -189,6 +201,37 @@ export const sendEmail = async (options: {
     return true;
   } catch (error) {
     console.error('Error sending email:', error);
+    return false;
+  }
+};
+
+/**
+ * Queues an email for background processing
+ */
+export const enqueueEmail = async (options: {
+  to: string;
+  subject: string;
+  html: string;
+  from?: string;
+}): Promise<boolean> => {
+  try {
+    // Dynamic import to avoid loading mongoose in edge environments if not needed
+    const dbConnect = (await import('@/lib/db/mongoose')).default;
+    const EmailJob = (await import('@/models/EmailJob')).default;
+
+    await dbConnect();
+
+    await EmailJob.create({
+      to: options.to,
+      subject: options.subject,
+      html: options.html,
+      from: options.from || `"Portfolio" <${process.env.EMAIL_FROM || 'lab205ab1@gmail.com'}>`,
+      status: 'pending',
+    });
+
+    return true;
+  } catch (error) {
+    console.error('Error enqueueing email:', error);
     return false;
   }
 };

@@ -139,7 +139,7 @@ export function WordleGame({ onClose }: { onClose?: () => void }) {
         <div className="flex flex-col lg:flex-row gap-8 items-center lg:items-start justify-center w-full max-w-5xl mx-auto p-4 md:p-8">
 
             {/* Game Area */}
-            <div className="flex-1 w-full max-w-md bg-zinc-900/50 p-6 rounded-3xl border border-white/10 backdrop-blur-xl shadow-2xl">
+            <div className="flex-1 w-full max-w-md bg-card/50 p-6 rounded-3xl border border-foreground/10 backdrop-blur-xl shadow-2xl">
                 <div className="flex flex-col mb-6">
                     <div className="flex justify-between items-start">
                         <div>
@@ -147,17 +147,17 @@ export function WordleGame({ onClose }: { onClose?: () => void }) {
                                 <Trophy className="w-5 h-5 text-emerald-400" />
                                 Constraint Logic Demo
                             </h3>
-                            <p className="text-xs text-gray-400 mt-1 max-w-[280px]">
+                            <p className="text-xs text-muted-foreground mt-1 max-w-[280px]">
                                 An interactive constraint-based guessing system demonstrating state management, edge-case handling, and feedback-driven UX.
                             </p>
                         </div>
                         <div className="flex gap-2">
                             {/* Explanation Toggle */}
-                            <Button size="icon" variant="ghost" className="h-8 w-8 text-white/50 hover:text-white" onClick={() => setShowExplanation(!showExplanation)} title="Explain Logic">
+                            <Button size="icon" variant="ghost" className="h-8 w-8 text-foreground/50 hover:text-foreground" onClick={() => setShowExplanation(!showExplanation)} title="Explain Logic">
                                 <HelpCircle className="w-5 h-5" />
                             </Button>
                             {/* Reset Button */}
-                            <Button size="icon" variant="ghost" className="h-8 w-8 text-white/50 hover:text-white" onClick={resetGame} title="Reset">
+                            <Button size="icon" variant="ghost" className="h-8 w-8 text-foreground/50 hover:text-foreground" onClick={resetGame} title="Reset">
                                 <RefreshCcw className="w-5 h-5" />
                             </Button>
                             {/* Close Button (if in Modal) */}
@@ -188,11 +188,11 @@ export function WordleGame({ onClose }: { onClose?: () => void }) {
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: 20 }}
-                        className="w-full lg:w-80 bg-zinc-900/80 p-6 rounded-2xl border border-white/10 space-y-6"
+                        className="w-full lg:w-80 bg-card/80 p-6 rounded-2xl border border-foreground/10 space-y-6"
                     >
                         {/* Game Over Status */}
                         {(isGameWon || isGameLost) && (
-                            <div className="text-center pb-6 border-b border-white/10">
+                            <div className="text-center pb-6 border-b border-foreground/10">
                                 {isGameWon ? (
                                     <motion.div
                                         initial={{ scale: 0.8 }}
@@ -206,10 +206,10 @@ export function WordleGame({ onClose }: { onClose?: () => void }) {
                                         Optimization Failed
                                     </div>
                                 )}
-                                <div className="text-gray-400">
-                                    Target Term: <span className="font-mono text-white font-bold tracking-widest">{solution}</span>
+                                <div className="text-muted-foreground">
+                                    Target Term: <span className="font-mono text-foreground font-bold tracking-widest">{solution}</span>
                                 </div>
-                                <Button onClick={resetGame} className="mt-4 bg-emerald-500 hover:bg-emerald-600 text-white w-full">
+                                <Button onClick={resetGame} className="mt-4 bg-emerald-500 hover:bg-emerald-600 text-foreground dark:text-white w-full">
                                     Run New Diagnostics
                                 </Button>
                             </div>
@@ -217,27 +217,27 @@ export function WordleGame({ onClose }: { onClose?: () => void }) {
 
                         {/* Stats */}
                         <div className="grid grid-cols-2 gap-4">
-                            <div className="bg-white/5 p-3 rounded-xl text-center">
-                                <div className="text-2xl font-bold text-white">{stats.played}</div>
-                                <div className="text-xs text-gray-400 uppercase tracking-wider">Runs</div>
+                            <div className="bg-foreground/5 p-3 rounded-xl text-center">
+                                <div className="text-2xl font-bold text-foreground">{stats.played}</div>
+                                <div className="text-xs text-muted-foreground uppercase tracking-wider">Runs</div>
                             </div>
-                            <div className="bg-white/5 p-3 rounded-xl text-center">
+                            <div className="bg-foreground/5 p-3 rounded-xl text-center">
                                 <div className="text-2xl font-bold text-emerald-400">{stats.streak}</div>
-                                <div className="text-xs text-gray-400 uppercase tracking-wider">Streak</div>
+                                <div className="text-xs text-muted-foreground uppercase tracking-wider">Streak</div>
                             </div>
                         </div>
 
                         {/* Explanation of Algorithm */}
-                        <div className="space-y-3 text-sm text-gray-300">
-                            <h4 className="font-semibold text-white flex items-center gap-2">
+                        <div className="space-y-3 text-sm text-muted-foreground">
+                            <h4 className="font-semibold text-foreground flex items-center gap-2">
                                 <Code className="w-4 h-4 text-cyan-400" />
                                 Developer Insight: O(n) Evaluation
                             </h4>
-                            <p className="font-medium text-white/90">
+                            <p className="font-medium text-foreground/90">
                                 &quot;The core challenge in Wordle is correctly handling repeated letters and evaluation order, which requires a two-pass matching algorithm.&quot;
                             </p>
 
-                            <div className="bg-black/40 p-3 rounded-lg border border-white/5 font-mono text-[10px] sm:text-xs text-gray-400 overflow-x-auto">
+                            <div className="bg-muted p-3 rounded-lg border border-foreground/5 font-mono text-[10px] sm:text-xs text-muted-foreground overflow-x-auto">
                                 <pre>{`// Pass 1: Green (Exact)
 for i in 0..4:
   if guess[i] == target[i]:
@@ -251,11 +251,11 @@ for i in 0..4:
                             </div>
 
                             <div className="space-y-3 pt-2">
-                                <h4 className="font-semibold text-white flex items-center gap-2 text-sm">
+                                <h4 className="font-semibold text-foreground flex items-center gap-2 text-sm">
                                     <Book className="w-4 h-4 text-purple-400" />
                                     Two-Dictionary System
                                 </h4>
-                                <p className="text-xs text-gray-300">
+                                <p className="text-xs text-muted-foreground">
                                     To ensure meaningful gameplay, guesses are validated against a large dictionary (O(1) Set lookup), while solutions are picked from a curated list of technical terms.
                                 </p>
                             </div>

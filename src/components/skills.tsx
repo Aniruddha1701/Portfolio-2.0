@@ -96,7 +96,7 @@ const SkillsComponent = ({ skills = [] }: SkillsProps) => {
           viewport={{ once: true }}
           transition={{ delay: 0.2, duration: 0.5 }}
         >
-          <span className="text-white">My </span>
+          <span className="text-foreground">My </span>
           <span className="relative inline-block">
             <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400">
               Expertise
@@ -134,7 +134,7 @@ const SkillsComponent = ({ skills = [] }: SkillsProps) => {
         </motion.h2>
 
         <motion.p
-          className="max-w-[650px] text-gray-400 md:text-lg leading-relaxed"
+          className="max-w-[650px] text-muted-foreground md:text-lg leading-relaxed"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -183,14 +183,14 @@ const SkillsComponent = ({ skills = [] }: SkillsProps) => {
                 <div className="pb-3 relative z-10">
                   <div className="flex items-center gap-3">
                     <motion.div
-                      className="p-2.5 bg-gradient-to-br from-violet-500/15 to-pink-500/10 rounded-xl border border-white/[0.06] group-hover:border-violet-500/20 transition-colors"
+                      className="p-2.5 bg-gradient-to-br from-violet-500/15 to-pink-500/10 rounded-xl border border-foreground/[0.06] group-hover:border-violet-500/20 transition-colors"
                       style={{ color: 'hsl(var(--primary))' }}
                       whileHover={{ rotate: 360, scale: 1.1 }}
                       transition={{ duration: 0.5 }}
                     >
                       {getCategoryIcon(skillCategory.category)}
                     </motion.div>
-                    <h3 className="text-lg font-semibold text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-violet-400 group-hover:to-pink-400 transition-all duration-500">{skillCategory.category}</h3>
+                    <h3 className="text-lg font-semibold text-foreground group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-violet-400 group-hover:to-pink-400 transition-all duration-500">{skillCategory.category}</h3>
                   </div>
                 </div>
                 <div className="relative z-10">
@@ -211,7 +211,7 @@ const SkillsComponent = ({ skills = [] }: SkillsProps) => {
                           stiffness: 300
                         }}
                         viewport={{ once: true }}
-                        className="px-3 py-1.5 bg-white/[0.04] backdrop-blur-sm rounded-full text-sm font-medium text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-violet-500/20 hover:to-pink-500/15 transition-all duration-300 cursor-default border border-white/[0.06] hover:border-violet-500/30 flex items-center gap-2 inline-flex"
+                        className="px-3 py-1.5 bg-foreground/[0.04] backdrop-blur-sm rounded-full text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-gradient-to-r hover:from-violet-500/20 hover:to-pink-500/15 transition-all duration-300 cursor-default border border-foreground/[0.06] hover:border-violet-500/30 flex items-center gap-2 inline-flex"
                       >
                         {techLogos[skill] && <span className="flex-shrink-0">{techLogos[skill]}</span>}
                         {skill}

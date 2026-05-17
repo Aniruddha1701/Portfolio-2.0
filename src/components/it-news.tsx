@@ -111,7 +111,7 @@ export function ItNews() {
                     <CardHeader className="relative z-10">
                       <CardTitle className="flex items-center gap-3 text-primary">
                         <motion.div
-                          className="p-2.5 bg-gradient-to-br from-violet-500/15 to-cyan-500/10 rounded-xl border border-white/[0.06]"
+                          className="p-2.5 bg-gradient-to-br from-violet-500/15 to-cyan-500/10 rounded-xl border border-foreground/[0.06]"
                           whileHover={{ rotate: 360, scale: 1.1 }}
                           transition={{ duration: 0.5 }}
                         >
@@ -121,7 +121,7 @@ export function ItNews() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="relative z-10">
-                      <Alert className="bg-white/[0.03] border-white/[0.08] backdrop-blur-sm rounded-xl group-hover:bg-white/[0.05] transition-colors">
+                      <Alert className="bg-foreground/[0.03] border-foreground/[0.08] backdrop-blur-sm rounded-xl group-hover:bg-foreground/[0.05] transition-colors">
                         <div className="flex items-center gap-2 mb-2">
                           <BotMessageSquare className="h-4 w-4 text-emerald-400" />
                           <span className="text-primary/90 font-medium text-sm border-b border-emerald-500/30 pb-0.5">Article Snippet</span>

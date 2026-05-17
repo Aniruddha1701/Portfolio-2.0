@@ -66,7 +66,7 @@ export function Footer({ personalInfo, socialLinks }: FooterProps) {
               <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-5 font-headline">
                 Let&apos;s <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-pink-400">Connect</span>
               </h2>
-              <p className="text-gray-400 text-base md:text-lg max-w-md leading-relaxed">
+              <p className="text-muted-foreground text-base md:text-lg max-w-md leading-relaxed">
                 Have a project in mind or just want to chat? Feel free to reach out. I&apos;m always open to discussing new opportunities.
               </p>
             </div>
@@ -76,25 +76,25 @@ export function Footer({ personalInfo, socialLinks }: FooterProps) {
               {personalInfo?.email && (
                 <a
                   href={`mailto:${personalInfo.email}`}
-                  className="flex items-center gap-4 p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-violet-500/25 hover:bg-white/[0.04] transition-all duration-300 group"
+                  className="flex items-center gap-4 p-4 rounded-2xl bg-foreground/[0.02] border border-foreground/[0.06] hover:border-violet-500/25 hover:bg-foreground/[0.04] transition-all duration-300 group"
                 >
-                  <div className="p-3 rounded-xl bg-gradient-to-br from-violet-500/15 to-pink-500/10 border border-white/[0.06] group-hover:border-violet-500/20 transition-colors">
+                  <div className="p-3 rounded-xl bg-gradient-to-br from-violet-500/15 to-pink-500/10 border border-foreground/[0.06] group-hover:border-violet-500/20 transition-colors">
                     <Mail className="h-5 w-5 text-violet-400" />
                   </div>
                   <div>
-                    <div className="text-xs text-gray-500 font-medium uppercase tracking-wider mb-0.5">Email</div>
-                    <span className="text-sm text-gray-300 group-hover:text-white transition-colors">{personalInfo.email}</span>
+                    <div className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-0.5">Email</div>
+                    <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">{personalInfo.email}</span>
                   </div>
                 </a>
               )}
               {personalInfo?.location && (
-                <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
-                  <div className="p-3 rounded-xl bg-gradient-to-br from-cyan-500/15 to-blue-500/10 border border-white/[0.06]">
+                <div className="flex items-center gap-4 p-4 rounded-2xl bg-foreground/[0.02] border border-foreground/[0.06]">
+                  <div className="p-3 rounded-xl bg-gradient-to-br from-cyan-500/15 to-blue-500/10 border border-foreground/[0.06]">
                     <MapPin className="h-5 w-5 text-cyan-400" />
                   </div>
                   <div>
-                    <div className="text-xs text-gray-500 font-medium uppercase tracking-wider mb-0.5">Location</div>
-                    <span className="text-sm text-gray-300">{personalInfo.location}</span>
+                    <div className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-0.5">Location</div>
+                    <span className="text-sm text-muted-foreground">{personalInfo.location}</span>
                   </div>
                 </div>
               )}
@@ -107,11 +107,11 @@ export function Footer({ personalInfo, socialLinks }: FooterProps) {
                   href={socialLinks.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.06] hover:border-violet-500/25 hover:bg-white/[0.06] transition-all duration-300 group"
+                  className="p-3.5 rounded-2xl bg-foreground/[0.03] border border-foreground/[0.06] hover:border-violet-500/25 hover:bg-foreground/[0.06] transition-all duration-300 group"
                   whileHover={{ scale: 1.08, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <Github className="h-5 w-5 text-gray-400 group-hover:text-white transition-colors" />
+                  <Github className="h-5 w-5 text-muted-foreground group-hover:text-foreground transition-colors" />
                 </motion.a>
               )}
               {socialLinks?.linkedin && (
@@ -119,11 +119,11 @@ export function Footer({ personalInfo, socialLinks }: FooterProps) {
                   href={socialLinks.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.06] hover:border-blue-500/25 hover:bg-white/[0.06] transition-all duration-300 group"
+                  className="p-3.5 rounded-2xl bg-foreground/[0.03] border border-foreground/[0.06] hover:border-blue-500/25 hover:bg-foreground/[0.06] transition-all duration-300 group"
                   whileHover={{ scale: 1.08, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <Linkedin className="h-5 w-5 text-gray-400 group-hover:text-blue-400 transition-colors" />
+                  <Linkedin className="h-5 w-5 text-muted-foreground group-hover:text-blue-400 transition-colors" />
                 </motion.a>
               )}
             </div>
@@ -141,20 +141,20 @@ export function Footer({ personalInfo, socialLinks }: FooterProps) {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-20 pt-8 border-t border-white/[0.05]">
+        <div className="mt-20 pt-8 border-t border-foreground/[0.05]">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex flex-col md:flex-row items-center gap-4 text-sm">
-              <span className="text-gray-500">© {new Date().getFullYear()} {personalInfo?.name || 'Portfolio Owner'}. All Rights Reserved.</span>
+              <span className="text-muted-foreground">© {new Date().getFullYear()} {personalInfo?.name || 'Portfolio Owner'}. All Rights Reserved.</span>
               <span className="hidden md:block text-gray-700">·</span>
               <span className="text-gray-600 text-xs">Built with Next.js & ❤️</span>
             </div>
             <motion.button
               onClick={scrollToTop}
-              className="p-3 rounded-full bg-white/[0.03] border border-white/[0.06] hover:border-violet-500/30 hover:bg-white/[0.05] transition-all duration-300 group"
+              className="p-3 rounded-full bg-foreground/[0.03] border border-foreground/[0.06] hover:border-violet-500/30 hover:bg-foreground/[0.05] transition-all duration-300 group"
               whileHover={{ scale: 1.1, y: -2 }}
               whileTap={{ scale: 0.95 }}
             >
-              <ArrowUp className="h-4 w-4 text-gray-500 group-hover:text-violet-400 transition-colors" />
+              <ArrowUp className="h-4 w-4 text-muted-foreground group-hover:text-violet-400 transition-colors" />
               <span className="sr-only">Scroll to top</span>
             </motion.button>
           </div>

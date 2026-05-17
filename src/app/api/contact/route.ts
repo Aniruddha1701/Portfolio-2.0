@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
 import { successResponse, errorResponse, serverError } from "@/lib/api-response";
-import { sendEmail } from "@/lib/email";
+import { enqueueEmail } from "@/lib/email";
 
 // Validation schema
 const contactSchema = z.object({
@@ -43,20 +43,26 @@ export async function POST(request: NextRequest) {
       </div>
     `;
 
-    // 3. Send email using centralized utility
+    // 3. Enqueue email for background processing
     const recipient = process.env.EMAIL_TO || process.env.EMAIL_USER || 'lab205ab1@gmail.com';
-    const emailSent = await sendEmail({
+    const emailEnqueued = await enqueueEmail({
       to: recipient,
       subject: `[Portfolio Contact] ${subject}`,
       html: htmlContent,
       from: `"Portfolio Contact" <${process.env.EMAIL_FROM || 'lab205ab1@gmail.com'}>`
     });
 
-    if (!emailSent) {
-      return errorResponse("Failed to send email. Please try again later.", 500);
+    if (!emailEnqueued) {
+      return errorResponse("Failed to enqueue email. Please try again later.", 500);
     }
 
-    return successResponse(null, "Your message has been sent successfully!");
+    // Trigger queue processing asynchronously (fire and forget)
+    // We use absolute URL for the fetch
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:9002');
+    const url = new URL('/api/queue/process', baseUrl);
+    fetch(url.toString(), { method: 'POST' }).catch(e => console.error('Failed to trigger queue processor:', e));
+
+    return successResponse(null, "Your message has been queued successfully!");
   } catch (error: any) {
     return serverError(error);
   }

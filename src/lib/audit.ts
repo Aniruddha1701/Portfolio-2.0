@@ -26,7 +26,8 @@ export interface AuditData {
 }
 
 /**
- * Log an administrative action to the database
+ * Log an administrative action to the database.
+ * Awaitable version — use when audit success is critical (e.g., security events).
  */
 export async function logAudit(data: AuditData) {
   try {
@@ -51,4 +52,16 @@ export async function logAudit(data: AuditData) {
     console.error('[Audit Log Error]:', error);
     return null;
   }
+}
+
+/**
+ * Fire-and-forget audit logging — does NOT block the response.
+ * Use for non-critical audit events (e.g., portfolio reads, general updates).
+ * The audit still gets written to DB, but the API response is sent immediately.
+ */
+export function logAuditAsync(data: AuditData): void {
+  // Intentionally not awaited — runs in background
+  logAudit(data).catch((err) => {
+    console.error('[Async Audit Error]:', err);
+  });
 }

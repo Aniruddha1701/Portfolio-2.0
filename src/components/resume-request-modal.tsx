@@ -62,7 +62,7 @@ export function ResumeRequestModal({ children }: ResumeRequestModalProps) {
         {children}
       </div>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[480px] bg-black/95 border-white/10 backdrop-blur-3xl text-white p-0 overflow-hidden">
+        <DialogContent className="sm:max-w-[480px] bg-background/95 border-foreground/10 backdrop-blur-3xl text-foreground p-0 overflow-hidden">
         <AnimatePresence mode="wait">
           {status === "success" ? (
             <motion.div
@@ -79,7 +79,7 @@ export function ResumeRequestModal({ children }: ResumeRequestModalProps) {
                 transition={{ delay: 0.2, type: "spring", duration: 0.6, bounce: 0.5 }}
                 className="w-24 h-24 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-full mx-auto mb-6 flex items-center justify-center shadow-2xl shadow-emerald-500/30"
               >
-                <CheckCircle2 className="h-12 w-12 text-white" />
+                <CheckCircle2 className="h-12 w-12 text-foreground" />
               </motion.div>
               
               <motion.h2 
@@ -95,7 +95,7 @@ export function ResumeRequestModal({ children }: ResumeRequestModalProps) {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
-                className="text-gray-400 text-base leading-relaxed"
+                className="text-muted-foreground text-base leading-relaxed"
               >
                 Your request has been submitted. You&apos;ll receive an email with the secure download link once approved!
               </motion.p>
@@ -104,7 +104,7 @@ export function ResumeRequestModal({ children }: ResumeRequestModalProps) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6 }}
-                className="mt-8 flex items-center justify-center gap-2 text-sm text-gray-500"
+                className="mt-8 flex items-center justify-center gap-2 text-sm text-muted-foreground"
               >
                 <Sparkles className="h-4 w-4" />
                 <span>Usually responds within 24 hours</span>
@@ -129,14 +129,14 @@ export function ResumeRequestModal({ children }: ResumeRequestModalProps) {
                     transition={{ type: "spring", duration: 0.6, bounce: 0.4 }}
                     className="w-16 h-16 bg-gradient-to-br from-violet-600 to-pink-600 rounded-2xl mx-auto mb-5 flex items-center justify-center shadow-lg shadow-purple-500/25"
                   >
-                    <LockKeyhole className="h-8 w-8 text-white" />
+                    <LockKeyhole className="h-8 w-8 text-foreground" />
                   </motion.div>
                   
                   <motion.h2 
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
-                    className="text-2xl font-bold text-white mb-2"
+                    className="text-2xl font-bold text-foreground mb-2"
                   >
                     Secure Resume Access
                   </motion.h2>
@@ -145,7 +145,7 @@ export function ResumeRequestModal({ children }: ResumeRequestModalProps) {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.2 }}
-                    className="text-gray-400 text-sm leading-relaxed"
+                    className="text-muted-foreground text-sm leading-relaxed"
                   >
                     Enter your details to request access. I&apos;ll personally review and send a secure link to your email.
                   </motion.p>
@@ -158,9 +158,9 @@ export function ResumeRequestModal({ children }: ResumeRequestModalProps) {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.2 }}
                   >
-                    <Label htmlFor="name" className="text-gray-300 text-sm font-medium ml-1">Full Name</Label>
+                    <Label htmlFor="name" className="text-muted-foreground text-sm font-medium ml-1">Full Name</Label>
                     <div className="relative group">
-                      <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-purple-400 transition-colors">
+                      <div className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-purple-400 transition-colors">
                         <User className="h-4 w-4" />
                       </div>
                       <Input 
@@ -169,7 +169,7 @@ export function ResumeRequestModal({ children }: ResumeRequestModalProps) {
                         required 
                         disabled={status === "loading"}
                         placeholder="John Doe" 
-                        className="pl-11 h-12 bg-white/5 border-white/10 focus-visible:ring-purple-500 focus-visible:border-purple-500/50 text-white placeholder:text-gray-500 transition-all"
+                        className="pl-11 h-12 bg-foreground/5 border-foreground/10 focus-visible:ring-purple-500 focus-visible:border-purple-500/50 text-foreground placeholder:text-muted-foreground transition-all"
                       />
                     </div>
                   </motion.div>
@@ -180,9 +180,9 @@ export function ResumeRequestModal({ children }: ResumeRequestModalProps) {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.3 }}
                   >
-                    <Label htmlFor="email" className="text-gray-300 text-sm font-medium ml-1">Email Address</Label>
+                    <Label htmlFor="email" className="text-muted-foreground text-sm font-medium ml-1">Email Address</Label>
                     <div className="relative group">
-                      <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-purple-400 transition-colors">
+                      <div className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-purple-400 transition-colors">
                         <Mail className="h-4 w-4" />
                       </div>
                       <Input 
@@ -192,7 +192,7 @@ export function ResumeRequestModal({ children }: ResumeRequestModalProps) {
                         required 
                         disabled={status === "loading"}
                         placeholder="john@example.com" 
-                        className="pl-11 h-12 bg-white/5 border-white/10 focus-visible:ring-purple-500 focus-visible:border-purple-500/50 text-white placeholder:text-gray-500 transition-all"
+                        className="pl-11 h-12 bg-foreground/5 border-foreground/10 focus-visible:ring-purple-500 focus-visible:border-purple-500/50 text-foreground placeholder:text-muted-foreground transition-all"
                       />
                     </div>
                   </motion.div>
@@ -222,7 +222,7 @@ export function ResumeRequestModal({ children }: ResumeRequestModalProps) {
                     <Button 
                       type="submit" 
                       disabled={status === "loading"}
-                      className="w-full h-12 bg-gradient-to-r from-violet-600 to-pink-600 hover:from-violet-500 hover:to-pink-500 text-white font-semibold transition-all duration-300 rounded-xl shadow-lg shadow-purple-500/20 hover:shadow-purple-500/40 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                      className="w-full h-12 bg-gradient-to-r from-violet-600 to-pink-600 hover:from-violet-500 hover:to-pink-500 text-foreground dark:text-white font-semibold transition-all duration-300 rounded-xl shadow-lg shadow-purple-500/20 hover:shadow-purple-500/40 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                     >
                       {status === "loading" ? (
                         <>
@@ -244,7 +244,7 @@ export function ResumeRequestModal({ children }: ResumeRequestModalProps) {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.6 }}
-                  className="text-center text-gray-500 text-xs mt-6 flex items-center justify-center gap-1"
+                  className="text-center text-muted-foreground text-xs mt-6 flex items-center justify-center gap-1"
                 >
                   <LockKeyhole className="h-3 w-3" />
                   Your information is secure and private

@@ -15,8 +15,7 @@ const RefreshTokenSchema = new Schema<IRefreshToken>({
   token: {
     type: String,
     required: true,
-    unique: true,
-    index: true
+    unique: true
   },
   user: {
     type: Schema.Types.ObjectId,
@@ -26,8 +25,7 @@ const RefreshTokenSchema = new Schema<IRefreshToken>({
   },
   expiresAt: {
     type: Date,
-    required: true,
-    index: true
+    required: true
   },
   isRevoked: {
     type: Boolean,

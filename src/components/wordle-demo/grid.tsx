@@ -26,11 +26,11 @@ const Row = ({ guess, status, isCurrent, isCompleted, isShaking }: { guess: stri
                     const bgClass = clsx(
                         "w-12 h-12 sm:w-14 sm:h-14 border-2 flex items-center justify-center text-2xl font-bold uppercase select-none transition-colors duration-500 rounded-lg", // rounded-lg for softer look
                         {
-                            "border-gray-700 bg-transparent text-white": letterStatus === 'empty' && !letter,
-                            "border-gray-500 bg-transparent text-white animate-pulse-short": letterStatus === 'empty' && letter && isCurrent, // Typing pop
-                            "bg-[#538d4e] border-[#538d4e] text-white": letterStatus === 'correct',
-                            "bg-[#b59f3b] border-[#b59f3b] text-white": letterStatus === 'present',
-                            "bg-[#3a3a3c] border-[#3a3a3c] text-white": letterStatus === 'absent',
+                            "border-gray-700 bg-transparent text-foreground dark:text-white": letterStatus === 'empty' && !letter,
+                            "border-gray-500 bg-transparent text-foreground dark:text-white animate-pulse-short": letterStatus === 'empty' && letter && isCurrent, // Typing pop
+                            "bg-[#538d4e] border-[#538d4e] text-foreground dark:text-white": letterStatus === 'correct',
+                            "bg-[#b59f3b] border-[#b59f3b] text-foreground dark:text-white": letterStatus === 'present',
+                            "bg-[#3a3a3c] border-[#3a3a3c] text-foreground dark:text-white": letterStatus === 'absent',
                         }
                     );
 

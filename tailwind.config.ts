@@ -19,8 +19,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        body: ['Plus Jakarta Sans', 'Inter', ...fontFamily.sans],
-        headline: ['Space Grotesk', 'Plus Jakarta Sans', ...fontFamily.sans],
+        body: ['Inter', ...fontFamily.sans],
+        headline: ['Sora', ...fontFamily.sans],
         code: ['JetBrains Mono', 'Fira Code', ...fontFamily.mono],
       },
       colors: {

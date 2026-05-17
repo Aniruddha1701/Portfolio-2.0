@@ -101,7 +101,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
                    exit={{ opacity: 0, y: "-100%" }}
                    transition={{ duration: 0.4, ease: [0.76, 0, 0.24, 1] }}
                  >
-                   <h1 className="text-5xl sm:text-7xl lg:text-8xl font-light tracking-tight text-white/90 flex items-center">
+                   <h1 className="text-5xl sm:text-7xl lg:text-8xl font-light tracking-tight text-foreground/90 flex items-center">
                      {words[index]}
                    </h1>
                    
@@ -119,7 +119,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
              </div>
 
              {/* Minimalist Glassmorphic Progress Bar */}
-             <div className="w-48 sm:w-64 h-[2px] bg-white/10 rounded-full overflow-hidden mt-8 relative backdrop-blur-sm">
+             <div className="w-48 sm:w-64 h-[2px] bg-foreground/10 rounded-full overflow-hidden mt-8 relative backdrop-blur-sm">
                 <motion.div 
                   className="absolute inset-y-0 left-0 bg-gradient-to-r from-sky-400 via-indigo-400 to-emerald-400"
                   initial={{ width: "0%" }}
@@ -130,7 +130,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
              
              {/* Subtitle / Brand Signature */}
              <motion.div
-               className="mt-6 text-[10px] sm:text-xs font-mono text-white/30 tracking-[0.4em] uppercase"
+               className="mt-6 text-[10px] sm:text-xs font-mono text-foreground/30 tracking-[0.4em] uppercase"
                initial={{ opacity: 0, y: 10 }}
                animate={{ opacity: 1, y: 0 }}
                transition={{ delay: 0.5, duration: 1 }}

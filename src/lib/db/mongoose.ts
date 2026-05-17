@@ -19,30 +19,23 @@ if (!cached) {
 }
 
 async function dbConnect() {
-  if (cached.conn) {
-    // Check if connection is still alive
-    try {
-      await cached.conn.connection.db.admin().ping();
-      return cached.conn;
-    } catch (error) {
-      console.log('MongoDB connection lost, reconnecting...');
-      cached.conn = null;
-      cached.promise = null;
-    }
+  // Fast path: reuse existing connection without pinging
+  // Mongoose driver handles reconnection automatically via its internal monitor
+  if (cached.conn && cached.conn.connection.readyState === 1) {
+    return cached.conn;
   }
 
   if (!cached.promise) {
-    const opts = {
+    const opts: mongoose.ConnectOptions = {
       bufferCommands: false,
       maxPoolSize: 10,
-      serverSelectionTimeoutMS: 10000,
-      socketTimeoutMS: 45000,
+      minPoolSize: 2,                  // Keep 2 connections warm
+      serverSelectionTimeoutMS: 5000,  // Fail fast (was 10s)
+      socketTimeoutMS: 30000,          // Reduced from 45s
+      heartbeatFrequencyMS: 10000,     // Mongoose monitors connection health
+      family: 4,                       // Force IPv4 — fixes querySrv ECONNREFUSED
     };
 
-    console.log('Connecting to MongoDB...');
-    console.log('MongoDB URI exists:', !!MONGODB_URI);
-    console.log('URI starts with:', MONGODB_URI?.substring(0, 20) + '...');
-    
     cached.promise = mongoose.connect(MONGODB_URI!, opts)
       .then((mongoose) => {
         console.log('MongoDB connected successfully');
@@ -54,7 +47,7 @@ async function dbConnect() {
         throw error;
       });
   }
-  
+
   try {
     cached.conn = await cached.promise;
     return cached.conn;

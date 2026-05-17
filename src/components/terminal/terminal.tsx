@@ -42,13 +42,13 @@ export function Terminal({ onClose, onAction }: { onClose?: () => void, onAction
                     <div className="space-y-1 text-emerald-400">
                         <div>Available commands:</div>
                         <div className="grid grid-cols-[100px_1fr] gap-2 pl-4">
-                            <span className="text-white">about</span> <span>Who am I?</span>
-                            <span className="text-white">skills</span> <span>Technical capability matrix</span>
-                            <span className="text-white">projects</span> <span>View key projects</span>
-                            <span className="text-white">contact</span> <span>Connect with me</span>
-                            <span className="text-white">matrix</span> <span>Enter the Matrix</span>
-                            <span className="text-white">clear</span> <span>Clear terminal</span>
-                            <span className="text-white">exit</span> <span>Close terminal</span>
+                            <span className="text-foreground dark:text-white">about</span> <span>Who am I?</span>
+                            <span className="text-foreground dark:text-white">skills</span> <span>Technical capability matrix</span>
+                            <span className="text-foreground dark:text-white">projects</span> <span>View key projects</span>
+                            <span className="text-foreground dark:text-white">contact</span> <span>Connect with me</span>
+                            <span className="text-foreground dark:text-white">matrix</span> <span>Enter the Matrix</span>
+                            <span className="text-foreground dark:text-white">clear</span> <span>Clear terminal</span>
+                            <span className="text-foreground dark:text-white">exit</span> <span>Close terminal</span>
                         </div>
                     </div>
                 );
@@ -71,7 +71,7 @@ export function Terminal({ onClose, onAction }: { onClose?: () => void, onAction
                         <div className="flex items-center gap-2 text-blue-400">
                             <Linkedin className="w-4 h-4" /> <span>/in/aniruddhapatil</span>
                         </div>
-                        <div className="flex items-center gap-2 text-white">
+                        <div className="flex items-center gap-2 text-foreground dark:text-white">
                             <Github className="w-4 h-4" /> <span>/Aniruddha1701</span>
                         </div>
                     </div>
@@ -118,9 +118,9 @@ export function Terminal({ onClose, onAction }: { onClose?: () => void, onAction
     };
 
     return (
-        <div className="flex flex-col w-full h-[600px] max-w-3xl bg-black/90 rounded-xl border border-white/10 shadow-2xl overflow-hidden font-mono text-sm md:text-base relative" onClick={() => inputRef.current?.focus()}>
+        <div className="flex flex-col w-full h-[600px] max-w-3xl bg-black/90 rounded-xl border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden font-mono text-sm md:text-base relative" onClick={() => inputRef.current?.focus()}>
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 bg-zinc-900 border-b border-white/10 select-none">
+            <div className="flex items-center justify-between px-4 py-3 bg-zinc-900 border-b border-black/10 dark:border-white/10 select-none">
                 <div className="flex items-center gap-2">
                     <div className="flex gap-1.5 group">
                         <button onClick={onClose} className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-600 transition-colors" />
@@ -133,7 +133,7 @@ export function Terminal({ onClose, onAction }: { onClose?: () => void, onAction
                     </span>
                 </div>
                 {onClose && (
-                    <button onClick={onClose} className="text-zinc-500 hover:text-white transition-colors">
+                    <button onClick={onClose} className="text-zinc-500 hover:text-foreground dark:text-white transition-colors">
                         <X className="w-4 h-4" />
                     </button>
                 )}
@@ -144,7 +144,7 @@ export function Terminal({ onClose, onAction }: { onClose?: () => void, onAction
                 {history.map((item) => (
                     <div key={item.id} className="space-y-1">
                         {item.type === 'command' && (
-                            <div className="flex items-center gap-2 text-white">
+                            <div className="flex items-center gap-2 text-foreground dark:text-white">
                                 <span className="text-emerald-500">➜</span>
                                 <span className="text-cyan-400">~</span>
                                 <span>{item.content}</span>
@@ -160,7 +160,7 @@ export function Terminal({ onClose, onAction }: { onClose?: () => void, onAction
                 ))}
 
                 {/* Active Input Line */}
-                <div className="flex items-center gap-2 text-white pt-2">
+                <div className="flex items-center gap-2 text-foreground dark:text-white pt-2">
                     <span className="text-emerald-500">➜</span>
                     <span className="text-cyan-400">~</span>
                     <input
@@ -169,7 +169,7 @@ export function Terminal({ onClose, onAction }: { onClose?: () => void, onAction
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         onKeyDown={handleKeyDown}
-                        className="flex-1 bg-transparent border-none outline-none text-white placeholder-gray-600"
+                        className="flex-1 bg-transparent border-none outline-none text-foreground dark:text-white placeholder-gray-600"
                         autoComplete="off"
                         spellCheck="false"
                     />

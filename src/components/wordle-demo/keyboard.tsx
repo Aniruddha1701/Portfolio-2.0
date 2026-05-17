@@ -27,7 +27,7 @@ export function Keyboard({ onKey, usedKeys }: KeyboardProps) {
                                 onClick={() => onKey(key)}
                                 className={clsx(
                                     "flex items-center justify-center rounded font-bold text-sm transition-all active:scale-95 select-none",
-                                    isSpecial ? "px-3 md:px-4 py-3 bg-gray-600 text-white text-xs" : "w-8 h-10 md:w-10 md:h-12 bg-gray-700 text-white", // Default
+                                    isSpecial ? "px-3 md:px-4 py-3 bg-gray-600 text-foreground dark:text-white text-xs" : "w-8 h-10 md:w-10 md:h-12 bg-gray-700 text-foreground dark:text-white", // Default
                                     {
                                         "bg-[#538d4e]": status === 'correct',
                                         "bg-[#b59f3b]": status === 'present',
