@@ -5,12 +5,12 @@
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 833 nodes · 1483 edges · 70 communities (57 shown, 13 thin omitted)
+- 833 nodes · 1483 edges · 69 communities (58 shown, 11 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 9 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `749783f7`
+- Built from commit: `2ac76391`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -71,10 +71,9 @@
 - [[_COMMUNITY_Community 53|Community 53]]
 - [[_COMMUNITY_Community 54|Community 54]]
 - [[_COMMUNITY_Community 55|Community 55]]
-- [[_COMMUNITY_Community 56|Community 56]]
+- [[_COMMUNITY_Community 57|Community 57]]
 - [[_COMMUNITY_Community 58|Community 58]]
-- [[_COMMUNITY_Community 59|Community 59]]
-- [[_COMMUNITY_Community 65|Community 65]]
+- [[_COMMUNITY_Community 64|Community 64]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `cn()` - 57 edges
@@ -84,8 +83,8 @@
 5. `errorResponse()` - 22 edges
 6. `a` - 18 edges
 7. `requireAdmin()` - 17 edges
-8. `v` - 15 edges
-9. `logAudit()` - 15 edges
+8. `logAudit()` - 15 edges
+9. `v` - 15 edges
 10. `z()` - 14 edges
 
 ## Surprising Connections (you probably didn't know these)
@@ -93,18 +92,18 @@
   src/components/ui/alert-dialog.tsx → src/lib/utils.ts
 - `AlertDialogFooter()` --calls--> `cn()`  [EXTRACTED]
   src/components/ui/alert-dialog.tsx → src/lib/utils.ts
+- `DialogHeader()` --calls--> `cn()`  [EXTRACTED]
+  src/components/ui/dialog.tsx → src/lib/utils.ts
+- `DialogFooter()` --calls--> `cn()`  [EXTRACTED]
+  src/components/ui/dialog.tsx → src/lib/utils.ts
 - `DropdownMenuShortcut()` --calls--> `cn()`  [EXTRACTED]
   src/components/ui/dropdown-menu.tsx → src/lib/utils.ts
-- `MenubarShortcut()` --calls--> `cn()`  [EXTRACTED]
-  src/components/ui/menubar.tsx → src/lib/utils.ts
-- `SheetHeader()` --calls--> `cn()`  [EXTRACTED]
-  src/components/ui/sheet.tsx → src/lib/utils.ts
 
-## Communities (70 total, 13 thin omitted)
+## Communities (69 total, 11 thin omitted)
 
 ### Community 0 - "Community 0"
-Cohesion: 0.06
-Nodes (77): GET(), contactSchema, POST(), POST(), dbConnect(), GET(), DELETE(), PATCH() (+69 more)
+Cohesion: 0.07
+Nodes (66): GET(), contactSchema, POST(), POST(), dbConnect(), GET(), DELETE(), PATCH() (+58 more)
 
 ### Community 1 - "Community 1"
 Cohesion: 0.06
@@ -112,71 +111,75 @@ Nodes (41): ResumeRequest, ResumeRequestsTab(), NewsArticle, cardVariants, conta
 
 ### Community 2 - "Community 2"
 Cohesion: 0.05
-Nodes (39): generateMetadata(), AuthContext, AuthContextType, AuthProvider(), useAuth(), User, ProtectedRoute(), ProtectedRouteProps (+31 more)
+Nodes (31): generateMetadata(), AuthContext, AuthContextType, AuthProvider(), useAuth(), User, ProtectedRoute(), ProtectedRouteProps (+23 more)
 
 ### Community 3 - "Community 3"
-Cohesion: 0.09
-Nodes (25): domain, getAccessTokenCookieConfig(), getAuthCookieConfig(), getClearCookieConfig(), getRefreshTokenCookieConfig(), createSession(), SessionData, getDeviceInfo() (+17 more)
+Cohesion: 0.08
+Nodes (27): domain, getAccessTokenCookieConfig(), getAuthCookieConfig(), getClearCookieConfig(), getRefreshTokenCookieConfig(), createSession(), SessionData, getDeviceInfo() (+19 more)
 
 ### Community 4 - "Community 4"
-Cohesion: 0.1
-Nodes (21): FloatingNavbar(), navItems, ThemeToggle(), cn(), AccordionContent, AccordionItem, AccordionTrigger, DialogContent (+13 more)
+Cohesion: 0.09
+Nodes (23): FloatingNavbar(), navItems, ThemeToggle(), cn(), Avatar, AvatarFallback, AvatarImage, PopoverContent (+15 more)
 
 ### Community 5 - "Community 5"
+Cohesion: 0.11
+Nodes (25): ItNews(), Action, ActionType, actionTypes, addToRemoveQueue(), dispatch(), genId(), listeners (+17 more)
+
+### Community 6 - "Community 6"
 Cohesion: 0.08
 Nodes (18): Certifications, Footer, ItNews, Journey, MatrixRain, Portfolio, Skills, Terminal (+10 more)
 
-### Community 6 - "Community 6"
-Cohesion: 0.11
-Nodes (13): b(), d(), deleteCacheAndMetadata(), e(), et, f(), g, i (+5 more)
-
 ### Community 7 - "Community 7"
-Cohesion: 0.15
-Nodes (3): a, c(), h()
+Cohesion: 0.11
+Nodes (14): b(), d(), deleteCacheAndMetadata(), e(), et, f(), g, i (+6 more)
 
 ### Community 8 - "Community 8"
+Cohesion: 0.13
+Nodes (3): a, c(), h()
+
+### Community 9 - "Community 9"
 Cohesion: 0.15
 Nodes (12): SOLUTIONS, VALID_GUESSES, Grid(), GridProps, Keyboard(), KeyboardProps, ROWS, EvaluatedLetter (+4 more)
 
-### Community 9 - "Community 9"
+### Community 10 - "Community 10"
 Cohesion: 0.21
 Nodes (13): ThemeToggleDemoPage(), AppBarProps, CurtainPhase, MoonIcon(), SearchIcon(), SunIcon(), Theme, ThemeToggle() (+5 more)
 
-### Community 10 - "Community 10"
-Cohesion: 0.32
-Nodes (6): k(), m(), st(), T(), u, v
-
 ### Community 11 - "Community 11"
+Cohesion: 0.23
+Nodes (11): ResumeRequestModalProps, EyeBall(), EyeBallProps, LoginPage(), Pupil(), PupilProps, Button, Checkbox (+3 more)
+
+### Community 12 - "Community 12"
 Cohesion: 0.12
 Nodes (11): Menubar, MenubarCheckboxItem, MenubarContent, MenubarItem, MenubarLabel, MenubarRadioItem, MenubarSeparator, MenubarShortcut() (+3 more)
 
-### Community 12 - "Community 12"
-Cohesion: 0.17
-Nodes (8): Sidebar(), SidebarProps, HeroEnhancedProps, ResumeRequestModal(), ResumeRequestModalProps, CommandOutput, Button, ButtonProps
-
 ### Community 13 - "Community 13"
+Cohesion: 0.16
+Nodes (3): $(), w(), z()
+
+### Community 14 - "Community 14"
 Cohesion: 0.17
 Nodes (11): ai, handleGetItNews(), getItNews(), itNewsFlow, ItNewsOutput, ItNewsOutputSchema, prompt, getStaticItNews() (+3 more)
 
-### Community 14 - "Community 14"
+### Community 15 - "Community 15"
 Cohesion: 0.12
 Nodes (15): 🙏 Acknowledgments, code:bash (# Development), code:env (# Database), code:block9 (Portfolio-2.0/), 📞 Contact & Support, 🤝 Contributing, ⚙️ Environment Variables, 📄 License (+7 more)
 
-### Community 15 - "Community 15"
+### Community 16 - "Community 16"
+Cohesion: 0.37
+Nodes (5): m(), st(), T(), u, v
+
+### Community 17 - "Community 17"
+Cohesion: 0.16
+Nodes (7): Sidebar(), SidebarProps, CommandOutput, ButtonProps, buttonVariants, Calendar(), CalendarProps
+
+### Community 18 - "Community 18"
 Cohesion: 0.22
 Nodes (13): checkRateLimit(), cleanupExpiredEntries(), config, generateRequestId(), getClientIp(), getRouteTier(), getSecurityHeaders(), hashIp() (+5 more)
 
-### Community 16 - "Community 16"
+### Community 19 - "Community 19"
 Cohesion: 0.14
 Nodes (12): Carousel, CarouselApi, CarouselContent, CarouselContext, CarouselContextProps, CarouselItem, CarouselNext, CarouselOptions (+4 more)
-
-### Community 17 - "Community 17"
-Cohesion: 0.21
-Nodes (7): createLogEntry(), formatLog(), LOG_LEVELS, LogEntry, LogLevel, RequestLogger, shouldLog()
-
-### Community 18 - "Community 18"
-Cohesion: 0.25
-Nodes (9): EyeBall(), EyeBallProps, LoginPage(), Pupil(), PupilProps, Checkbox, Input, Label (+1 more)
 
 ### Community 20 - "Community 20"
 Cohesion: 0.23
@@ -184,69 +187,73 @@ Nodes (10): CertificateCard(), CertificationsProps, containerVariants, getCertif
 
 ### Community 21 - "Community 21"
 Cohesion: 0.17
-Nodes (11): AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter(), AlertDialogHeader(), AlertDialogOverlay, AlertDialogTitle (+3 more)
+Nodes (9): FormControl, FormDescription, FormFieldContext, FormFieldContextValue, FormItem, FormItemContext, FormItemContextValue, FormLabel (+1 more)
 
 ### Community 22 - "Community 22"
-Cohesion: 0.21
-Nodes (3): j(), q(), r
-
-### Community 23 - "Community 23"
 Cohesion: 0.18
 Nodes (3): Component(), DockIcon, GlassEffectProps
 
-### Community 24 - "Community 24"
-Cohesion: 0.17
-Nodes (9): FormControl, FormDescription, FormFieldContext, FormFieldContextValue, FormItem, FormItemContext, FormItemContextValue, FormLabel (+1 more)
-
-### Community 25 - "Community 25"
+### Community 23 - "Community 23"
 Cohesion: 0.18
 Nodes (7): ChartConfig, ChartContainer, ChartContext, ChartContextProps, ChartLegendContent, ChartTooltipContent, THEMES
 
-### Community 26 - "Community 26"
+### Community 24 - "Community 24"
 Cohesion: 0.2
 Nodes (9): DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuShortcut(), DropdownMenuSubContent (+1 more)
 
-### Community 28 - "Community 28"
+### Community 25 - "Community 25"
+Cohesion: 0.24
+Nodes (7): HeroEnhancedProps, ResumeRequestModal(), COLOR_SCHEME, createNoise(), CyberBackgroundProps, FluidParticlesBackground(), Particle
+
+### Community 26 - "Community 26"
+Cohesion: 0.22
+Nodes (8): AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter(), AlertDialogHeader(), AlertDialogOverlay, AlertDialogTitle
+
+### Community 27 - "Community 27"
 Cohesion: 0.22
 Nodes (8): Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow
+
+### Community 28 - "Community 28"
+Cohesion: 0.31
+Nodes (3): j(), q(), r
 
 ### Community 29 - "Community 29"
 Cohesion: 0.22
 Nodes (9): 🤖 **AI-Powered**, code:yaml (✨ Stunning dark/light mode), code:yaml (🧠 Google Gemini AI integration), code:yaml (📧 Email OTP authentication), code:yaml (📱 PWA support), ✨ Highlights, 🎨 **Modern Design**, ⚡ **Performance** (+1 more)
 
 ### Community 30 - "Community 30"
-Cohesion: 0.22
-Nodes (8): SheetContent, SheetContentProps, SheetDescription, SheetFooter(), SheetHeader(), SheetOverlay, SheetTitle, sheetVariants
-
-### Community 31 - "Community 31"
 Cohesion: 0.25
 Nodes (7): SelectContent, SelectItem, SelectLabel, SelectScrollDownButton, SelectScrollUpButton, SelectSeparator, SelectTrigger
 
-### Community 32 - "Community 32"
+### Community 31 - "Community 31"
 Cohesion: 0.29
 Nodes (5): content, files, fs, newContent, path
 
-### Community 33 - "Community 33"
+### Community 32 - "Community 32"
+Cohesion: 0.29
+Nodes (6): DialogContent, DialogDescription, DialogFooter(), DialogHeader(), DialogOverlay, DialogTitle
+
+### Community 34 - "Community 34"
 Cohesion: 0.48
 Nodes (5): AdminLogin(), EyeBall(), EyeBallProps, Pupil(), PupilProps
 
-### Community 34 - "Community 34"
+### Community 35 - "Community 35"
 Cohesion: 0.29
 Nodes (4): Skill, Skills, SkillsProps, techLogos
 
-### Community 35 - "Community 35"
+### Community 36 - "Community 36"
 Cohesion: 0.29
 Nodes (7): 🎨 Admin Panel, Authentication Flow, code:mermaid (sequenceDiagram), 💼 Content, Features, 📄 Files, 👤 Personal Info
 
-### Community 36 - "Community 36"
+### Community 37 - "Community 37"
 Cohesion: 0.33
 Nodes (4): content, files, fs, path
 
-### Community 37 - "Community 37"
+### Community 38 - "Community 38"
 Cohesion: 0.4
 Nodes (5): c, n(), r(), s, u
 
-### Community 38 - "Community 38"
+### Community 39 - "Community 39"
 Cohesion: 0.33
 Nodes (5): GuestbookEntry, ModerateTextInput, ModerateTextInputSchema, ModerateTextOutput, ModerateTextOutputSchema
 
@@ -254,13 +261,13 @@ Nodes (5): GuestbookEntry, ModerateTextInput, ModerateTextInputSchema, ModerateT
 Cohesion: 0.33
 Nodes (6): code:yaml (✅ Node.js >= 18.0), code:bash (# 📥 1. Clone the repository), 🛠️ Installation, 🎉 Open [http://localhost:9002](http://localhost:9002) in your browser!, 📦 Prerequisites, 🚀 Quick Start
 
-### Community 42 - "Community 42"
-Cohesion: 0.4
-Nodes (5): COLOR_SCHEME, createNoise(), CyberBackgroundProps, FluidParticlesBackground(), Particle
-
-### Community 45 - "Community 45"
+### Community 44 - "Community 44"
 Cohesion: 0.4
 Nodes (5): code:dockerfile (FROM node:18-alpine), code:bash (docker build -t portfolio .), 🚢 Deployment, Docker, Vercel (Recommended)
+
+### Community 45 - "Community 45"
+Cohesion: 0.5
+Nodes (3): AccordionContent, AccordionItem, AccordionTrigger
 
 ### Community 46 - "Community 46"
 Cohesion: 0.67
@@ -286,28 +293,24 @@ Nodes (4): Animations, code:css (:root {), 🎨 Customization, Theme Colors
 Cohesion: 0.5
 Nodes (3): Important Notes:, Security:, Uploads Directory
 
-### Community 52 - "Community 52"
-Cohesion: 0.5
-Nodes (3): Avatar, AvatarFallback, AvatarImage
-
 ## Knowledge Gaps
 - **280 isolated node(s):** `fs`, `path`, `files`, `content`, `newContent` (+275 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **13 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **11 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `cn()` connect `Community 4` to `Community 1`, `Community 2`, `Community 42`, `Community 11`, `Community 12`, `Community 16`, `Community 18`, `Community 20`, `Community 21`, `Community 52`, `Community 24`, `Community 25`, `Community 26`, `Community 28`, `Community 30`, `Community 31`?**
+- **Why does `cn()` connect `Community 4` to `Community 32`, `Community 1`, `Community 5`, `Community 11`, `Community 12`, `Community 45`, `Community 17`, `Community 19`, `Community 20`, `Community 21`, `Community 23`, `Community 24`, `Community 25`, `Community 26`, `Community 27`, `Community 30`?**
   _High betweenness centrality (0.202) - this node is a cross-community bridge._
-- **Why does `handleGetItNews()` connect `Community 13` to `Community 1`, `Community 10`?**
+- **Why does `handleGetItNews()` connect `Community 14` to `Community 16`, `Community 1`?**
   _High betweenness centrality (0.158) - this node is a cross-community bridge._
-- **Why does `POST()` connect `Community 0` to `Community 10`?**
+- **Why does `POST()` connect `Community 0` to `Community 16`?**
   _High betweenness centrality (0.060) - this node is a cross-community bridge._
 - **What connects `fs`, `path`, `files` to the rest of the system?**
   _280 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
-  _Cohesion score 0.06 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.07 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.06 - nodes in this community are weakly interconnected._
 - **Should `Community 2` be split into smaller, more focused modules?**
