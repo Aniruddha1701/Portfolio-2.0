@@ -48,3 +48,6 @@ firestore-debug.log
 /public/uploads/*
 !/public/uploads/.gitkeep
 !/public/uploads/README.md
+
+# graphify cache
+graphify-out/cache/
