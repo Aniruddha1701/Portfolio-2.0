@@ -29,7 +29,7 @@ const RATE_LIMITS: Record<string, { maxRequests: number; windowMs: number }> = {
 
 function getClientIp(request: NextRequest): string {
   const forwarded = request.headers.get('x-forwarded-for');
-  return forwarded ? forwarded.split(',')[0].trim() : request.ip || 'unknown';
+  return forwarded ? forwarded.split(',')[0].trim() : (request.headers.get('x-forwarded-for') || '127.0.0.1') || 'unknown';
 }
 
 /**

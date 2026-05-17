@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
       user: authUser.userId,
       action: 'login',
       status: 'success',
-      ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || request.ip || 'unknown',
+      ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || (request.headers.get('x-forwarded-for') || '127.0.0.1') || 'unknown',
       userAgent: request.headers.get('user-agent') || '',
       metadata: { action: 'admin_users_list', page, limit }
     });

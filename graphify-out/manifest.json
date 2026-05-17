@@ -1,4 +1,12 @@
 {
+  "D:\\Projects\\My Website\\fix_quotes.js": {
+    "mtime": 1779027535.3768356,
+    "hash": "21047050f53b3efadb8305da7aff2f56"
+  },
+  "D:\\Projects\\My Website\\fix_quotes.py": {
+    "mtime": 1779027511.4524145,
+    "hash": "b0aa0210766ea746342450eefe48e820"
+  },
   "D:\\Projects\\My Website\\next-env.d.ts": {
     "mtime": 1778919634.898232,
     "hash": "c68600c0eb0d34c34bfc0f4b2547e31f"
@@ -40,8 +48,8 @@
     "hash": "4c2007bbf42795ef731c7d7b64490c41"
   },
   "D:\\Projects\\My Website\\src\\middleware.ts": {
-    "mtime": 1778925863.2011826,
-    "hash": "fdcaff630aa539680fdd79b82158fc30"
+    "mtime": 1779027535.4616811,
+    "hash": "b1dfaac5637b15ab568c9af9fa99ac6c"
   },
   "D:\\Projects\\My Website\\src\\ai\\dev.ts": {
     "mtime": 1778919456.8865921,
@@ -64,16 +72,16 @@
     "hash": "4d44c00cacd36135118c4dde6b71a871"
   },
   "D:\\Projects\\My Website\\src\\app\\layout.tsx": {
-    "mtime": 1779015814.9618855,
-    "hash": "5b122caa6149845c2c0f8ff9e0c10b46"
+    "mtime": 1779022751.9953213,
+    "hash": "050fc50100f156b309413c8bfed052c0"
   },
   "D:\\Projects\\My Website\\src\\app\\manifest.ts": {
     "mtime": 1778919456.925832,
     "hash": "ddaae7c1eff8a59fe0c182fe6aa78c61"
   },
   "D:\\Projects\\My Website\\src\\app\\page.tsx": {
-    "mtime": 1779015814.9628956,
-    "hash": "c74d8aba2101207b1d31d512270471bc"
+    "mtime": 1779030493.024807,
+    "hash": "845f37de95b6a7b711fb0f761e8bf8b7"
   },
   "D:\\Projects\\My Website\\src\\app\\robots.ts": {
     "mtime": 1778919456.930447,
@@ -96,12 +104,12 @@
     "hash": "2216f1b39f3b583569078cbcc9bccb92"
   },
   "D:\\Projects\\My Website\\src\\app\\admin\\dashboard\\page.tsx": {
-    "mtime": 1778919456.893632,
-    "hash": "f4649098b37e8b2ddab3bf149cff0428"
+    "mtime": 1779029347.7811463,
+    "hash": "fc071f77dc753d1954f3f8bcdc8b889f"
   },
   "D:\\Projects\\My Website\\src\\app\\admin\\login\\page.tsx": {
-    "mtime": 1779017383.4261317,
-    "hash": "f205f6c1eb47479c04ea50d05a2bdabc"
+    "mtime": 1779025402.5981996,
+    "hash": "c3c4b115b5f0c3ae77ce58a62832456d"
   },
   "D:\\Projects\\My Website\\src\\app\\api\\admin\\resume-requests\\route.ts": {
     "mtime": 1778919456.8979993,
@@ -120,36 +128,36 @@
     "hash": "a05e20af23c4eda7b6aa221139accb70"
   },
   "D:\\Projects\\My Website\\src\\app\\api\\auth\\v2\\admin\\users\\route.ts": {
-    "mtime": 1778919456.9049377,
-    "hash": "a99e8f509acb0bf9dcfabdab7656bc9d"
+    "mtime": 1779027535.4456887,
+    "hash": "1924449fa0fdc5b23d38139367fe3064"
   },
   "D:\\Projects\\My Website\\src\\app\\api\\auth\\v2\\admin\\users\\create\\route.ts": {
-    "mtime": 1778919456.9049377,
-    "hash": "bbe4d55460d55b4dcace050bac36936d"
+    "mtime": 1779027535.4410748,
+    "hash": "42c074297f44831ddbe8ac60e990d773"
   },
   "D:\\Projects\\My Website\\src\\app\\api\\auth\\v2\\admin\\users\\[id]\\route.ts": {
-    "mtime": 1778919456.9018204,
-    "hash": "83d0140f15ccee4aac98119f2914199a"
+    "mtime": 1779027535.446194,
+    "hash": "b7a92eb86447cc735f91f630d8e9f2a0"
   },
   "D:\\Projects\\My Website\\src\\app\\api\\auth\\v2\\login\\route.ts": {
-    "mtime": 1778919456.9049377,
-    "hash": "0a37c552e8344aa7e4d82938aa6a0db5"
+    "mtime": 1779027535.4472437,
+    "hash": "91b8f95f42e3cd70d21d8f59d9d4e6f1"
   },
   "D:\\Projects\\My Website\\src\\app\\api\\auth\\v2\\logout\\route.ts": {
-    "mtime": 1778919456.9049377,
-    "hash": "371f734f143f4e4d8ba56ec4f9e79cf9"
+    "mtime": 1779027535.4472437,
+    "hash": "921fa8ad4ad44db3a3cd8614165b6e83"
   },
   "D:\\Projects\\My Website\\src\\app\\api\\auth\\v2\\me\\route.ts": {
     "mtime": 1778919456.9049377,
     "hash": "54c52a4537fc85c7a39067c0e39d7988"
   },
   "D:\\Projects\\My Website\\src\\app\\api\\auth\\v2\\refresh\\route.ts": {
-    "mtime": 1778919456.9049377,
-    "hash": "ffb430b479f41607feb84cf6d870b864"
+    "mtime": 1779027535.4478643,
+    "hash": "921865ee6905b4dc688dff16fd8c7898"
   },
   "D:\\Projects\\My Website\\src\\app\\api\\auth\\v2\\register\\route.ts": {
-    "mtime": 1778919456.9049377,
-    "hash": "0aa0c2ffe69e0d68bf7e5044d3b0b253"
+    "mtime": 1779027535.4484324,
+    "hash": "a7cb5cb1d0a36accbe0347e262002390"
   },
   "D:\\Projects\\My Website\\src\\app\\api\\auth\\verify-otp\\route.ts": {
     "mtime": 1778919456.9049377,
@@ -172,8 +180,8 @@
     "hash": "a55ec127325159bcd0d8a3847a77ed71"
   },
   "D:\\Projects\\My Website\\src\\app\\api\\resume\\approve\\route.ts": {
-    "mtime": 1778919456.9151201,
-    "hash": "b2085510c499d1f022047019433fe297"
+    "mtime": 1779027632.383326,
+    "hash": "bf68c7a669193f215c0fbf514af38949"
   },
   "D:\\Projects\\My Website\\src\\app\\api\\resume\\download\\route.ts": {
     "mtime": 1778919456.9166665,
@@ -188,8 +196,8 @@
     "hash": "0c9c5e26ee6d5644c80f02d5e5819f65"
   },
   "D:\\Projects\\My Website\\src\\app\\api\\resume\\view\\[token]\\route.ts": {
-    "mtime": 1778919456.9182506,
-    "hash": "37631f429855dfd1861d3640b40c79e2"
+    "mtime": 1779027969.1455238,
+    "hash": "ca677aa95035bb7f80d414b34e6e1632"
   },
   "D:\\Projects\\My Website\\src\\app\\api\\upload\\logo\\route.ts": {
     "mtime": 1778919456.9215279,
@@ -198,6 +206,10 @@
   "D:\\Projects\\My Website\\src\\app\\demo\\page.tsx": {
     "mtime": 1779019142.2800312,
     "hash": "b42b620b9c1b9dbf3c1118b1d4f0e5af"
+  },
+  "D:\\Projects\\My Website\\src\\app\\liquid-glass\\page.tsx": {
+    "mtime": 1779029822.936026,
+    "hash": "d09b3528ce00ceba960646e70d0b190f"
   },
   "D:\\Projects\\My Website\\src\\app\\offline\\page.tsx": {
     "mtime": 1778919456.925832,
@@ -208,40 +220,40 @@
     "hash": "909ec2c9934b76397dd725a7cfcf4de3"
   },
   "D:\\Projects\\My Website\\src\\components\\certifications.tsx": {
-    "mtime": 1778929214.5987308,
-    "hash": "e8a3e1196fb8a8238fdb754673d0892e"
+    "mtime": 1779027366.9882658,
+    "hash": "d23db084d5791882ee1452faf3f241bb"
   },
   "D:\\Projects\\My Website\\src\\components\\contact-form.tsx": {
     "mtime": 1778929214.600552,
     "hash": "957820f9b1287b04d26fcb1a0e448d3c"
   },
   "D:\\Projects\\My Website\\src\\components\\floating-navbar.tsx": {
-    "mtime": 1779019856.447245,
-    "hash": "772bac260a96f7c7c9ff1d7090e0b2a3"
+    "mtime": 1779030424.2635367,
+    "hash": "d72b57dd2503541691b5b6428da6a7bb"
   },
   "D:\\Projects\\My Website\\src\\components\\footer.tsx": {
-    "mtime": 1778928297.7468855,
-    "hash": "46fbe8c4bc73c96a5bbab4da7afae818"
+    "mtime": 1779021803.7448518,
+    "hash": "cc9d4cfcfd1b5e143c477a8dfaa349c6"
   },
   "D:\\Projects\\My Website\\src\\components\\hero-enhanced.tsx": {
     "mtime": 1779016411.4276412,
     "hash": "2102b2722904276ca56818440099bc35"
   },
   "D:\\Projects\\My Website\\src\\components\\it-news.tsx": {
-    "mtime": 1778928260.7796361,
-    "hash": "89ba2b40e3f9bab5a2195892f266e3c1"
+    "mtime": 1779027422.4114647,
+    "hash": "8510532507c6a101ad9f51bb5fc923ac"
   },
   "D:\\Projects\\My Website\\src\\components\\journey.tsx": {
     "mtime": 1778928260.7809193,
     "hash": "9547333e0a270fa267d652bf8bd24a1c"
   },
   "D:\\Projects\\My Website\\src\\components\\loading-screen.tsx": {
-    "mtime": 1778928260.7832267,
-    "hash": "07f3742c496cf4514c36dbd64af59136"
+    "mtime": 1779026144.1162488,
+    "hash": "662fe81f0e049106e652af0632c9b354"
   },
   "D:\\Projects\\My Website\\src\\components\\portfolio.tsx": {
-    "mtime": 1778929214.617116,
-    "hash": "895cc519ec736744e251c4dbecdc88af"
+    "mtime": 1779024973.3069992,
+    "hash": "5413cd503e7998872145a321bb61fb8a"
   },
   "D:\\Projects\\My Website\\src\\components\\resume-request-modal.tsx": {
     "mtime": 1778929214.6206667,
@@ -258,6 +270,10 @@
   "D:\\Projects\\My Website\\src\\components\\theme-provider.tsx": {
     "mtime": 1779015814.9690874,
     "hash": "59f1d78fc51d84e0325d869de49c28be"
+  },
+  "D:\\Projects\\My Website\\src\\components\\theme-toggle.tsx": {
+    "mtime": 1779021604.62977,
+    "hash": "cb231d01af329f5d84f9158cdff07fe5"
   },
   "D:\\Projects\\My Website\\src\\components\\admin\\resume-requests-tab.tsx": {
     "mtime": 1778929214.5940933,
@@ -280,8 +296,8 @@
     "hash": "ab1239a43ff7737ba0ac6c6b1dd1d576"
   },
   "D:\\Projects\\My Website\\src\\components\\terminal\\terminal.tsx": {
-    "mtime": 1778929214.626641,
-    "hash": "8c84f8c5ec680fd7e95e3f447ad5e850"
+    "mtime": 1779025110.704198,
+    "hash": "1f83c1d60464e2b7b60d11bfd6bdfe4c"
   },
   "D:\\Projects\\My Website\\src\\components\\ui\\3d-card.tsx": {
     "mtime": 1778928192.2895525,
@@ -300,8 +316,12 @@
     "hash": "59e3895ea793fed08d8d9f0f83ad13df"
   },
   "D:\\Projects\\My Website\\src\\components\\ui\\animated-characters-login-page.tsx": {
-    "mtime": 1779017400.7785752,
-    "hash": "09e26a23cece7935c81478130a361eeb"
+    "mtime": 1779025177.034401,
+    "hash": "bbe4746d9d430fd244d653a7139cdd81"
+  },
+  "D:\\Projects\\My Website\\src\\components\\ui\\animated-gradient-background.tsx": {
+    "mtime": 1779026100.3012168,
+    "hash": "71e69a90f5e761f52b6232b4ae806789"
   },
   "D:\\Projects\\My Website\\src\\components\\ui\\avatar.tsx": {
     "mtime": 1778928192.314998,
@@ -340,8 +360,8 @@
     "hash": "cb66adfc183b69da16a00c9e5ddf1fb2"
   },
   "D:\\Projects\\My Website\\src\\components\\ui\\curtain-theme-toggle.tsx": {
-    "mtime": 1779019819.165382,
-    "hash": "28d69c9df506b5d58ab26eafe964faa9"
+    "mtime": 1779019979.1627235,
+    "hash": "c1f3e6ae483472df9f74afbc4b9ff37c"
   },
   "D:\\Projects\\My Website\\src\\components\\ui\\demo.tsx": {
     "mtime": 1779019135.2296193,
@@ -350,6 +370,10 @@
   "D:\\Projects\\My Website\\src\\components\\ui\\dialog.tsx": {
     "mtime": 1778928192.3603215,
     "hash": "08591310866072cdbdda0457d9ad510c"
+  },
+  "D:\\Projects\\My Website\\src\\components\\ui\\dock-tabs.tsx": {
+    "mtime": 1779030275.9193664,
+    "hash": "f08b126dbdce7849694ae6dc136f97e4"
   },
   "D:\\Projects\\My Website\\src\\components\\ui\\dropdown-menu.tsx": {
     "mtime": 1778928192.3720598,
@@ -370,6 +394,14 @@
   "D:\\Projects\\My Website\\src\\components\\ui\\label.tsx": {
     "mtime": 1778928192.3845205,
     "hash": "a82ec35cf363a42512246117aeb61897"
+  },
+  "D:\\Projects\\My Website\\src\\components\\ui\\liquid-glass-demo.tsx": {
+    "mtime": 1779029203.469555,
+    "hash": "f5c94156f375ae4cac666e6208df524d"
+  },
+  "D:\\Projects\\My Website\\src\\components\\ui\\liquid-glass.tsx": {
+    "mtime": 1779029958.090089,
+    "hash": "b46dbbb75a611f92b490e3fa2f703866"
   },
   "D:\\Projects\\My Website\\src\\components\\ui\\menubar.tsx": {
     "mtime": 1778928192.396318,
@@ -472,8 +504,8 @@
     "hash": "985ff1b1a97798ff41c5c9d937a2fb41"
   },
   "D:\\Projects\\My Website\\src\\lib\\audit.ts": {
-    "mtime": 1778921982.5577104,
-    "hash": "2264a0985aae2d42d4f2e461276cfd11"
+    "mtime": 1779027663.106296,
+    "hash": "8b161d516ba467db6a4c51ee768e93c3"
   },
   "D:\\Projects\\My Website\\src\\lib\\cache.ts": {
     "mtime": 1778921936.093715,
@@ -496,8 +528,8 @@
     "hash": "7b96d9b8a59df6a869283f414202db5f"
   },
   "D:\\Projects\\My Website\\src\\lib\\session.ts": {
-    "mtime": 1778919456.9866247,
-    "hash": "2e4f99bbb6b90deed9d0db4983d0625a"
+    "mtime": 1779027316.4895518,
+    "hash": "3dda7a402f54313c25f470efddd152e7"
   },
   "D:\\Projects\\My Website\\src\\lib\\static-fallback.ts": {
     "mtime": 1778922866.0016987,
@@ -528,16 +560,16 @@
     "hash": "1a74b4b169e1cb61e2d3188f7f22d82b"
   },
   "D:\\Projects\\My Website\\src\\middleware\\rate-limit.ts": {
-    "mtime": 1778919456.9866247,
-    "hash": "1ee95e0e53e47d5fde0b130b2576caec"
+    "mtime": 1779027535.4610207,
+    "hash": "da5a4ae92ed474a458e166b063a28035"
   },
   "D:\\Projects\\My Website\\src\\models\\Admin.ts": {
     "mtime": 1778919456.989772,
     "hash": "471f0079e9a4a54a0b5077d8c0dca59e"
   },
   "D:\\Projects\\My Website\\src\\models\\AuditLog.ts": {
-    "mtime": 1778919456.989772,
-    "hash": "5e2da27bd9396b457b7b4eb6be2ab901"
+    "mtime": 1779027675.906509,
+    "hash": "4ebbae9c5e7dc68f34474f96d231208b"
   },
   "D:\\Projects\\My Website\\src\\models\\EmailJob.ts": {
     "mtime": 1778923342.2300582,
@@ -586,6 +618,10 @@
   "D:\\Projects\\My Website\\stitch_landing.html": {
     "mtime": 1778924345.9251182,
     "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "D:\\Projects\\My Website\\tsc-errors.txt": {
+    "mtime": 1779027096.8340232,
+    "hash": "f0cdbd8f128391d634a5c394a901048c"
   },
   "D:\\Projects\\My Website\\public\\uploads\\README.md": {
     "mtime": 1778919456.8829064,

@@ -66,7 +66,7 @@ export async function GET(
 
     // 5. Fetch the actual resume file
     // First, check the Portfolio model to see which file is active
-    const portfolio = await Portfolio.findOne().lean();
+    const portfolio = (await Portfolio.findOne().lean()) as any;
     const resumePath = portfolio?.personalInfo?.resume;
 
     let fileBuffer: Buffer | null = null;

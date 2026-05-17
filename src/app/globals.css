@@ -22,7 +22,7 @@
     --secondary-foreground: 240 6% 10%;
 
     --muted: 240 5% 96%;
-    --muted-foreground: 240 4% 46%;
+    --muted-foreground: 240 5% 35%;
 
     /* Sophisticated Accent — Deep Rose */
     --accent: 330 70% 55%;
@@ -575,6 +575,16 @@
 
   .animate-spin-slow {
     animation: spin-slow 8s linear infinite;
+  }
+
+  /* Liquid glass background scroll */
+  @keyframes moveBackground {
+    from {
+      background-position: 0% 0%;
+    }
+    to {
+      background-position: 0% -1000%;
+    }
   }
 
   /* Reduced motion support */

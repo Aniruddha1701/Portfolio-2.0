@@ -53,9 +53,7 @@ export async function GET(request: Request) {
                 resumeRequest.name, 
                 resumeRequest.email, 
                 resumeRequest.token, 
-                baseUrl,
-                resumeFile ? resumeFile.data : undefined,
-                resumeFile ? resumeFile.filename : undefined
+                baseUrl
             );
         } else {
             await sendRejectionEmailToVisitor(resumeRequest.name, resumeRequest.email);

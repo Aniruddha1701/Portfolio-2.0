@@ -24,7 +24,7 @@ setInterval(cleanExpiredEntries, 5 * 60 * 1000);
 
 function getClientIdentifier(request: NextRequest): string {
   const forwarded = request.headers.get('x-forwarded-for');
-  const ip = forwarded ? forwarded.split(',')[0].trim() : request.ip || 'unknown';
+  const ip = forwarded ? forwarded.split(',')[0].trim() : (request.headers.get('x-forwarded-for') || '127.0.0.1') || 'unknown';
   return crypto.createHash('sha256').update(ip).digest('hex').substring(0, 16);
 }
 

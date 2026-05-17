@@ -1,7 +1,8 @@
 "use client"
 
 import { motion, AnimatePresence } from "framer-motion"
-import { useEffect, useState, useCallback, useRef, memo } from "react"
+import { useEffect, useState, useCallback, useRef, memo, useMemo } from "react"
+import AnimatedGradientBackground from "@/components/ui/animated-gradient-background"
 
 interface LoadingScreenProps {
   onComplete?: () => void
@@ -195,17 +196,25 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
             transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] },
           }}
         >
-          {/* Ambient mesh — GPU-composited, ultra subtle */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-            <motion.div
-              className="absolute -top-[30%] -left-[15%] w-[60vw] h-[60vw] rounded-full bg-primary/[0.04] dark:bg-primary/[0.06] blur-[120px]"
-              animate={{ x: [0, 30, 0], y: [0, 20, 0] }}
-              transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-            />
-            <motion.div
-              className="absolute bottom-[5%] -right-[15%] w-[50vw] h-[50vw] rounded-full bg-accent/[0.03] dark:bg-accent/[0.05] blur-[100px]"
-              animate={{ x: [0, -25, 0], y: [0, 40, 0] }}
-              transition={{ duration: 24, repeat: Infinity, ease: "easeInOut" }}
+          {/* Animated gradient background — breathing radial gradient */}
+          <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+            <AnimatedGradientBackground
+              Breathing={true}
+              startingGap={130}
+              animationSpeed={0.015}
+              breathingRange={8}
+              topOffset={15}
+              gradientColors={[
+                "hsl(var(--background))",
+                "#1a1a2e",
+                "#16213e",
+                "#0f3460",
+                "#533483",
+                "#e94560",
+                "#0f3460"
+              ]}
+              gradientStops={[30, 45, 55, 65, 75, 85, 100]}
+              containerClassName="opacity-40 dark:opacity-60"
             />
           </div>
 

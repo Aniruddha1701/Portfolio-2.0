@@ -66,7 +66,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       user: authUser.userId,
       action: 'password_change',
       status: 'success',
-      ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || request.ip || 'unknown',
+      ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || (request.headers.get('x-forwarded-for') || '127.0.0.1') || 'unknown',
       userAgent: request.headers.get('user-agent') || '',
       metadata: { action: 'update_user', updatedUserId: id, updates }
     });
@@ -124,7 +124,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       user: authUser.userId,
       action: 'logout',
       status: 'success',
-      ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || request.ip || 'unknown',
+      ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || (request.headers.get('x-forwarded-for') || '127.0.0.1') || 'unknown',
       userAgent: request.headers.get('user-agent') || '',
       metadata: { action: 'delete_user', deletedUserId: id }
     });

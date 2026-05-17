@@ -138,7 +138,6 @@ const CertificateCard = ({ cert }: { cert: any }) => {
     <CardContainer className="h-full w-full py-0">
       <CardBody 
         className="group/card relative w-full h-full min-h-[380px] flex flex-col rounded-[2.5rem] bg-white/80 dark:bg-[#0c0c11]/90 backdrop-blur-2xl border border-gray-200 dark:border-foreground/[0.03] p-6 sm:p-8 hover:border-violet-500/30 dark:hover:border-foreground/[0.1] hover:shadow-[0_8px_30px_rgba(0,0,0,0.05)] dark:hover:shadow-[0_8px_30px_rgb(0,0,0,0.5)] transition-all duration-500 overflow-hidden"
-        onMouseMove={handleMouseMove}
       >
         
         {/* Spotlight Effect */}

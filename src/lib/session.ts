@@ -14,7 +14,7 @@ export interface SessionData {
 export async function createSession(data: SessionData): Promise<void> {
   const token = jwt.sign(data, JWT_SECRET, { expiresIn: '15m' });
   
-  cookies().set(SESSION_NAME, token, {
+  (await cookies()).set(SESSION_NAME, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
@@ -25,7 +25,7 @@ export async function createSession(data: SessionData): Promise<void> {
 
 export async function getSession(): Promise<SessionData | null> {
   try {
-    const token = cookies().get(SESSION_NAME)?.value;
+    const token = (await cookies()).get(SESSION_NAME)?.value;
     
     if (!token) {
       console.log('No session token found');
@@ -41,5 +41,5 @@ export async function getSession(): Promise<SessionData | null> {
 }
 
 export async function deleteSession(): Promise<void> {
-  cookies().delete(SESSION_NAME);
+  (await cookies()).delete(SESSION_NAME);
 }

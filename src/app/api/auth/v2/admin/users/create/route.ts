@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
       user: authUser.userId,
       action: 'register',
       status: 'success',
-      ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || request.ip || 'unknown',
+      ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || (request.headers.get('x-forwarded-for') || '127.0.0.1') || 'unknown',
       userAgent: request.headers.get('user-agent') || '',
       metadata: { action: 'create_user', createdUserId: user._id, role: userRole }
     });

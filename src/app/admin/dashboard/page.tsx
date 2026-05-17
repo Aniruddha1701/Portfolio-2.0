@@ -357,7 +357,6 @@ const normalizePortfolio = (rawPortfolio?: Partial<PortfolioData> | null): Portf
 };
 
 const getPortfolioSnapshot = (portfolio: PortfolioData) => JSON.stringify(normalizePortfolio(portfolio));
-
 const reorderItems = <T,>(items: T[], index: number, direction: 'up' | 'down') => {
   const targetIndex = direction === 'up' ? index - 1 : index + 1;
   if (targetIndex < 0 || targetIndex >= items.length) {
@@ -559,6 +558,10 @@ export default function AdminDashboard() {
   };
 
   const handleSave = async () => {
+    if (!portfolio) {
+      setMessage({ type: 'error', text: '❌ Portfolio data not loaded yet!' });
+      return;
+    }
     setSaving(true);
     setMessage({ type: '', text: '' });
 
@@ -700,12 +703,15 @@ export default function AdminDashboard() {
       }
 
       // Update local state
-      setPortfolio({
-        ...portfolio,
-        personalInfo: {
-          ...portfolio.personalInfo,
-          resume: data.data.resumeUrl
-        }
+      setPortfolio(prev => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          personalInfo: {
+            ...prev.personalInfo,
+            resume: data.data.resumeUrl
+          }
+        };
       });
 
       setSelectedFile(null);
@@ -752,12 +758,15 @@ export default function AdminDashboard() {
       }
 
       // Update local state
-      setPortfolio({
-        ...portfolio,
-        personalInfo: {
-          ...portfolio.personalInfo,
-          resume: ''
-        }
+      setPortfolio(prev => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          personalInfo: {
+            ...prev.personalInfo,
+            resume: ''
+          }
+        };
       });
 
       setSelectedFile(null);
@@ -778,6 +787,7 @@ export default function AdminDashboard() {
   };
 
   const updatePersonalInfo = (field: string, value: any) => {
+    if (!portfolio) return;
     setPortfolio({
       ...portfolio,
       personalInfo: {
@@ -788,6 +798,7 @@ export default function AdminDashboard() {
   };
 
   const updateSocialLinks = (platform: string, value: string) => {
+    if (!portfolio) return;
     setPortfolio({
       ...portfolio,
       socialLinks: {
@@ -798,6 +809,7 @@ export default function AdminDashboard() {
   };
 
   const addSkill = () => {
+    if (!portfolio) return;
     setPortfolio({
       ...portfolio,
       skills: [...(portfolio.skills || []), { category: '', items: [] }]
@@ -805,16 +817,29 @@ export default function AdminDashboard() {
   };
 
   const updateSkill = (index: number, field: string, value: any) => {
-    const newSkills = [...(portfolio.skills || [])];
-    if (field === 'items') {
-      newSkills[index].items = value.split(',').map((s: string) => s.trim()).filter((s: string) => s);
-    } else {
-      newSkills[index][field] = value;
-    }
-    setPortfolio({ ...portfolio, skills: newSkills });
+    setPortfolio(prev => {
+      if (!prev) return null;
+      const newSkills = [...prev.skills];
+      if (field === 'items') {
+        newSkills[index] = {
+          ...newSkills[index],
+          items: typeof value === 'string' ? value.split(',').map((s: string) => s.trim()).filter(Boolean) : value
+        };
+      } else if (field === 'category') {
+        newSkills[index] = {
+          ...newSkills[index],
+          category: value
+        };
+      }
+      return {
+        ...prev,
+        skills: newSkills
+      };
+    });
   };
 
   const removeSkill = (index: number) => {
+    if (!portfolio) return;
     if (!window.confirm('Are you sure you want to delete this skill category? This action cannot be undone.')) return;
     setPortfolio({
       ...portfolio,
@@ -828,6 +853,7 @@ export default function AdminDashboard() {
   };
 
   const addProject = () => {
+    if (!portfolio) return;
     setPortfolio({
       ...portfolio,
       projects: [...(portfolio.projects || []), {
@@ -844,16 +870,29 @@ export default function AdminDashboard() {
   };
 
   const updateProject = (index: number, field: string, value: any) => {
-    const newProjects = [...(portfolio.projects || [])];
-    if (field === 'technologies') {
-      newProjects[index].technologies = value.split(',').map((s: string) => s.trim()).filter((s: string) => s);
-    } else {
-      newProjects[index][field] = value;
-    }
-    setPortfolio({ ...portfolio, projects: newProjects });
+    setPortfolio(prev => {
+      if (!prev) return null;
+      const newProjects = [...prev.projects];
+      if (field === 'technologies') {
+        newProjects[index] = {
+          ...newProjects[index],
+          technologies: typeof value === 'string' ? value.split(',').map((s: string) => s.trim()).filter(Boolean) : value
+        };
+      } else {
+        newProjects[index] = {
+          ...newProjects[index],
+          [field]: value
+        } as any;
+      }
+      return {
+        ...prev,
+        projects: newProjects
+      };
+    });
   };
 
   const removeProject = (index: number) => {
+    if (!portfolio) return;
     if (!window.confirm('Are you sure you want to delete this project? This action cannot be undone.')) return;
     setPortfolio({
       ...portfolio,
@@ -862,11 +901,13 @@ export default function AdminDashboard() {
   };
 
   const moveProject = (index: number, direction: 'up' | 'down') => {
+    if (!portfolio) return;
     if (!portfolio || !portfolio.projects) return;
     setPortfolio({ ...portfolio, projects: reorderItems(portfolio.projects, index, direction) });
   };
 
   const addExperience = () => {
+    if (!portfolio) return;
     setPortfolio({
       ...portfolio,
       experience: [...(portfolio.experience || []), {
@@ -884,51 +925,62 @@ export default function AdminDashboard() {
   };
 
   const updateExperience = (index: number, field: string, value: any) => {
-    const newExperience = [...(portfolio.experience || [])];
-    if (field === 'highlights') {
-      newExperience[index].highlights = value.split('\n').filter((s: string) => s.trim());
-    } else if (field === 'current') {
-      newExperience[index][field] = value;
-      // Update duration when current is toggled
-      if (value) {
-        const startDate = newExperience[index].startDate;
-        const startYear = startDate ? new Date(startDate).getFullYear() : new Date().getFullYear();
-        const startMonth = startDate ? new Date(startDate).toLocaleString('default', { month: 'short' }) : '';
-        newExperience[index].duration = startMonth ? `${startMonth} ${startYear} – Present` : `${startYear} – Present`;
-        newExperience[index].endDate = 'Present';
-      } else if (newExperience[index].startDate && newExperience[index].endDate && newExperience[index].endDate !== 'Present') {
-        const startDate = new Date(newExperience[index].startDate);
-        const endDate = new Date(newExperience[index].endDate);
-        const startYear = startDate.getFullYear();
-        const endYear = endDate.getFullYear();
-        const startMonth = startDate.toLocaleString('default', { month: 'short' });
-        const endMonth = endDate.toLocaleString('default', { month: 'short' });
-        newExperience[index].duration = `${startMonth} ${startYear} – ${endMonth} ${endYear}`;
-      }
-    } else if (field === 'startDate' || field === 'endDate') {
-      newExperience[index][field] = value;
-      // Update duration when dates change
-      if (newExperience[index].startDate && (newExperience[index].endDate || newExperience[index].current)) {
-        const startDate = new Date(newExperience[index].startDate);
-        const startYear = startDate.getFullYear();
-        const startMonth = startDate.toLocaleString('default', { month: 'short' });
+    setPortfolio(prev => {
+      if (!prev) return null;
+      const newExperience = [...prev.experience];
+      const item = { ...newExperience[index] } as any;
 
-        if (newExperience[index].current || newExperience[index].endDate === 'Present') {
-          newExperience[index].duration = `${startMonth} ${startYear} – Present`;
-        } else if (newExperience[index].endDate) {
-          const endDate = new Date(newExperience[index].endDate);
+      if (field === 'highlights') {
+        item.highlights = typeof value === 'string' ? value.split('\n').filter((s: string) => s.trim()) : value;
+      } else if (field === 'current') {
+        item.current = value;
+        // Update duration when current is toggled
+        if (value) {
+          const startDate = item.startDate;
+          const startYear = startDate ? new Date(startDate).getFullYear() : new Date().getFullYear();
+          const startMonth = startDate ? new Date(startDate).toLocaleString('default', { month: 'short' }) : '';
+          item.duration = startMonth ? `${startMonth} ${startYear} – Present` : `${startYear} – Present`;
+          item.endDate = 'Present';
+        } else if (item.startDate && item.endDate && item.endDate !== 'Present') {
+          const startDate = new Date(item.startDate);
+          const endDate = new Date(item.endDate);
+          const startYear = startDate.getFullYear();
           const endYear = endDate.getFullYear();
+          const startMonth = startDate.toLocaleString('default', { month: 'short' });
           const endMonth = endDate.toLocaleString('default', { month: 'short' });
-          newExperience[index].duration = `${startMonth} ${startYear} – ${endMonth} ${endYear}`;
+          item.duration = `${startMonth} ${startYear} – ${endMonth} ${endYear}`;
         }
+      } else if (field === 'startDate' || field === 'endDate') {
+        item[field] = value;
+        // Update duration when dates change
+        if (item.startDate && (item.endDate || item.current)) {
+          const startDate = new Date(item.startDate);
+          const startYear = startDate.getFullYear();
+          const startMonth = startDate.toLocaleString('default', { month: 'short' });
+
+          if (item.current || item.endDate === 'Present') {
+            item.duration = `${startMonth} ${startYear} – Present`;
+          } else if (item.endDate) {
+            const endDate = new Date(item.endDate);
+            const endYear = endDate.getFullYear();
+            const endMonth = endDate.toLocaleString('default', { month: 'short' });
+            item.duration = `${startMonth} ${startYear} – ${endMonth} ${endYear}`;
+          }
+        }
+      } else {
+        item[field] = value || '';
       }
-    } else {
-      newExperience[index][field] = value || '';
-    }
-    setPortfolio({ ...portfolio, experience: newExperience });
+
+      newExperience[index] = item;
+      return {
+        ...prev,
+        experience: newExperience
+      };
+    });
   };
 
   const removeExperience = (index: number) => {
+    if (!portfolio) return;
     if (!window.confirm('Are you sure you want to delete this experience entry? This action cannot be undone.')) return;
     setPortfolio({
       ...portfolio,
@@ -937,11 +989,13 @@ export default function AdminDashboard() {
   };
 
   const moveExperience = (index: number, direction: 'up' | 'down') => {
+    if (!portfolio) return;
     if (!portfolio || !portfolio.experience) return;
     setPortfolio({ ...portfolio, experience: reorderItems(portfolio.experience, index, direction) });
   };
 
   const addEducation = () => {
+    if (!portfolio) return;
     setPortfolio({
       ...portfolio,
       education: [...(portfolio.education || []), {
@@ -961,61 +1015,72 @@ export default function AdminDashboard() {
   };
 
   const updateEducation = (index: number, field: string, value: any) => {
-    const newEducation = [...(portfolio.education || [])];
-    if (field === 'achievements') {
-      newEducation[index].achievements = value.split('\n').filter((s: string) => s.trim());
-    } else if (field === 'current') {
-      newEducation[index][field] = value;
-      // Update duration when current is toggled
-      if (value) {
-        const startDate = newEducation[index].startDate;
-        const startYear = startDate ? new Date(startDate).getFullYear() : new Date().getFullYear();
-        const startMonth = startDate ? new Date(startDate).toLocaleString('default', { month: 'short' }) : '';
-        newEducation[index].duration = startMonth ? `${startMonth} ${startYear} – Present` : `${startYear} – Present`;
-        newEducation[index].endDate = 'Present';
-      } else if (newEducation[index].startDate && newEducation[index].endDate && newEducation[index].endDate !== 'Present') {
-        const startDate = new Date(newEducation[index].startDate);
-        const endDate = new Date(newEducation[index].endDate);
-        const startYear = startDate.getFullYear();
-        const endYear = endDate.getFullYear();
-        const startMonth = startDate.toLocaleString('default', { month: 'short' });
-        const endMonth = endDate.toLocaleString('default', { month: 'short' });
+    setPortfolio(prev => {
+      if (!prev) return null;
+      const newEducation = [...prev.education];
+      const item = { ...newEducation[index] } as any;
 
-        if (startYear === endYear && startMonth === endMonth) {
-          newEducation[index].duration = `Completed ${endYear}`;
-        } else {
-          newEducation[index].duration = `${startMonth} ${startYear} – ${endMonth} ${endYear}`;
-        }
-      }
-    } else if (field === 'startDate' || field === 'endDate') {
-      newEducation[index][field] = value;
-      // Update duration when dates change
-      if (newEducation[index].startDate && (newEducation[index].endDate || newEducation[index].current)) {
-        const startDate = new Date(newEducation[index].startDate);
-        const startYear = startDate.getFullYear();
-        const startMonth = startDate.toLocaleString('default', { month: 'short' });
-
-        if (newEducation[index].current || newEducation[index].endDate === 'Present') {
-          newEducation[index].duration = `${startMonth} ${startYear} – Present`;
-        } else if (newEducation[index].endDate) {
-          const endDate = new Date(newEducation[index].endDate);
+      if (field === 'achievements') {
+        item.achievements = typeof value === 'string' ? value.split('\n').filter((s: string) => s.trim()) : value;
+      } else if (field === 'current') {
+        item.current = value;
+        // Update duration when current is toggled
+        if (value) {
+          const startDate = item.startDate;
+          const startYear = startDate ? new Date(startDate).getFullYear() : new Date().getFullYear();
+          const startMonth = startDate ? new Date(startDate).toLocaleString('default', { month: 'short' }) : '';
+          item.duration = startMonth ? `${startMonth} ${startYear} – Present` : `${startYear} – Present`;
+          item.endDate = 'Present';
+        } else if (item.startDate && item.endDate && item.endDate !== 'Present') {
+          const startDate = new Date(item.startDate);
+          const endDate = new Date(item.endDate);
+          const startYear = startDate.getFullYear();
           const endYear = endDate.getFullYear();
+          const startMonth = startDate.toLocaleString('default', { month: 'short' });
           const endMonth = endDate.toLocaleString('default', { month: 'short' });
 
           if (startYear === endYear && startMonth === endMonth) {
-            newEducation[index].duration = `Completed ${endYear}`;
+            item.duration = `Completed ${endYear}`;
           } else {
-            newEducation[index].duration = `${startMonth} ${startYear} – ${endMonth} ${endYear}`;
+            item.duration = `${startMonth} ${startYear} – ${endMonth} ${endYear}`;
           }
         }
+      } else if (field === 'startDate' || field === 'endDate') {
+        item[field] = value;
+        // Update duration when dates change
+        if (item.startDate && (item.endDate || item.current)) {
+          const startDate = new Date(item.startDate);
+          const startYear = startDate.getFullYear();
+          const startMonth = startDate.toLocaleString('default', { month: 'short' });
+
+          if (item.current || item.endDate === 'Present') {
+            item.duration = `${startMonth} ${startYear} – Present`;
+          } else if (item.endDate) {
+            const endDate = new Date(item.endDate);
+            const endYear = endDate.getFullYear();
+            const endMonth = endDate.toLocaleString('default', { month: 'short' });
+
+            if (startYear === endYear && startMonth === endMonth) {
+              item.duration = `Completed ${endYear}`;
+            } else {
+              item.duration = `${startMonth} ${startYear} – ${endMonth} ${endYear}`;
+            }
+          }
+        }
+      } else {
+        item[field] = value || '';
       }
-    } else {
-      newEducation[index][field] = value || '';
-    }
-    setPortfolio({ ...portfolio, education: newEducation });
+
+      newEducation[index] = item;
+      return {
+        ...prev,
+        education: newEducation
+      };
+    });
   };
 
   const removeEducation = (index: number) => {
+    if (!portfolio) return;
     if (!window.confirm('Are you sure you want to delete this education entry? This action cannot be undone.')) return;
     setPortfolio({
       ...portfolio,
@@ -1024,11 +1089,12 @@ export default function AdminDashboard() {
   };
 
   const moveEducation = (index: number, direction: 'up' | 'down') => {
+    if (!portfolio) return;
     if (!portfolio || !portfolio.education) return;
     setPortfolio({ ...portfolio, education: reorderItems(portfolio.education, index, direction) });
   };
 
-  if (loading) {
+  if (loading || !portfolio) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-purple-900/10 to-gray-900">
         <motion.div
@@ -2103,10 +2169,7 @@ export default function AdminDashboard() {
                     <Switch
                       id="open-to-work"
                       checked={portfolio.settings?.openToWork ?? false}
-                      onCheckedChange={(checked) => setPortfolio({
-                        ...portfolio,
-                        settings: { ...portfolio.settings, openToWork: checked }
-                      })}
+                      onCheckedChange={(checked) => { if (portfolio) setPortfolio({ ...portfolio, settings: { ...portfolio.settings, openToWork: checked } }) }}
                     />
                   </div>
 
@@ -2120,10 +2183,7 @@ export default function AdminDashboard() {
                     <Switch
                       id="public-profile"
                       checked={portfolio.settings?.publicProfile}
-                      onCheckedChange={(checked) => setPortfolio({
-                        ...portfolio,
-                        settings: { ...portfolio.settings, publicProfile: checked }
-                      })}
+                      onCheckedChange={(checked) => { if (portfolio) setPortfolio({ ...portfolio, settings: { ...portfolio.settings, publicProfile: checked } }) }}
                     />
                   </div>
 
@@ -2137,10 +2197,7 @@ export default function AdminDashboard() {
                     <Switch
                       id="email-notifications"
                       checked={portfolio.settings?.emailNotifications}
-                      onCheckedChange={(checked) => setPortfolio({
-                        ...portfolio,
-                        settings: { ...portfolio.settings, emailNotifications: checked }
-                      })}
+                      onCheckedChange={(checked) => { if (portfolio) setPortfolio({ ...portfolio, settings: { ...portfolio.settings, emailNotifications: checked } }) }}
                     />
                   </div>
 
@@ -2154,10 +2211,7 @@ export default function AdminDashboard() {
                     <Switch
                       id="analytics"
                       checked={portfolio.settings?.analytics}
-                      onCheckedChange={(checked) => setPortfolio({
-                        ...portfolio,
-                        settings: { ...portfolio.settings, analytics: checked }
-                      })}
+                      onCheckedChange={(checked) => { if (portfolio) setPortfolio({ ...portfolio, settings: { ...portfolio.settings, analytics: checked } }) }}
                     />
                   </div>
                 </CardContent>

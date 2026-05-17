@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
       expiresAt,
       isRevoked: false,
       deviceInfo: getDeviceInfo(request.headers.get('user-agent') || ''),
-      ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || request.ip || 'unknown',
+      ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || (request.headers.get('x-forwarded-for') || '127.0.0.1') || 'unknown',
       userAgent: request.headers.get('user-agent') || ''
     });
 
@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
     await Session.create({
       user: user._id,
       deviceInfo: getDeviceInfo(request.headers.get('user-agent') || ''),
-      ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || request.ip || 'unknown',
+      ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || (request.headers.get('x-forwarded-for') || '127.0.0.1') || 'unknown',
       userAgent: request.headers.get('user-agent') || '',
       isActive: true,
       expiresAt: sessionExpiresAt
@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
       user: user._id,
       action: 'register',
       status: 'success',
-      ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || request.ip || 'unknown',
+      ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || (request.headers.get('x-forwarded-for') || '127.0.0.1') || 'unknown',
       userAgent: request.headers.get('user-agent') || '',
       deviceInfo: getDeviceInfo(request.headers.get('user-agent') || ''),
       email: user.email

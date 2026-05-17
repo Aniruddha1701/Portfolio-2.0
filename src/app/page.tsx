@@ -6,6 +6,7 @@ import { Github, Linkedin, Mail, Brain } from 'lucide-react';
 
 import HeroEnhanced from '@/components/hero-enhanced';
 import FloatingNavbar from '@/components/floating-navbar';
+
 import SmoothScroll from '@/components/smooth-scroll';
 import { LoadingScreen } from '@/components/loading-screen';
 
@@ -20,6 +21,7 @@ const TextReveal = lazy(() => import('@/components/ui/text-reveal').then(m => ({
 const WordleGame = lazy(() => import('@/components/wordle-demo/wordle-game').then(m => ({ default: m.WordleGame })));
 const Terminal = lazy(() => import('@/components/terminal/terminal').then(m => ({ default: m.Terminal })));
 const MatrixRain = lazy(() => import('@/components/effects/matrix-rain').then(m => ({ default: m.MatrixRain })));
+
 
 
 
@@ -150,6 +152,7 @@ export default function Home() {
         <SmoothScroll>
     <div className="flex min-h-screen w-full flex-col bg-transparent">
       <FloatingNavbar />
+
       <SocialLinks />
       <main className="flex-1">
         <section id="home" className="relative w-full">
@@ -185,6 +188,7 @@ export default function Home() {
             <Certifications certifications={achievements} />
           </section>
         </Suspense>
+
 
         <Suspense fallback={<div className="w-full py-24" />}>
           <section id="logic-demo" className="w-full py-24 relative overflow-hidden">

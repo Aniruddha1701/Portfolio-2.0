@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
       await AuditLog.create({
         action: 'failed_login',
         status: 'failure',
-        ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || request.ip || 'unknown',
+        ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || (request.headers.get('x-forwarded-for') || '127.0.0.1') || 'unknown',
         userAgent: request.headers.get('user-agent') || '',
         email: email.toLowerCase(),
         metadata: { reason: 'User not found' }
@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
         user: user._id,
         action: 'failed_login',
         status: 'failure',
-        ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || request.ip || 'unknown',
+        ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || (request.headers.get('x-forwarded-for') || '127.0.0.1') || 'unknown',
         userAgent: request.headers.get('user-agent') || '',
         email: user.email,
         metadata: { reason: 'Account disabled' }
@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
         user: user._id,
         action: 'account_locked',
         status: 'failure',
-        ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || request.ip || 'unknown',
+        ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || (request.headers.get('x-forwarded-for') || '127.0.0.1') || 'unknown',
         userAgent: request.headers.get('user-agent') || '',
         email: user.email,
         metadata: { lockUntil: user.lockUntil }
@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
           user: user._id,
           action: 'account_locked',
           status: 'failure',
-          ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || request.ip || 'unknown',
+          ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || (request.headers.get('x-forwarded-for') || '127.0.0.1') || 'unknown',
           userAgent: request.headers.get('user-agent') || '',
           email: user.email,
           metadata: { reason: 'Max failed attempts reached' }
@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
         user: user._id,
         action: 'failed_login',
         status: 'failure',
-        ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || request.ip || 'unknown',
+        ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || (request.headers.get('x-forwarded-for') || '127.0.0.1') || 'unknown',
         userAgent: request.headers.get('user-agent') || '',
         email: user.email,
         metadata: { attempts: user.failedLoginAttempts }
@@ -138,7 +138,7 @@ export async function POST(request: NextRequest) {
       expiresAt,
       isRevoked: false,
       deviceInfo: getDeviceInfo(request.headers.get('user-agent') || ''),
-      ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || request.ip || 'unknown',
+      ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || (request.headers.get('x-forwarded-for') || '127.0.0.1') || 'unknown',
       userAgent: request.headers.get('user-agent') || ''
     });
 
@@ -148,7 +148,7 @@ export async function POST(request: NextRequest) {
     await Session.create({
       user: user._id,
       deviceInfo: getDeviceInfo(request.headers.get('user-agent') || ''),
-      ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || request.ip || 'unknown',
+      ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || (request.headers.get('x-forwarded-for') || '127.0.0.1') || 'unknown',
       userAgent: request.headers.get('user-agent') || '',
       isActive: true,
       expiresAt: sessionExpiresAt
@@ -158,7 +158,7 @@ export async function POST(request: NextRequest) {
       user: user._id,
       action: 'login',
       status: 'success',
-      ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || request.ip || 'unknown',
+      ipAddress: request.headers.get('x-forwarded-for')?.split(',')[0] || (request.headers.get('x-forwarded-for') || '127.0.0.1') || 'unknown',
       userAgent: request.headers.get('user-agent') || '',
       deviceInfo: getDeviceInfo(request.headers.get('user-agent') || ''),
       email: user.email

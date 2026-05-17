@@ -27,7 +27,7 @@ export function ItNews() {
         toast({
           variant: "destructive",
           title: "Error fetching news",
-          description: result.error,
+          description: String(result.error),
         })
       } else {
         setNews(result.news || [])
