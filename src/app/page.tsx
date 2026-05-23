@@ -13,7 +13,7 @@ import { LoadingScreen } from '@/components/loading-screen';
 // Lazy-load below-the-fold components for faster initial load
 const Portfolio = lazy(() => import('@/components/portfolio').then(m => ({ default: m.Portfolio })));
 const Skills = lazy(() => import('@/components/skills').then(m => ({ default: m.Skills })));
-const Footer = lazy(() => import('@/components/footer').then(m => ({ default: m.Footer })));
+const CinematicFooter = lazy(() => import('@/components/ui/motion-footer').then(m => ({ default: m.CinematicFooter })));
 const Journey = lazy(() => import('@/components/journey').then(m => ({ default: m.Journey })));
 const Certifications = lazy(() => import('@/components/certifications').then(m => ({ default: m.Certifications })));
 const ItNews = lazy(() => import('@/components/it-news').then(m => ({ default: m.ItNews })));
@@ -150,7 +150,7 @@ export default function Home() {
 
       {showMainContent && (
         <SmoothScroll>
-    <div className="flex min-h-screen w-full flex-col bg-transparent">
+    <div className="flex min-h-screen w-full flex-col bg-background">
       <FloatingNavbar />
 
       <SocialLinks />
@@ -352,7 +352,7 @@ export default function Home() {
 
       </main>
       <Suspense fallback={<div className="w-full py-24" />}>
-        <Footer personalInfo={personalInfo} socialLinks={socialLinks} />
+        <CinematicFooter personalInfo={personalInfo} socialLinks={socialLinks} />
       </Suspense>
 
       {/* Matrix Rain Overlay */}

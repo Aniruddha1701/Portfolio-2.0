@@ -19,10 +19,15 @@ export default function HeroEnhanced({ name, city, title, bio, hasResume = false
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
 
-  // Smoother, heavier feel for professional 3D effect
-  const springConfig = { damping: 30, stiffness: 200, mass: 2 }
+  // Heavy spring for the main 3D tilt — deliberate, premium weight
+  const springConfig = { damping: 25, stiffness: 150, mass: 2.5 }
   const x = useSpring(mouseX, springConfig)
   const y = useSpring(mouseY, springConfig)
+
+  // Lighter spring for orb parallax — faster, floatier feel
+  const orbSpring = { damping: 40, stiffness: 100, mass: 1 }
+  const orbX = useSpring(mouseX, orbSpring)
+  const orbY = useSpring(mouseY, orbSpring)
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -35,62 +40,89 @@ export default function HeroEnhanced({ name, city, title, bio, hasResume = false
     return () => window.removeEventListener("mousemove", handleMouseMove)
   }, [mouseX, mouseY])
 
-  // SUBTLE rotation logic - less is more for "Professional" look
-  const rotateX = useTransform(y, [-0.5, 0.5], [2, -2])
-  const rotateY = useTransform(x, [-0.5, 0.5], [-2, 2])
+  // Increased rotation range for real 3D depth (was ±2°, now ±5°)
+  const rotateX = useTransform(y, [-0.5, 0.5], [5, -5])
+  const rotateY = useTransform(x, [-0.5, 0.5], [-5, 5])
+
+  // Independent parallax transforms for each orb
+  const orb1X = useTransform(orbX, [-0.5, 0.5], [-40, 40])
+  const orb1Y = useTransform(orbY, [-0.5, 0.5], [-30, 30])
+  const orb2X = useTransform(orbX, [-0.5, 0.5], [30, -30])
+  const orb2Y = useTransform(orbY, [-0.5, 0.5], [20, -20])
+  const orb3X = useTransform(orbX, [-0.5, 0.5], [-20, 20])
+  const orb3Y = useTransform(orbY, [-0.5, 0.5], [35, -35])
 
   const words = title.split(" ")
 
   return (
     <FluidParticlesBackground className="min-h-screen">
       <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Animated gradient mesh orbs */}
+        {/* Dot-grid texture for spatial depth */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-[0.035]"
+          style={{
+            backgroundImage: `radial-gradient(circle, rgba(139,92,246,0.8) 1px, transparent 1px)`,
+            backgroundSize: '40px 40px',
+          }}
+          aria-hidden="true"
+        />
+
+        {/* Animated gradient mesh orbs — driven by mouse parallax */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
           <motion.div
-            className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-violet-600/15 blur-[120px]"
-            animate={{ x: [0, 60, 0], y: [0, -40, 0], scale: [1, 1.2, 1] }}
-            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-            aria-hidden="true"
+            className="absolute top-1/4 left-1/4 w-[550px] h-[550px] rounded-full bg-violet-600/18 blur-[130px]"
+            style={{ x: orb1X, y: orb1Y }}
+            animate={{ scale: [1, 1.15, 1] }}
+            transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
           />
           <motion.div
-            className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full bg-cyan-500/10 blur-[100px]"
-            animate={{ x: [0, -50, 0], y: [0, 30, 0], scale: [1.1, 0.9, 1.1] }}
-            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-            aria-hidden="true"
+            className="absolute bottom-1/4 right-1/4 w-[450px] h-[450px] rounded-full bg-cyan-500/12 blur-[110px]"
+            style={{ x: orb2X, y: orb2Y }}
+            animate={{ scale: [1.1, 0.9, 1.1] }}
+            transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 2 }}
           />
           <motion.div
-            className="absolute top-1/2 right-1/3 w-[300px] h-[300px] rounded-full bg-pink-500/8 blur-[80px]"
-            animate={{ x: [0, 40, 0], y: [0, 50, 0] }}
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 4 }}
-            aria-hidden="true"
+            className="absolute top-1/2 right-1/3 w-[320px] h-[320px] rounded-full bg-pink-500/10 blur-[90px]"
+            style={{ x: orb3X, y: orb3Y }}
+            animate={{ scale: [0.95, 1.1, 0.95] }}
+            transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 4 }}
           />
+          {/* Deep background bloom */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full bg-violet-900/20 blur-[200px]" />
         </div>
 
-        {/* 3D Container */}
-        <motion.div
-          style={{
-            rotateX,
-            rotateY,
-            transformStyle: "preserve-3d",
-          }}
-          className="relative z-10 max-w-5xl mx-auto px-6"
-        >
-          <div className="text-center space-y-8" style={{ transform: "translateZ(30px)" }}>
+        {/* 3D Container — perspective set on parent for true depth */}
+        <div style={{ perspective: '1200px' }} className="relative z-10 max-w-5xl mx-auto px-6 w-full">
+          <motion.div
+            style={{
+              rotateX,
+              rotateY,
+              transformStyle: "preserve-3d",
+            }}
+            className="w-full"
+          >
+          <div className="text-center space-y-8" style={{ transform: "translateZ(50px)" }}>
             {/* Status Badge */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-secondary/20 border border-border backdrop-blur-xl"
+              className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-secondary/20 border border-border backdrop-blur-xl relative overflow-hidden"
             >
+              {/* Badge shimmer sweep */}
+              <motion.div
+                className="absolute inset-0 -skew-x-12 bg-gradient-to-r from-transparent via-white/8 to-transparent"
+                animate={{ x: ['-100%', '200%'] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "linear", repeatDelay: 2 }}
+              />
               <span className="relative flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
               </span>
-              <span className="text-sm font-medium text-muted-foreground tracking-wide">
+              <span className="text-sm font-medium text-muted-foreground tracking-wide relative z-10">
                 Available for opportunities
               </span>
-              <Sparkles className="w-3.5 h-3.5 text-violet-600 dark:text-violet-400" />
+              <Sparkles className="w-3.5 h-3.5 text-violet-600 dark:text-violet-400 relative z-10" />
             </motion.div>
 
             {/* Name With 3D Letter Effect */}
@@ -121,8 +153,11 @@ export default function HeroEnhanced({ name, city, title, bio, hasResume = false
                   </motion.span>
                 ))}
               </motion.h1>
-              {/* Glow behind name */}
-              <div className="absolute inset-0 text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight font-headline text-violet-500/20 blur-2xl -z-10 select-none flex justify-center flex-wrap" aria-hidden>
+              {/* Enhanced multi-layer glow behind name */}
+              <div className="absolute inset-0 text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight font-headline text-violet-500/30 blur-[40px] -z-10 select-none flex justify-center flex-wrap" aria-hidden>
+                {name.split('').map((letter, i) => <span key={i} style={{ minWidth: letter === ' ' ? '1rem' : 'auto' }}>{letter}</span>)}
+              </div>
+              <div className="absolute inset-0 text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight font-headline text-pink-500/15 blur-[80px] -z-10 select-none flex justify-center flex-wrap" aria-hidden>
                 {name.split('').map((letter, i) => <span key={i} style={{ minWidth: letter === ' ' ? '1rem' : 'auto' }}>{letter}</span>)}
               </div>
             </div>
@@ -249,7 +284,8 @@ export default function HeroEnhanced({ name, city, title, bio, hasResume = false
               </Button>
             </motion.div>
           </div>
-        </motion.div>
+          </motion.div>
+        </div>
 
         {/* Scroll Indicator */}
         <motion.div

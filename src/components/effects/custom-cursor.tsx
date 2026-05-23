@@ -56,17 +56,45 @@ export function CustomCursor() {
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: `
-        /* Hide default cursor on desktop, but keep it on interactive elements if you prefer, 
-           or hide it everywhere. Let's hide it everywhere for the full custom feel. */
+        /* Hide default cursor on desktop */
         @media (hover: hover) and (pointer: fine) {
           * {
             cursor: none !important;
           }
         }
+
+        /* Theme-adaptive cursor colors — LIGHT MODE (default) */
+        .custom-cursor-dot {
+          background: rgb(91, 33, 182) !important;  /* violet-800 — bold on white */
+          box-shadow: 0 0 16px rgba(91, 33, 182, 0.7), 0 0 6px rgba(91, 33, 182, 1) !important;
+        }
+        .custom-cursor-dot.hovering {
+          background: rgba(91, 33, 182, 0.12) !important;
+          box-shadow: 0 0 30px rgba(91, 33, 182, 0.5), inset 0 0 14px rgba(91, 33, 182, 0.4) !important;
+          border: 2px solid rgba(91, 33, 182, 0.8) !important;
+        }
+        .custom-cursor-ring {
+          border-color: rgba(91, 33, 182, 0.45) !important;
+        }
+
+        /* DARK MODE */
+        .dark .custom-cursor-dot {
+          background: rgba(167, 139, 250, 1) !important;  /* violet-400 */
+          box-shadow: 0 0 14px rgba(139, 92, 246, 0.8), 0 0 4px rgba(167, 139, 250, 0.9) !important;
+        }
+        .dark .custom-cursor-dot.hovering {
+          background: rgba(139, 92, 246, 0.15) !important;
+          box-shadow: 0 0 24px rgba(139, 92, 246, 0.5), inset 0 0 12px rgba(139, 92, 246, 0.6) !important;
+          border: 1.5px solid rgba(139, 92, 246, 0.8) !important;
+        }
+        .dark .custom-cursor-ring {
+          border-color: rgba(139, 92, 246, 0.3) !important;
+        }
       `}} />
 
+      {/* Inner dot */}
       <motion.div
-        className="fixed top-0 left-0 w-4 h-4 rounded-full bg-violet-400 pointer-events-none z-[9999] mix-blend-screen"
+        className={`custom-cursor-dot fixed top-0 left-0 w-4 h-4 rounded-full pointer-events-none z-[9999] ${isHovering ? 'hovering' : ''}`}
         style={{
           x,
           y,
@@ -77,20 +105,14 @@ export function CustomCursor() {
         animate={{
           opacity: 1,
           scale: isHovering ? 3 : 1,
-          backgroundColor: isHovering ? "rgba(139, 92, 246, 0.2)" : "rgba(139, 92, 246, 1)",
-          boxShadow: isHovering 
-            ? "0 0 20px rgba(139, 92, 246, 0.4), inset 0 0 10px rgba(139, 92, 246, 0.6)" 
-            : "0 0 10px rgba(139, 92, 246, 0.8)",
-          border: isHovering ? "1px solid rgba(139, 92, 246, 0.8)" : "none"
         }}
         transition={{
           scale: { duration: 0.2 },
-          backgroundColor: { duration: 0.2 },
         }}
       />
       {/* Outer trailing ring */}
       <motion.div
-        className="fixed top-0 left-0 w-8 h-8 rounded-full border border-violet-500/30 pointer-events-none z-[9998]"
+        className="custom-cursor-ring fixed top-0 left-0 w-8 h-8 rounded-full border pointer-events-none z-[9998]"
         style={{
           x: outerX,
           y: outerY,

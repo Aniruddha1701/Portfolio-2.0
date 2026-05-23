@@ -8,6 +8,8 @@ import {
   type ReactNode,
   type CSSProperties,
 } from "react";
+import { createPortal } from "react-dom";
+import { useTheme } from "next-themes";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -45,28 +47,28 @@ export interface ThemeToggleProps {
   children?: ReactNode;
 }
 
-// ─── Design tokens ────────────────────────────────────────────────────────────
+// ─── Design tokens (using the crisp premium site themes) ───────────────────
 
 const TOKENS: Record<Theme, Record<string, string>> = {
   light: {
-    pageBg: "#f3ede1",
+    pageBg: "#fafafa",
     pageText: "#1a1a1a",
     barBg: "#1a1a1a",
     barText: "#ffffff",
     barBorder: "rgba(255,255,255,0.07)",
-    btnBg: "#f3ede1",
+    btnBg: "#fafafa",
     btnText: "#1a1a1a",
     btnRing: "rgba(255,255,255,0.15)",
     inputBg: "rgba(255,255,255,0.1)",
     inputText: "#ffffff",
   },
   dark: {
-    pageBg: "#0e0e0e",
+    pageBg: "#09090b",
     pageText: "#dfd8c6",
     barBg: "#dfd8c6",
     barText: "#1a1a1a",
     barBorder: "rgba(0,0,0,0.10)",
-    btnBg: "#0e0e0e",
+    btnBg: "#09090b",
     btnText: "#dfd8c6",
     btnRing: "rgba(0,0,0,0.25)",
     inputBg: "rgba(0,0,0,0.08)",
@@ -150,51 +152,40 @@ export function ThemeToggle({
   onThemeChange,
   children,
 }: ThemeToggleProps) {
-  const isAppBar = variant === "appbar";
-  const isIcon = variant === "icon";
-  const barHeight = explicitBarHeight ?? (isAppBar ? 60 : 44);
-
-  const [theme, setTheme] = useState<Theme>(defaultTheme);
+  const { theme, setTheme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const [phase, setPhase] = useState<CurtainPhase>("idle");
   const [hovered, setHovered] = useState(false);
   const [pressed, setPressed] = useState(false);
   const curtainColorRef = useRef<string>("");
-  const t = TOKENS[theme];
 
-  // Sync with global Tailwind dark class on mount
   useEffect(() => {
-    if (typeof document !== "undefined") {
-      const isDark = document.documentElement.classList.contains("dark");
-      if (isDark && theme !== "dark") {
-        setTheme("dark");
-      } else if (!isDark && theme !== "light") {
-        setTheme("light");
-      }
-    }
+    setMounted(true);
   }, []);
+
+  const activeTheme = (mounted ? (resolvedTheme || theme) : defaultTheme) as Theme;
+  const isDark = activeTheme === "dark";
+  const isAppBar = variant === "appbar";
+  const isIcon = variant === "icon";
+  const barHeight = explicitBarHeight ?? (isAppBar ? 60 : 44);
+  const t = TOKENS[activeTheme];
 
   const toggle = useCallback(() => {
     if (phase !== "idle") return;
-    const next: Theme = theme === "light" ? "dark" : "light";
+    const next: Theme = activeTheme === "light" ? "dark" : "light";
     curtainColorRef.current = TOKENS[next].pageBg;
     setPhase("falling");
 
     setTimeout(() => {
       setTheme(next);
       onThemeChange?.(next);
-
-      if (typeof document !== "undefined") {
-        if (next === "dark") {
-          document.documentElement.classList.add("dark");
-        } else {
-          document.documentElement.classList.remove("dark");
-        }
-      }
-
       setPhase("rising");
-      setTimeout(() => setPhase("idle"), duration + 60);
+      
+      setTimeout(() => {
+        setPhase("idle");
+      }, duration + 60);
     }, duration);
-  }, [phase, theme, duration, onThemeChange]);
+  }, [phase, activeTheme, duration, onThemeChange, setTheme]);
 
   // ── Derived styles ──────────────────────────────────────────────────────────
 
@@ -256,7 +247,7 @@ export function ThemeToggle({
     transform: phase === "falling" ? "scaleY(1)" : "scaleY(0)",
     transition:
       phase !== "idle" ? `transform ${duration}ms ${EASING}` : "none",
-    zIndex: 9997,
+    zIndex: 99999,
     pointerEvents: "none",
   };
 
@@ -266,10 +257,18 @@ export function ThemeToggle({
     gap: "12px",
   };
 
+  const curtainOverlay = (
+    <div aria-hidden="true" style={curtainStyle} />
+  );
+
+  const renderedCurtain = mounted && typeof document !== "undefined"
+    ? createPortal(curtainOverlay, document.body)
+    : null;
+
   if (isIcon) {
     return (
       <>
-        <div aria-hidden="true" style={curtainStyle} />
+        {renderedCurtain}
         <button
           style={btnStyle}
           onClick={toggle}
@@ -277,10 +276,10 @@ export function ThemeToggle({
           onMouseLeave={() => { setHovered(false); setPressed(false); }}
           onMouseDown={() => setPressed(true)}
           onMouseUp={() => setPressed(false)}
-          aria-label={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
-          aria-pressed={theme === "dark"}
+          aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+          aria-pressed={isDark}
         >
-          {theme === "light" ? <MoonIcon /> : <SunIcon />}
+          {isDark ? <SunIcon /> : <MoonIcon />}
         </button>
       </>
     );
@@ -288,8 +287,8 @@ export function ThemeToggle({
 
   return (
     <div style={pageStyle}>
-      {/* Curtain overlay */}
-      <div aria-hidden="true" style={curtainStyle} />
+      {/* Curtain overlay via React Portal */}
+      {renderedCurtain}
 
       {/* Fixed top bar */}
       <div style={barStyle}>
@@ -374,10 +373,10 @@ export function ThemeToggle({
               onMouseLeave={() => { setHovered(false); setPressed(false); }}
               onMouseDown={() => setPressed(true)}
               onMouseUp={() => setPressed(false)}
-              aria-label={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
-              aria-pressed={theme === "dark"}
+              aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+              aria-pressed={isDark}
             >
-              {theme === "light" ? <MoonIcon /> : <SunIcon />}
+              {isDark ? <SunIcon /> : <MoonIcon />}
             </button>
           </div>
         )}
@@ -391,10 +390,10 @@ export function ThemeToggle({
             onMouseLeave={() => { setHovered(false); setPressed(false); }}
             onMouseDown={() => setPressed(true)}
             onMouseUp={() => setPressed(false)}
-            aria-label={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
-            aria-pressed={theme === "dark"}
+            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            aria-pressed={isDark}
           >
-            {theme === "light" ? <MoonIcon /> : <SunIcon />}
+            {isDark ? <SunIcon /> : <MoonIcon />}
           </button>
         )}
 

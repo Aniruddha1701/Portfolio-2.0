@@ -7,8 +7,7 @@ dotenv.config({ path: '.env' });
 const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
-  console.error('Please define the MONGODB_URI environment variable inside .env');
-  process.exit(1);
+  throw new Error('Please define the MONGODB_URI environment variable inside .env');
 }
 
 // Minimal Admin Schema for seeding
@@ -24,7 +23,7 @@ const Admin = mongoose.models.Admin || mongoose.model('Admin', AdminSchema);
 
 async function seedAdmin() {
   try {
-    await mongoose.connect(MONGODB_URI);
+    await mongoose.connect(MONGODB_URI!);
     console.log('Connected to MongoDB');
 
     const email = 'lab205ab1@gmail.com';
